@@ -1,9 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Bad+Script);
+@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
+@import url(https://fonts.googleapis.com/css?family=Architects+Daughter);
 .eg-theme-gourmet {
   .eg-slideshow {
     background-image: url(~eagle.js/src/themes/gourmet/handmadepaper.png);
+    h3 {
+      margin-top: 0.3em;
+      margin-bottom: -0.1em;
+    }
   }
-  .eg-slide-content {
+  .eg-slide-content, .subslide {
     width: 25em;
     max-width: 80%;
     margin: 0 auto;
@@ -13,18 +19,20 @@
     font-family: 'Bad Script', cursive;
     font-weight: normal;
   }
-  h3 {
-    margin-top: 0.5em;
-  }
   p, li, .button {
-    font-family: 'Lato', cursive;
+    font-family: 'Architects Daughter', cursive;
     font-weight: normal;
+    font-size: 0.7em;
+    line-height: 2em;
   }
   h3 em {
     text-decoration: underline;
     font-style: normal;
   }
   @import './tomorrow';
+  .code-box {
+    box-shadow: 0 0 0.25em 0.25em #ddd
+  }
   .eg-code-comment {
     font-weight: bold;
     color: #dd4321

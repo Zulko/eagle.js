@@ -18,12 +18,11 @@ eg-transition(:enter='enter', :leave='leave')
 
               slide
                 h1 My research projects
-                h3 Please hire me
 
               introducing-myself <eg-code-comment> One Inserted/Reused slide </eg-code-comment>
 
-              my-first-project <eg-code-comment> Inserted slideshow ! </eg-code-comment>
-              other-project(:firstSlide=3) <eg-code-comment> Cut slides out </eg-code-comment>
+              slides-first-project <eg-code-comment> Inserted slideshow ! </eg-code-comment>
+              slides-other-project(:firstSlide=3) <eg-code-comment> Cut slides out </eg-code-comment>
 
               slide
                 h3 Thank you for listening
@@ -48,30 +47,6 @@ eg-transition(:enter='enter', :leave='leave')
             p(v-if='(11 < step)  && (step <= 13)').
               If you lost track: you are watching a slideshow embedded
               in a slideshow embedded in a slide inserted in a slideshow.
-      //- eg-transition(enter='bounceInRight')
-      //-   .subslide(v-if='step >= 15')
-      //-     p.
-      //-       One last thing: <b>meta-slideshows</b>, playing existing slideshows
-      //-       one after another to form a new one:
-      //-     eg-code-block(lang='html').
-      //-       .meta-slideshow
-      //-         slideshow
-      //-           slide
-      //-             h1 My portfolio
-      //-             h3 by Zulko
-      //-
-      //-         my-research-projects <eg-code-comment>AN EXISTING SLIDESHOW</eg-code-comment>
-      //-         my-gifs-portfolio(:startSlide='2') <eg-code-comment>SKIP FIRST FRAME</eg-code-comment>
-      //-         my-current-projects(:endSlide='40') <eg-code-comment>SKIP THE END</eg-code-comment>
-      //-
-      //-         slideshow
-      //-           slide
-      //-             h1 THE END
-      //-             h3 Thank you
-      //-
-      //-     eg-transition(enter='fadein')
-      //-       p(v-if='step === steps').
-      //-         If you were waiting for an actually useful feature, that would be this one!
 </template>
 
 <script>

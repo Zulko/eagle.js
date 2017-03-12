@@ -1,0 +1,5 @@
+<svg height="33.7mm" width="76.9mm" version="1.1" viewBox="0 0 272 119">
+  <circle v-if='step >= 1' cx="60" cy="65" r="30"/>
+  <circle v-if='step >= 2' class='animated bounce' cx="137" cy="65" r="30"/>
+  <circle v-if='step >= 3' cx="214" cy="65" r="30"/>
+</svg>

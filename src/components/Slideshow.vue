@@ -1,5 +1,4 @@
 <script>
-
 export default {
   props: {
     firstSlide: {default: 1},
@@ -144,11 +143,12 @@ export default {
     click: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         console.log(evt)
-        evt.preventDefault()
 
         if (evt.clientX < (0.1 * document.documentElement.clientWidth)) {
+          evt.preventDefault()
           this.previousStep()
-        } else {
+        } else if (evt.clientX > (0.9 * document.documentElement.clientWidth)){
+          evt.preventDefault()
           this.nextStep()
         }
 
@@ -162,17 +162,6 @@ export default {
           this.nextStep()
         } else if ((evt.wheelDeltaY < 0) || (evt.deltaY < 0)){
           this.previousStep()
-        }
-      }
-    },
-    swipe: function (evt) {
-      console.log("swiped")
-      if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
-        evt.preventDefault()
-        if (evt.deltaX > 0) {
-          this.previousStep()
-        } else if (evt.deltaX < 0) {
-          this.nextStep()
         }
       }
     },
@@ -216,6 +205,7 @@ export default {
           })
         }
       })
+      console.log('eeeee', this.slides.length, this.$children)
     }
   },
   watch: {
