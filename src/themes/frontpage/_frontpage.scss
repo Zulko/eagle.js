@@ -1,0 +1,66 @@
+@import url(https://fonts.googleapis.com/css?family=Patrick+Hand+SC);
+.frontpage {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  background-image: url(~eagle.js/src/themes/frontpage/crossword.png);
+  .content{
+    width: 600px;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+}
+
+h1, h2, h3, h4, p {
+  font-weight: normal;
+  font-family: 'Patrick Hand SC'
+}
+
+h1 {
+  font-size: 8em;
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  line-height: 0.8em;
+  text-align: center;
+}
+h2 {
+  font-size: 2.2em;
+  margin-top: 0.4em;
+  margin-bottom: 2em;
+  line-height: 0.8em;
+  text-align: center;
+}
+
+p {
+  margin-top: 1.5em;
+  font-size: 23px;
+}
+h3 {
+  font-size: 30px;
+}
+
+.grey {
+  color: #bbb
+}
+.box-card {
+  text-align: center;
+  margin-bottom: 50px;
+  .embedded-slideshow-container {
+    position: relative;
+    width: 150px;
+    height: 120px;
+    margin: 0 auto;
+    border: 1px solid grey;
+    overflow: hidden;
+  }
+  h3, p {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}

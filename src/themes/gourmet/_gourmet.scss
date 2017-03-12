@@ -1,0 +1,91 @@
+@import url(https://fonts.googleapis.com/css?family=Bad+Script);
+.eg-theme-gourmet {
+  .eg-slideshow {
+    background-image: url(~eagle.js/src/themes/gourmet/handmadepaper.png);
+  }
+  .eg-slide-content {
+    width: 25em;
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Bad Script', cursive;
+    font-weight: normal;
+  }
+  h3 {
+    margin-top: 0.5em;
+  }
+  p, li, .button {
+    font-family: 'Lato', cursive;
+    font-weight: normal;
+  }
+  h3 em {
+    text-decoration: underline;
+    font-style: normal;
+  }
+  @import './tomorrow';
+  .eg-code-comment {
+    font-weight: bold;
+    color: #dd4321
+  }
+  .eg-modal {
+    background-color: rgba(0,0,0,0.9);
+    color: white;
+    h1, h2, h3, h4 {
+      font-weight: bold;
+    }
+    img {
+      box-shadow: 0 0 4px 4px #888
+    }
+  }
+  .button {
+    background: none;
+    cursor: pointer;
+    border: none;
+    color: black;
+    border-radius: 2em;
+    border: 1px solid gray;
+    padding: 0.5em 0.5em;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 1em;
+    display: inline-block;
+  }
+  .eg-switch {
+    .slider {
+      background-color: #ccc;
+    }
+    .slider.checked {
+      background-color: #ffb014;
+    }
+    .unchecked {
+      color: #bbbbbb
+    }
+  }
+  .eg-radio {
+    margin-right: 1em;
+    .radio {
+      background: none;
+      border: 2px solid black;
+      border-spacing: 2px;
+      z-index: 1;
+    }
+
+    .radiodot {
+      background-color: #ffb014;
+    }
+  }
+
+  .shadowbox {
+    box-shadow: 0 0 4px 4px #bbb
+  }
+  .embedded-slideshow .eg-slideshow {
+    box-shadow: 0 0 4px 4px #bbb
+  }
+  .half {
+    width: 50%
+  }
+}
+
+@import "../base";
