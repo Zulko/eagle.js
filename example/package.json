@@ -12,7 +12,7 @@
   "dependencies": {
     "vue": "^2.1.10",
     "vue-router": "^2.2.0",
-    "eagle.js": "0.1.0",
+    "eagle.js": "0.1.1",
     "chart.js": "2.5.0"
   },
   "devDependencies": {

@@ -172,7 +172,7 @@
           p Result:
           demo-slideshow(:embedded='true', :firstSlide=9, :lastSlide=9)
 
-    v-slide(:steps=4)
+    v-slide(:steps=3)
       h3 Subslides
       eg-code-block(lang='html').
         slide(:steps=3)
