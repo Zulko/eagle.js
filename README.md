@@ -1,13 +1,14 @@
 # Eagle.js - A slideshow framework for hackers
 
-Eagle.js is a slideshow system built on top of the web framefork [Vue.js](https://vuejs.org/).
+Eagle.js is a slideshow system built on top of the [Vue.js](https://vuejs.org/) web framefork .
 It supports animations, themes, interactive widgets (for web demos),
 and makes it easy to reuse components, slides and styles across presentations.
+See [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle) for a quick tour.
 
 Most of all, Eagle aims at offering a simple and very hackable API so you
 can get off the beaten tracks and craft the slideshows you really want.
 
-Here is what the Eagle syntax looks like (using Pug):
+Here is what the Eagle syntax looks like (using [Pug](https://pugjs.org/api/getting-started.html)):
 ```pug
 .eg-slideshow
     slide
@@ -48,8 +49,11 @@ To start editing, click on ``My first slideshow`` to display this slideshow, the
 
 ## Contribute
 
-Eagle.JS is an open source framework originally written by [Zulko](https://github.com/Zulko) and released on [Github](https://github.com/Zulko/eagle.js) under the ISC licence. Everyone is welcome to contribute ! Below are a few ideas that would deserve attention:
+Eagle.JS is an open source framework originally written by [Zulko](https://github.com/Zulko) and released on [Github](https://github.com/Zulko/eagle.js) under the ISC licence. Everyone is welcome to contribute !
+
+Below are a few ideas that deserve more attention in the future:
 
 - Bundler to make standalone HTML presentations
 - PDF export ?
 - Themes
+- Better docs ? (What do javascript people use to write docs ?)
