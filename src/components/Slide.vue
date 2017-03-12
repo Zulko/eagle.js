@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     nextStep: function () {
-      console.log('nextStep')
       if (this.step === this.steps) {
         this.$parent.nextSlide()
       } else {
@@ -45,7 +44,6 @@ export default {
   },
   watch: {
     step: function (val) {
-      console.log('slidestep', val)
       this.$parent.step = val
     },
     active: function (val) {

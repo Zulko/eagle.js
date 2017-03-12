@@ -44,7 +44,6 @@ export default {
 
 
     if (!this.inserted) {
-      console.log('inserted', this.inserted, this.slides.length)
       this.currentSlide = this.slides[this.currentSlideIndex - 1]
       this.currentSlide.step = this.startStep
       // ADD NAVIGATION EVENTS
@@ -107,7 +106,6 @@ export default {
               this.slides[nextSlideIndex - 1].$parent.skip)) {
         nextSlideIndex++
       }
-      console.log('nsi', nextSlideIndex)
       if (nextSlideIndex < this.slides.length + 1) {
         this.currentSlideIndex = nextSlideIndex
       } else if (!this.embedded) {
@@ -121,7 +119,6 @@ export default {
               (this.slides[previousSlideIndex - 1].$parent.skip))) {
         previousSlideIndex--
       }
-      console.log(this.currentSlideIndex, previousSlideIndex)
       if (previousSlideIndex >= 1) {
         this.currentSlideIndex = previousSlideIndex
       } else if (!this.embedded) {
@@ -142,7 +139,6 @@ export default {
     },
     click: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
-        console.log(evt)
 
         if (evt.clientX < (0.1 * document.documentElement.clientWidth)) {
           evt.preventDefault()
@@ -155,7 +151,6 @@ export default {
       }
     },
     wheel: function (evt) {
-      console.log('wheeeeeel', evt)
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         evt.preventDefault()
         if ((evt.wheelDeltaY > 0) || (evt.deltaY > 0)) {
@@ -166,7 +161,6 @@ export default {
       }
     },
     keydown: function (evt) {
-      console.log('keydown', evt)
       if (this.keyboardNavigation &&
           (this.currentSlide.keyboardNavigation || evt.ctrlKey)) {
         evt.preventDefault()
@@ -192,9 +186,7 @@ export default {
           }
         } else if (el.isSlideshow) {
           el.active = false
-          console.log('inserted active', el.active, el.inserted)
           el.slides.forEach(function (slide) {
-            console.log("heee", slide.active)
             i++
             slide.active = false
             if ((i >= self.firstSlide) &&
@@ -205,13 +197,11 @@ export default {
           })
         }
       })
-      console.log('eeeee', this.slides.length, this.$children)
     }
   },
   watch: {
     currentSlide: function (newSlide, oldSlide) {
 
-      console.log('NS', newSlide, oldSlide)
       if (oldSlide) {
         oldSlide.active = false
         if ((oldSlide.$parent !== newSlide.$parent) &&
@@ -236,7 +226,6 @@ export default {
       }
     },
     active: function (val) {
-      console.log('active', val)
       if (val) {
         this.$el.style.visibility = 'visible'
       } else {

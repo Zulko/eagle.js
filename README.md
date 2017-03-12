@@ -33,12 +33,12 @@ You must have Node/NPM installed to use Eagle.js.
 
 Then the best to get started is to clone the example repo:
 ``` bash
-git clone zulko/eaglejs
+git clone https://github.com/Zulko/eaglejs-demo.git
 ```
 
 Install the dependencies (they will only be downloaded in a local folder):
 ```bash
-cd eaglejs
+cd eaglejs-demo
 npm install
 ```
 
@@ -48,7 +48,7 @@ To start editing, click on ``My first slideshow`` to display this slideshow, the
 
 ## Contribute
 
-Eagle.JS is an open source framework originally written by [Zulko](https://github.com/Zulko) and released on [Github]() under the ISC licence. Everyone is welcome to contribute ! Below are a few ideas that would deserve attention:
+Eagle.JS is an open source framework originally written by [Zulko](https://github.com/Zulko) and released on [Github](https://github.com/Zulko/eagle.js) under the ISC licence. Everyone is welcome to contribute ! Below are a few ideas that would deserve attention:
 
 - Bundler to make standalone HTML presentations
 - PDF export ?

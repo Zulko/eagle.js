@@ -24,17 +24,17 @@
     slide(:steps=4)
       h3 How to impress people
 
-      p(v-if='step >= 2') Learn to juggle
-      p(v-if='step >= 3') Make slideshows about juggling
+      p(v-if='step >= 2') Wear bright colors
+      p(v-if='step >= 3') Learn to juggle
       p(v-if='step >= 4') Use Eagle.JS
 
     slide(:steps=4)
       h3 How to impress people
 
       eg-transition(enter='fadeInRight')
-        p(v-if='step >= 2') Learn to juggle
+        p(v-if='step >= 2') Wear bright colors
       eg-transition(enter='fadeInLeft')
-        p(v-if='step >= 3') Make slideshows about juggling
+        p(v-if='step >= 3') Learn to juggle
       eg-transition(enter='fadeInDown')
         p(v-if='step >= 4') Use Eagle.JS
 

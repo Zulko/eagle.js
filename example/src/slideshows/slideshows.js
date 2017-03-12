@@ -4,7 +4,6 @@ export default {
   list: [
     require('./introducing-eagle/IntroducingEagle'),
     require('./eagle-recipes/EagleRecipes'),
-    require('./eagle-recipes/DemoSlideshow'),
     require('./themes-slideshow/ThemesSlideshow'),
     require('./first-slideshow/FirstSlideshow')
   ]

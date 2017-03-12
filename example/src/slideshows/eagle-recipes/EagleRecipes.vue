@@ -7,6 +7,7 @@
       img.logo(src='./eagle-jam.png')
       p.center 100% Pure Code, no Artificial Swag
 
+
     v-slide
       h3 Getting started
 
@@ -18,8 +19,8 @@
       p.
         Once you have installed Node/NPM, download the demo and start from there:
       eg-code-block(lang='bash').
-        git clone
-        cd eagle-example
+        git clone https://github.com/Zulko/eaglejs-demo.git
+        cd eaglejs-demo
         npm install
         npm run dev
 
@@ -107,8 +108,8 @@
         slide(:steps=4)
           h3 How to impress people
 
-          p(v-if='step >= 2') Learn to juggle
-          p(v-if='step >= 3') Make slideshows about juggling
+          p(v-if='step >= 2') Wear bright colors
+          p(v-if='step >= 3') Learn to juggle
           p(v-if='step >= 4') Use Eagle.JS
       .demo-slideshow
         p Result:
@@ -124,9 +125,9 @@
         slide(:steps=4)
           h3 How to impress people
           eg-transition(enter='fadeInRight')
-            p(v-if='step >= 2') Learn to juggle
+            p(v-if='step >= 2') Wear bright colors
           eg-transition(enter='fadeInLeft')
-            p(v-if='step >= 3') Make slideshows about juggling
+            p(v-if='step >= 3') Learn to juggle
           eg-transition(enter='fadeInDown')
             p(v-if='step >= 4') Use Eagle.JS
       .demo-slideshow
@@ -189,6 +190,12 @@
       .demo-slideshow
         p Result:
         demo-slideshow(:embedded='true', :firstSlide=10, :lastSlide=10)
+
+    v-slide
+      p.
+        Hmmm... Looks like this slideshow is under construction.
+        That would explain the general ugliness...
+        Come back later for more !
 </template>
 
 <script>
