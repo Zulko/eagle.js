@@ -2,8 +2,9 @@
 
 Eagle.js is a slideshow system built on top of the [Vue.js](https://vuejs.org/) web framefork .
 It supports animations, themes, interactive widgets (for web demos),
-and makes it easy to reuse components, slides and styles across presentations.
-See [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle) for a quick tour.
+and makes it easy to reuse components, slides and styles across presentations. For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):
+
+[![screenshot](https://raw.githubusercontent.com/Zulko/eagle.js/master/screenshot.jpg)](https://zulko.github.io/eaglejs-demo/#/introducing-eagle)
 
 Most of all, Eagle aims at offering a simple and very hackable API so you
 can get off the beaten tracks and craft the slideshows you really want.

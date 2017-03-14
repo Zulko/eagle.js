@@ -50,10 +50,4 @@ export default {
     margin: 0 auto;
   }
 }
-//
-// .eg-slide-content {
-//   width: 25em;
-//   max-width: 80%;
-//   margin: 0 auto;
-// }
 </style>

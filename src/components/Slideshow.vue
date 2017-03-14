@@ -140,10 +140,10 @@ export default {
     click: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
 
-        if (evt.clientX < (0.1 * document.documentElement.clientWidth)) {
+        if (evt.clientX < (0.25 * document.documentElement.clientWidth)) {
           evt.preventDefault()
           this.previousStep()
-        } else if (evt.clientX > (0.9 * document.documentElement.clientWidth)){
+        } else if (evt.clientX > (0.75 * document.documentElement.clientWidth)){
           evt.preventDefault()
           this.nextStep()
         }

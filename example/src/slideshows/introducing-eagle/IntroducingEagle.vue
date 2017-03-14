@@ -136,9 +136,11 @@
       h3 That's all folks !
       p.center Think you can help ?
       .center
-        img.shadowbox(src='http://i.imgur.com/AAlntwU.gif')
+        img.computerkid.shadowbox(src='http://i.imgur.com/AAlntwU.gif')
       p.center.
-        I'm not a frontend person, so <br />any contribution is welcome.
+        I'm not a frontend person, so everyone<br />
+        is welcome to contribute to <a href="https://github.com/Zulko/eagle.js" target='_blank'> the repo</a>.
+
 
     slide(enter='fadeIn')
       h3 Thank you !
@@ -270,6 +272,13 @@ export default {
     .button.next {
       float: right;
     }
+  }
+  img.computerkid {
+    height: 6.5em;
+  }
+
+  a {
+    color: black;
   }
 }
 </style>
