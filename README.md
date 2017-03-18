@@ -1,15 +1,15 @@
 # Eagle.js - A slideshow framework for hackers
 
-Eagle.js is a slideshow system built on top of the [Vue.js](https://vuejs.org/) web framefork .
+Eagle.js is a slideshow system built on top of the [Vue.js](https://vuejs.org/) web framework.
 It supports animations, themes, interactive widgets (for web demos),
 and makes it easy to reuse components, slides and styles across presentations. For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):
 
 [![screenshot](https://raw.githubusercontent.com/Zulko/eagle.js/master/screenshot.jpg)](https://zulko.github.io/eaglejs-demo/#/introducing-eagle)
 
-Most of all, Eagle aims at offering a simple and very hackable API so you
+Most of all, Eagle.js aims at offering a simple and very hackable API so you
 can get off the beaten tracks and craft the slideshows you really want.
 
-Here is what the Eagle syntax looks like (using [Pug](https://pugjs.org/api/getting-started.html)):
+Here is what the Eagle.js syntax looks like (using [Pug](https://pugjs.org/api/getting-started.html)):
 ```pug
 .eg-slideshow
     slide
@@ -27,21 +27,21 @@ Here is what the Eagle syntax looks like (using [Pug](https://pugjs.org/api/gett
       p(v-if='step >= 3') This will appear second.
 ```
 
-If you are not familiar with Vue.js you will find Eagle harder to use than, say, [Reveal.js](https://github.com/hakimel/reveal.js/), but on the long term Eagle makes it easier to organize your slides and implement new ideas.
+If you are not familiar with Vue.js you will find Eagle.js harder to use than, say, [Reveal.js](https://github.com/hakimel/reveal.js/), but on the long term Eagle.js makes it easier to organize your slides and implement new ideas.
 
 ## Get started
 
-You must have Node/NPM installed to use Eagle.js.
+You must have Node.js/npm installed to use Eagle.js.
 
 Then the best to get started is to clone the example repo:
 ``` bash
-git clone https://github.com/Zulko/eaglejs-demo.git
+$ git clone https://github.com/Zulko/eaglejs-demo.git
 ```
 
 Install the dependencies (they will only be downloaded in a local folder):
 ```bash
-cd eaglejs-demo
-npm install
+$ cd eaglejs-demo
+$ npm install
 ```
 
 Then run ```npm run dev``` to start the server, and open your browser at [http://localhost:8080](http://localhost:8080) to see the slideshows.
@@ -50,11 +50,11 @@ To start editing, click on ``My first slideshow`` to display this slideshow, the
 
 ## Contribute
 
-Eagle.JS is an open source framework originally written by [Zulko](https://github.com/Zulko) and released on [Github](https://github.com/Zulko/eagle.js) under the ISC licence. Everyone is welcome to contribute !
+Eagle.js is an open source framework originally written by [Zulko](https://github.com/Zulko) and released on [Github](https://github.com/Zulko/eagle.js) under the ISC licence. Everyone is welcome to contribute!
 
 Below are a few ideas that deserve more attention in the future:
 
 - Bundler to make standalone HTML presentations
-- PDF export ?
+- PDF export?
 - Themes
-- Better docs ? (What do javascript people use to write docs ?)
+- Better docs? (What do JavaScript people use to write docs?)
