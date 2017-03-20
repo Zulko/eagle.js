@@ -162,7 +162,7 @@ export default {
     },
     keydown: function (evt) {
       if (this.keyboardNavigation &&
-          (this.currentSlide.keyboardNavigation || evt.ctrlKey)) {
+          (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
         evt.preventDefault()
         if (evt.key === 'ArrowLeft') {
           this.previousStep()
