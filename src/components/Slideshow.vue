@@ -54,6 +54,7 @@ export default {
       }
       if (this.mouseNavigation) {
         window.addEventListener('click', this.click)
+        // TODO you need to play with this time 1000 – it's good for Mac but i'm not sure about other devices
         window.addEventListener('wheel', _.throttle(this.wheel, 1000))
       }
       if (this.embedded) {
@@ -152,8 +153,6 @@ export default {
       }
     },
     wheel: function (evt) {
-      console.log("Wheel", evt)
-
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         evt.preventDefault()
         if ((evt.wheelDeltaY > 0) || (evt.deltaY > 0)) {
