@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "Slideshow framework for Vue.js",
   "main": "src/main.js",
-  "url" : "https://github.com/zulko/eagle.js",
+  "url": "https://github.com/zulko/eagle.js",
   "directories": {
     "example": "example"
   },
@@ -16,9 +16,10 @@
   "author": "Zulko",
   "license": "ISC",
   "dependencies": {
-    "vue": "2.1.10",
+    "animate.css": "3.5.2",
     "highlight.js": "9.9.0",
-    "animate.css": "3.5.2"
+    "lodash": "^4.17.4",
+    "vue": "2.1.10"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -61,7 +62,6 @@
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.16.1",
     "webpack-merge": "^2.6.1",
-
     "pug": "2.0.0-beta11",
     "sass-loader": "5.0.0",
     "node-sass": "4.5.0"
