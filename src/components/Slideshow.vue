@@ -86,18 +86,30 @@ export default {
   },
   methods: {
     nextStep: function () {
-      if (this.step === this.currentSlide.steps) {
-        this.nextSlide()
-      } else {
-        this.step++
-      }
+      this.slides.forEach(function (slide) {
+        slide.direction = "next"
+      });
+      var self = this
+      this.$nextTick(function() {
+        if (self.step === self.currentSlide.steps) {
+          self.nextSlide()
+        } else {
+          self.step++
+        }
+      })
     },
     previousStep: function () {
-      if (this.step === 1) {
-        this.previousSlide()
-      } else {
-        this.step--
-      }
+      this.slides.forEach(function (slide) {
+        slide.direction = "prev"
+      });
+      var self = this
+      this.$nextTick(function() {
+        if (self.step === 1) {
+          self.previousSlide()
+        } else {
+          self.step--
+        }
+      })
     },
     nextSlide: function () {
       var nextSlideIndex = this.currentSlideIndex + 1
