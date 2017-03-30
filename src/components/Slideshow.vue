@@ -1,4 +1,5 @@
 <script>
+import _ from 'lodash'
 export default {
   props: {
     firstSlide: {default: 1},
@@ -53,7 +54,8 @@ export default {
       }
       if (this.mouseNavigation) {
         window.addEventListener('click', this.click)
-        window.addEventListener('wheel', this.wheel)
+        // TODO you need to play with this time 1000 – it's good for Mac but i'm not sure about other devices
+        window.addEventListener('wheel', _.throttle(this.wheel, 1000))
       }
       if (this.embedded) {
         this.$el.className += ' embedded-slideshow'
