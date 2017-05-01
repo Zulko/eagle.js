@@ -36,7 +36,7 @@ export default {
 </script>
 <style scoped>
 
-p {
+.eg-switch p {
   display: inline;
 }
 

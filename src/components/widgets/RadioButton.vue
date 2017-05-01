@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-p {
+.eg-radio p {
   display: inline;
 }
 .radiobutton {
