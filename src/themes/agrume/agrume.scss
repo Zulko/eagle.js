@@ -1,8 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Pompiere);
 @import url(https://fonts.googleapis.com/css?family=Amatic+SC);
+@import "../functions";
 .eg-theme-agrume {
   .eg-slideshow {
-    background-image: url(~eagle.js/src/themes/agrume/subtle_symphony.png);
+    background-image: assetUrl("subtle_symphony.png");
     background-color: #eee;
   }
   .eg-slide-content, .subslide {

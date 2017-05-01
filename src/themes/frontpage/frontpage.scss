@@ -1,9 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Patrick+Hand+SC);
+@import "../functions";
 .frontpage {
   width: 100%;
   height: auto;
   position: absolute;
-  background-image: url(~eagle.js/src/themes/frontpage/crossword.png);
+  background-image: assetUrl("crossword.png");
   .content{
     width: 600px;
     max-width: 90%;

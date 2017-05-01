@@ -224,7 +224,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import 'node_modules/eagle.js/src/themes/agrume/agrume';
+@import '~eagle.js/dist/themes/agrume/agrume';
 #IntroducingEagle {
   .frontpage {
     img {

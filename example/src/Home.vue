@@ -56,7 +56,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
-@import "node_modules/eagle.js/src/themes/frontpage/frontpage";
+@import "~eagle.js/dist/themes/frontpage/frontpage";
 .logo {
   display: inline-block;
   width: 130px;

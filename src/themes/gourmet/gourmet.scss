@@ -1,9 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Bad+Script);
 @import url(https://fonts.googleapis.com/css?family=Indie+Flower);
 @import url(https://fonts.googleapis.com/css?family=Architects+Daughter);
+@import "../functions";
 .eg-theme-gourmet {
   .eg-slideshow {
-    background-image: url(~eagle.js/src/themes/gourmet/handmadepaper.png);
+    background-image: assetUrl("handmadepaper.png");
     h3 {
       margin-top: 0.3em;
       margin-bottom: -0.1em;
