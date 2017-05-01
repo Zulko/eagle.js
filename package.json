@@ -2,8 +2,9 @@
   "name": "eagle.js",
   "version": "0.1.2",
   "description": "Slideshow framework for Vue.js",
-  "main": "src/main.js",
-  "url" : "https://github.com/zulko/eagle.js",
+  "main": "dist/eagle.js",
+  "module": "dist/eagle.js",
+  "url": "https://github.com/zulko/eagle.js",
   "directories": {
     "example": "example"
   },
