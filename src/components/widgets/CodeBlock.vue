@@ -39,25 +39,27 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.container {
-  position: relative;
-  width: 100%;
-}
-
-.code-box {
-  .eg-code-comment {
-    display: none
+.eg-code-block {
+  &.container {
+    position: relative;
+    width: 100%;
   }
-}
 
-.comments-box {
-  position: absolute;
-  color: rgba(0, 0, 0, 0.0);
-  top: 0;
+  .code-box {
+    .eg-code-comment {
+      display: none
+    }
+  }
 
-}
+  .comments-box {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.0);
+    top: 0;
 
-.eg-code-comment {
-  z-index: 10 !important;
+  }
+
+  .eg-code-comment {
+    z-index: 10 !important;
+  }
 }
 </style>
