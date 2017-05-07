@@ -20,7 +20,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "vue": "2.1.10",
     "highlight.js": "9.9.0",
     "animate.css": "3.5.2"
   },
@@ -43,7 +42,11 @@
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-vue": "^2.3.1",
     "shelljs": "^0.7.6",
-    "vue-template-compiler": "2.1.10"
+    "vue": "^2.1.10",
+    "vue-template-compiler": "^2.1.10"
+  },
+  "peerDependencies": {
+    "vue": "^2.0.0"
   },
   "engines": {
     "node": ">= 4.0.0",
