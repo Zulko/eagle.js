@@ -8,6 +8,10 @@
   "directories": {
     "example": "example"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "keywords": [
     "slideshow",
     "slide",
