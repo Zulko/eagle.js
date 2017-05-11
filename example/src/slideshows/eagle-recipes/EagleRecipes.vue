@@ -233,7 +233,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import 'node_modules/eagle.js/src/themes/gourmet/gourmet';
+@import '~eagle.js/dist/themes/gourmet/gourmet';
 #EagleRecipes {
   a {
     font-weight: bold;

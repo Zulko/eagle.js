@@ -84,7 +84,7 @@ export default {
 @import url(https://fonts.googleapis.com/css?family=Permanent+Marker);
 
 #AwesomeEmbeddedSlideshow {
-  @import 'node_modules/eagle.js/src/themes/base';
+  @import '~eagle.js/dist/themes/base';
   .eg-slideshow {
     .eg-slide {
       .eg-slide-content, .subslide{

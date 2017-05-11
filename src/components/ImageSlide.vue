@@ -1,11 +1,11 @@
 
 <template lang='pug'>
-  eg-transition(:enter='enter', :leave='leave')
-    .eg-slide.image-slide(v-if='active', :style="style")
+eg-transition(:enter='enter', :leave='leave')
+  .eg-slide.image-slide(v-if='active', :style="style")
 </template>
 
 <script>
-import Slide from './Slide'
+import Slide from './Slide.vue'
 export default {
   mixins: [Slide],
   props: {

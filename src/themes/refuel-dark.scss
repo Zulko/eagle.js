@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Comfortaa);
+@import "functions";
 // @import "/../node_modules/highlight.js/styles/solarized-dark.css";
 // @import "../assets/themes/base-theme.scss";
 .reveal {
@@ -21,7 +22,7 @@ text-align: left
 
 
 .rf-slideshow {
-  background-image: url(~refuel.js/themes/assets/subtle_symphony.png);
+  background-image: assetUrl("subtle_symphony.png");
   .rf-slide-content {
     width: 25em;
     max-width: 80%;
@@ -35,7 +36,7 @@ text-align: left
     text-decoration: underline;
     font-style: normal;
   }
-  @import '~refuel.js/themes/code_themes/solarized-light';
+  @import 'agrume/solarized-light';
   .rf-code-comment {
     // font-family: 'Raleway', Courier;
     font-weight: bold;

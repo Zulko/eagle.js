@@ -6,6 +6,7 @@ import App from './App'
 import Home from './Home'
 
 import Eagle from 'eagle.js'
+import 'eagle.js/dist/eagle.css'
 
 import slideshows from './slideshows/slideshows.js'
 /* eslint-disable no-new */
