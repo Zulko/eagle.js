@@ -80,5 +80,3 @@ Below are a few ideas that deserve more attention in the future:
 - PDF export?
 - Themes
 - Better docs? (What do JavaScript people use to write docs?)
-
-If you are not familiar with Vue.js you will find Eagle.js harder to use than, say, [Reveal.js](https://github.com/hakimel/reveal.js/), but on the long term Eagle.js makes it easier to organize your slides and implement new ideas.
