@@ -82,7 +82,7 @@ export default {
     window.removeEventListener('keydown', this.keydown)
     window.removeEventListener('click', this.click)
     window.removeEventListener('wheel', this.wheel)
-    clearInterval(this.slideshowTimerUpdater)
+    clearInterval(this.timerUpdater)
   },
   methods: {
     nextStep: function () {
