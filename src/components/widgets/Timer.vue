@@ -15,14 +15,14 @@ export default {
       text: '',
       active: false
     }
-  }
+  },
   mounted: function () {
     this.updateText()
     window.addEventListener('keydown', this.keydown)
     setInterval(this.updateText, 1000)
   },
   beforeDestroy: function () {
-    window.removeEventListener('keydown', this.keydown) {
+    window.removeEventListener('keydown', this.keydown) 
   },
   methods: {
     toggle: function () {
