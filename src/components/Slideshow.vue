@@ -32,7 +32,7 @@ export default {
       var size = 0.04 * Math.min(this.parentWidth, this.parentHeight)
       return { fontSize: size + 'px' }
     },
-    active: function () {
+    computedActive: function () {
       return this.slides.some(function (slide) { return slide.active })
     }
   },
@@ -209,6 +209,13 @@ export default {
           })
         }
       })
+    },
+    updateSlideshowVisibility: function (val) {
+      if (val) {
+        this.$el.style.visibility = 'visible'
+      } else {
+        this.$el.style.visibility = 'hidden'
+      }
     }
   },
   watch: {
@@ -237,13 +244,8 @@ export default {
         this.currentSlide.$parent.step = val
       }
     },
-    active: function (val) {
-      if (val) {
-        this.$el.style.visibility = 'visible'
-      } else {
-        this.$el.style.visibility = 'hidden'
-      }
-    }
+    active: 'updateSlideshowVisibility',
+    computedActive: 'updateSlideshowVisibility'
   }
 
 }
