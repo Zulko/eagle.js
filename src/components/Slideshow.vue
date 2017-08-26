@@ -32,7 +32,7 @@ export default {
       var size = 0.04 * Math.min(this.parentWidth, this.parentHeight)
       return { fontSize: size + 'px' }
     },
-    active: function () {
+    computedActive: function () {
       return this.slides.some(function (slide) { return slide.active })
     }
   },
@@ -82,7 +82,7 @@ export default {
     window.removeEventListener('keydown', this.keydown)
     window.removeEventListener('click', this.click)
     window.removeEventListener('wheel', this.wheel)
-    clearInterval(this.slideshowTimerUpdater)
+    clearInterval(this.timerUpdater)
   },
   methods: {
     nextStep: function () {
@@ -209,6 +209,13 @@ export default {
           })
         }
       })
+    },
+    updateSlideshowVisibility: function (val) {
+      if (val) {
+        this.$el.style.visibility = 'visible'
+      } else {
+        this.$el.style.visibility = 'hidden'
+      }
     }
   },
   watch: {
@@ -237,13 +244,8 @@ export default {
         this.currentSlide.$parent.step = val
       }
     },
-    active: function (val) {
-      if (val) {
-        this.$el.style.visibility = 'visible'
-      } else {
-        this.$el.style.visibility = 'hidden'
-      }
-    }
+    active: 'updateSlideshowVisibility',
+    computedActive: 'updateSlideshowVisibility'
   }
 
 }
