@@ -48,6 +48,28 @@ Then run ```npm run dev``` to start the server, and open your browser at [http:/
 
 To start editing, click on ``My first slideshow`` to display this slideshow, then open the file ``eagle/src/slideshows/first-slideshow/FirstSlideshow.vue`` and change the content of the first slide. Observe the changes happen automatically in your browser. The only times you need to refresh the page is when you add remove or add slides to the presentation.
 
+## Configuration
+
+You can configure your slides with these properties:
+
+| Property             | Default         | Description                               |
+| -------------------- | --------------- | ----------------------------------------- |
+| `skip`               | `false`         |                                           |
+| `enter`              | `null`          | Default enter animation                   |
+| `leave`              | `null`          | Default leave animation                   |
+| `steps`              | `1`             | Default steps per slide                   |
+| `mouseNavigation`    | `true`          | Navigate with mouse click or scroll event |
+| `keyboardNavigation` | `true`          | Navigate with keyboard                    |
+
+### Usage example
+
+```js
+props: {
+  mouseNavigation: {default: false},
+  keyboardNavigation: {default: true}
+}
+```
+
 ## Contribute
 
 Eagle.js is an open source framework originally written by [Zulko](https://github.com/Zulko) and released on [Github](https://github.com/Zulko/eagle.js) under the ISC licence. Everyone is welcome to contribute!
