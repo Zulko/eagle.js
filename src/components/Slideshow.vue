@@ -20,7 +20,7 @@ export default {
       slideshowTimer: 0,
       slideTimer: 0,
       slides: [],
-      active: true,
+      active: true
     }
   },
   computed: {
@@ -42,12 +42,11 @@ export default {
     var self = this
     this.findSlides()
 
-
     if (!this.inserted) {
       this.currentSlide = this.slides[this.currentSlideIndex - 1]
       this.currentSlide.step = this.startStep
-      // ADD NAVIGATION EVENTS
 
+      // ADD NAVIGATION EVENTS
       if (this.keyboardNavigation) {
         window.addEventListener('keydown', this.keydown)
       }
@@ -73,8 +72,8 @@ export default {
     // LAST INITIALIZATIONS
     this.handleResize()
     this.timerUpdater = setInterval(function () {
-      self.slideshowTimer++;
-      self.slideTimer++;
+      self.slideshowTimer++
+      self.slideTimer++
     }, 1000)
     this.afterMounted()
   },
@@ -87,10 +86,10 @@ export default {
   methods: {
     nextStep: function () {
       this.slides.forEach(function (slide) {
-        slide.direction = "next"
-      });
+        slide.direction = 'next'
+      })
       var self = this
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         if (self.step === self.currentSlide.steps) {
           self.nextSlide()
         } else {
@@ -100,10 +99,10 @@ export default {
     },
     previousStep: function () {
       this.slides.forEach(function (slide) {
-        slide.direction = "prev"
-      });
+        slide.direction = 'prev'
+      })
       var self = this
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         if (self.step === 1) {
           self.previousSlide()
         } else {
@@ -151,15 +150,13 @@ export default {
     },
     click: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
-
         if (evt.clientX < (0.25 * document.documentElement.clientWidth)) {
           evt.preventDefault()
           this.previousStep()
-        } else if (evt.clientX > (0.75 * document.documentElement.clientWidth)){
+        } else if (evt.clientX > (0.75 * document.documentElement.clientWidth)) {
           evt.preventDefault()
           this.nextStep()
         }
-
       }
     },
     wheel: function (evt) {
@@ -167,7 +164,7 @@ export default {
         evt.preventDefault()
         if ((evt.wheelDeltaY > 0) || (evt.deltaY > 0)) {
           this.nextStep()
-        } else if ((evt.wheelDeltaY < 0) || (evt.deltaY < 0)){
+        } else if ((evt.wheelDeltaY < 0) || (evt.deltaY < 0)) {
           this.previousStep()
         }
       }
@@ -184,7 +181,7 @@ export default {
       }
     },
     afterMounted: function (evt) {
-      //useful in some instances
+      // useful in some instances
       return
     },
     findSlides: function () {
@@ -204,7 +201,6 @@ export default {
             if ((i >= self.firstSlide) &&
                 (!self.lastSlide || (i <= self.lastSlide))) {
               self.slides.push(slide)
-
             }
           })
         }
@@ -220,7 +216,6 @@ export default {
   },
   watch: {
     currentSlide: function (newSlide, oldSlide) {
-
       if (oldSlide) {
         oldSlide.active = false
         if ((oldSlide.$parent !== newSlide.$parent) &&

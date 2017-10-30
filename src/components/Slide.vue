@@ -12,10 +12,10 @@ export default {
     skip: {default: false},
     enter: {default: null},
     enterPrev: {default: null},
-    enterNext: { default: null},
+    enterNext: {default: null},
     leave: {default: null},
     leavePrev: {default: null},
-    leaveNext: { default: null},
+    leaveNext: {default: null},
     steps: {default: 1},
     mouseNavigation: {default: true},
     keyboardNavigation: {default: true}
@@ -26,7 +26,7 @@ export default {
       active: false,
       isSlide: true,
       slideTimer: 0,
-      direction: "next",
+      direction: 'next',
       transitions: {
         next: {
           enter: this.enterNext || this.enter,
@@ -40,15 +40,14 @@ export default {
     }
   },
   computed: {
-    enterTransition: function() {
+    enterTransition: function () {
       return this.transitions[this.direction].enter
     },
-    leaveTransition: function() {
+    leaveTransition: function () {
       return this.transitions[this.direction].leave
     }
   },
   mounted: function () {
-    var self = this
   },
   methods: {
     nextStep: function () {
@@ -75,12 +74,11 @@ export default {
       if (val) {
         this.slideTimer = 0
         this.timerUpdater = setInterval(function () {
-          self.slideTimer++;
+          self.slideTimer++
         }, 1000)
       } else {
         clearInterval(this.timerUpdater)
       }
-
     }
   }
 }
