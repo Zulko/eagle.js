@@ -16,7 +16,8 @@ module.exports = {
   format: 'es',
   moduleName: 'eagle.js',
   external: [
-    'highlight.js'
+    'highlight.js',
+    'lodash'
   ],
   banner,
   plugins: [
