@@ -1,4 +1,6 @@
 <script>
+import { throttle } from 'lodash'
+
 export default {
   props: {
     firstSlide: {default: 1},
@@ -8,8 +10,8 @@ export default {
     inserted: {default: false},
     keyboardNavigation: {default: true},
     mouseNavigation: {default: true},
-    onStartExit: {default: () => function () { this.$router.push('/') }},
-    onEndExit: {default: () => function () { this.$router.push('/') }},
+    onStartExit: {default: () => function () {}},
+    onEndExit: {default: () => function () {}},
     skip: {default: false}
   },
   data: function () {
@@ -136,7 +138,7 @@ export default {
         this.onStartExit()
       }
     },
-    handleResize: function (event) {
+    handleResize: throttle(function (event) {
       var width = 0
       var height = 0
       if (this.embedded) {
@@ -147,7 +149,7 @@ export default {
         height = document.documentElement.clientHeight
       }
       this.$el.style.fontSize = (0.04 * Math.min(height, width)) + 'px'
-    },
+    }, 16),
     click: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         if (evt.clientX < (0.25 * document.documentElement.clientWidth)) {
@@ -159,7 +161,7 @@ export default {
         }
       }
     },
-    wheel: function (evt) {
+    wheel: throttle(function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         evt.preventDefault()
         if ((evt.wheelDeltaY > 0) || (evt.deltaY > 0)) {
@@ -168,7 +170,7 @@ export default {
           this.previousStep()
         }
       }
-    },
+    }, 16),
     keydown: function (evt) {
       if (this.keyboardNavigation &&
           (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {

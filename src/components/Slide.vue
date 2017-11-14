@@ -1,9 +1,8 @@
 <template lang='pug'>
 eg-transition(:enter='enterTransition', :leave='leaveTransition')
-  div
-    .eg-slide(v-if='active')
-      .eg-slide-content
-        slot
+  .eg-slide(v-if='active')
+    .eg-slide-content
+      slot
 </template>
 
 <script>
