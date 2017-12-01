@@ -4,7 +4,7 @@ Eagle.js is a slideshow system built on top of the [Vue.js](https://vuejs.org/) 
 It supports animations, themes, interactive widgets (for web demos),
 and makes it easy to reuse components, slides and styles across presentations. For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):
 
-[![screenshot](https://raw.githubusercontent.com/Zulko/eagle.js/master/screenshot.jpg)](https://zulko.github.io/eaglejs-demo/#/introducing-eagle)
+[![screenshot](https://raw.githubusercontent.com/Zulko/eagle.js/master/img/screenshot.jpg)](https://zulko.github.io/eaglejs-demo/#/introducing-eagle)
 
 Most of all, Eagle.js aims at offering a simple and very hackable API so you
 can get off the beaten tracks and craft the slideshows you really want.
@@ -105,7 +105,7 @@ We use `slideshow`'s data `step` to control the conditional rendering in `slide`
 
 `slideshow` can only be used as mixin. 
 
-*Note*: For vue mixins, template cannot be extended. `slideshow` needs one HTML element to wrap around your following `slide`s because there are events registered to `slideshow` after component mounted. We recommend you to wrap your template in a `eg-slideshow` div for default styling. 
+*Note*: For vue mixins, template cannot be extended. `slideshow` needs one HTML element to wrap around your following `slide`s because there are events registered to `slideshow` after component mounted. **We recommend you to wrap your template in a `eg-slideshow` div for default styling.** 
 
 You can configure your authored `slideshow` component with these properties: 
 
@@ -120,7 +120,15 @@ You can configure your authored `slideshow` component with these properties:
 | `inserted`           | `false`         |                                                           |
 | `onStartExit`        | `null`          | event callback for exiting slideshow through first slide  |
 | `onEndExit`          | `null`          | event callback for exiting slideshow through last slide   |
+| `backBySlide`        | `false`         | slideshow navigates back by step by default               |
 
+More explaination on `backBySlide`:
+
+By default, slideshow navigates back by step, but you can change the behavior to be slide based: so if you go back to the previous slide, it lands on the first step instead of last step. See a comparison:
+
+![back by step](https://raw.githubusercontent.com/Zulko/eagle.js/master/img/backbystep.gif)) ![back by slide](https://raw.githubusercontent.com/Zulko/eagle.js/master/img/backbyslide.gif))
+
+Please note, if you have any embedded slideshows, you have to use default back mode, because for now parent slideshow cannot know how many steps child slideshow backs. This is a feature to be implemented in the future.
 
 #### Nested slideshow
 
@@ -155,7 +163,7 @@ You can configure `slide` with these properties:
 
 `enterPrev`, `enterNext`, `leavePrev` and `leaveNext` provides flexibility if you want to customize the animation for prev/next direction. If set to null they will use default `enter` and `leave` styles.
 
-*Note:* `enter` and `leave` must be set in pairs. Don't only set one property, because `slide` has two directions to move: prev/next, and both directions needs animations. We recommend either you set animation for all your `slide` on both `enter` and `leave`, or don't set any at all.
+*Note:* `enter` and `leave` must be set in pairs. Don't only set one property, because `slide` has two directions to move: prev/next, and both directions needs animations. **We recommend either you set animation for all your `slide` on both `enter` and `leave`, or don't set any at all.**
 
 ### eg-transition
 

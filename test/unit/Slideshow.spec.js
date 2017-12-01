@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { mount } from 'vue-test-utils'
 import Slideshow from '../fixtures/simpleSlideshow.vue'
+import ComplexSlideshow from '../fixtures/complexSlideshow.vue'
 
 let wrapper, vm
 
@@ -105,6 +106,41 @@ describe('Slideshow events', () => {
       expect(spy).toHaveBeenCalledTimes(1)
       spy.mockReset()
       spy.mockRestore()
+      done()
+    }, 1000)
+  })
+})
+
+describe('Slideshow back mode', () => {
+  it('go back by slide would result to previous slide first step', done => {
+    wrapper = mount(ComplexSlideshow, {
+      attachToDocument: true,
+      propsData: {
+        backBySlide: true
+      }
+    })
+    vm = wrapper.vm
+    vm.currentSlideIndex = 3
+    vm.previousStep()
+    setTimeout(() => {
+      console.log(`current slide is ${vm.currentSlideIndex}`)
+      expect(vm.slides[1].active).toBeTruthy()
+      expect(vm.step).toBe(1)
+      done()
+    }, 1000)
+  })
+
+  it.only('go back by step would result to previous slide last step', done => {
+    wrapper = mount(ComplexSlideshow)
+    vm = wrapper.vm
+    vm.currentSlideIndex = 3
+    // need to wait watcher funciton finishes for currentSlideIndex
+    setTimeout(() => {
+      vm.previousStep()
+    }, 500);
+    setTimeout(() => {
+      expect(vm.slides[1].active).toBeTruthy()
+      expect(vm.step).toBe(5)
       done()
     }, 1000)
   })

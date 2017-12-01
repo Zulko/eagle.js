@@ -12,7 +12,8 @@ export default {
     mouseNavigation: {default: true},
     onStartExit: {default: () => function () {}},
     onEndExit: {default: () => function () {}},
-    skip: {default: false}
+    skip: {default: false},
+    backBySlide: {default: false}
   },
   data: function () {
     return {
@@ -43,6 +44,10 @@ export default {
     this.isSlideshow = true
     var self = this
     this.findSlides()
+
+    if (this.$root.direction === 'prev') {
+      this.currentSlideIndex = this.slides.length
+    }
 
     if (!this.inserted) {
       this.currentSlide = this.slides[this.currentSlideIndex - 1]
@@ -90,6 +95,7 @@ export default {
       this.slides.forEach(function (slide) {
         slide.direction = 'next'
       })
+      this.$root.direction = 'next'
       var self = this
       this.$nextTick(function () {
         if (self.step === self.currentSlide.steps) {
@@ -103,6 +109,7 @@ export default {
       this.slides.forEach(function (slide) {
         slide.direction = 'prev'
       })
+      this.$root.direction = 'prev'
       var self = this
       this.$nextTick(function () {
         if (self.step === 1) {
@@ -170,7 +177,7 @@ export default {
           this.previousStep()
         }
       }
-    }, 16),
+    }, 1000),
     keydown: function (evt) {
       if (this.keyboardNavigation &&
           (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
@@ -226,9 +233,15 @@ export default {
         }
       }
       this.slideTimer = 0
-      this.step = 1
-      newSlide.step = 1
-      newSlide.$parent.step = 1
+      if (this.backBySlide || newSlide.direction === 'next') {
+        this.step = 1
+        newSlide.step = 1
+        newSlide.$parent.step = 1
+      } else if (newSlide.direction === 'prev') {
+        this.step = newSlide.steps
+        newSlide.step = newSlide.steps
+        newSlide.$parent.step = newSlide.steps
+      }
       newSlide.active = true
       newSlide.$parent.active = true
     },
