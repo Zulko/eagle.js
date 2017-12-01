@@ -126,7 +126,9 @@ More explaination on `backBySlide`:
 
 By default, slideshow navigates back by step, but you can change the behavior to be slide based: so if you go back to the previous slide, it lands on the first step instead of last step. See a comparison:
 
-![back by step](https://raw.githubusercontent.com/Zulko/eagle.js/master/img/backbystep.gif)) ![back by slide](https://raw.githubusercontent.com/Zulko/eagle.js/master/img/backbyslide.gif))
+|Back by Step: |Back by slide:|
+|--------------|--------------|
+|![back by step](https://raw.githubusercontent.com/Zulko/eagle.js/master/img/backbystep.gif)|![back by slide](https://raw.githubusercontent.com/Zulko/eagle.js/master/img/backbyslide.gif)|
 
 Please note, if you have any embedded slideshows, you have to use default back mode, because for now parent slideshow cannot know how many steps child slideshow backs. This is a feature to be implemented in the future.
 
