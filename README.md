@@ -1,10 +1,17 @@
-# Eagle.js - A slideshow framework for hackers
+<p align="center">
+<img alt="Eagle.js" title="Eagle.js" src="https://raw.githubusercontent.com/yaodingyd/eagle.js/master/img/logo.png" width="150">
+</p>
+<h1 align="center">Eagle.js - A slideshow framework for hackers</h1>
 
-Eagle.js is a slideshow system built on top of the [Vue.js](https://vuejs.org/) web framework.
-It supports animations, themes, interactive widgets (for web demos),
-and makes it easy to reuse components, slides and styles across presentations. For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):
+- Slideshow system built on top of the [Vue.js](https://vuejs.org/)
+- Supports animations, themes, interactive widgets (for web demos)
+- Easy to reuse components, slides and styles across presentations
+- All APIs public, maximum hackability 
 
-[![screenshot](https://raw.githubusercontent.com/Zulko/eagle.js/master/img/screenshot.jpg)](https://zulko.github.io/eaglejs-demo/#/introducing-eagle)
+### For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):
+
+<p align="center"><a href="https://zulko.github.io/eaglejs-demo/#/introducing-eagle" target="_blank"><img alt="screenshot" src="https://raw.githubusercontent.com/Zulko/eagle.js/master/img/screenshot.jpg"></a></p>
+
 
 Most of all, Eagle.js aims at offering a simple and very hackable API so you
 can get off the beaten tracks and craft the slideshows you really want.
@@ -182,6 +189,10 @@ Eagle.js ships several useful widgets that can be used in your `slide`:
 6. `eg-triggered-message`
 
 See their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
+
+### Events
+
+As you can see in `slideshow` configuration, eagle.js supports mouse and button event, but doesn't have built-in support for mobile gestures. Still, it is very easy to add mobile support with a well-tested library(like hammer.js). You can see example [here]().
 
 ## Contribute
 
