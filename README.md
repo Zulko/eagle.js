@@ -1,5 +1,5 @@
 <p align="center">
-<img alt="Eagle.js" title="Eagle.js" src="https://raw.githubusercontent.com/Zukko/eagle.js/master/img/logo.png" width="150">
+<img alt="Eagle.js" title="Eagle.js" src="https://raw.githubusercontent.com/Zulko/eagle.js/master/img/logo.png" width="150">
 </p>
 <h1 align="center">Eagle.js - A slideshow framework for hackers</h1>
 
