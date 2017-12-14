@@ -1,5 +1,5 @@
 <p align="center">
-<img alt="Eagle.js" title="Eagle.js" src="https://raw.githubusercontent.com/yaodingyd/eagle.js/master/img/logo.png" width="150">
+<img alt="Eagle.js" title="Eagle.js" src="https://raw.githubusercontent.com/Zukko/eagle.js/master/img/logo.png" width="150">
 </p>
 <h1 align="center">Eagle.js - A slideshow framework for hackers</h1>
 
@@ -190,9 +190,76 @@ Eagle.js ships several useful widgets that can be used in your `slide`:
 
 See their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
 
-### Events
+## Advanced usages
 
-As you can see in `slideshow` configuration, eagle.js supports mouse and button event, but doesn't have built-in support for mobile gestures. Still, it is very easy to add mobile support with a well-tested library(like hammer.js). You can see example [here]().
+### API
+
+If you want to customize eagle.js, most likely you will work on `slideshow` component. In this case, We recommend you to read through `slideshow`'s source code to get a better understanding of how eagle.js works. Because `slideshow` works as a vue mixin, all `data` and `method` will follow vue's [option merging rule](https://vuejs.org/v2/guide/mixins.html#Option-Merging). If you are not sure about whether you overwrite eagle.js's API, you can put your functions in `afterMounted`, which eagle.js exposes explicitly for users. 
+
+`slideshow`'s mostly used methods are `nextStep`, `previousStep`, `nextSlide`, `previousSlide`, which are pretty self-explanatory. 
+
+### Mobile Support
+
+As you can see in `slideshow` configuration, eagle.js supports mouse and button event, but doesn't have built-in support for mobile gestures. Still, it is very easy to add mobile support with a well-tested library, like [hammer.js](http://hammerjs.github.io/).
+
+In your slideshow component's `mounted` lifecycle hook,
+
+```javascript
+mounted: {
+  // You can also register to this.$el if you want
+  // to control the gesture only on your slideshow component
+  const hammer = new Hammer(window)
+  hammer.on('swiperight', () => {
+    this.previousStep()
+  })
+  hammer.on('swipeleft', () => {
+    this.nextStep()
+  })
+}
+```
+
+### Permalinks
+
+Eagle.js does not comes with permalinks implementation, because Eagle.js does not assume your usage with it. Using Eagle.js as a completely standalone slideshow, like `reveal.js` or `Remark`, or as a component inserted into your routes, permalinks can get quite different. What's more, `vue-router` is not a dependency for Eagle.js. So it's not a 'battery included' situtation. However, it is fairly easy to implement your own.
+
+The most common implementation for permalinks is to use hashbang in URLs. You can achieve with with `vue-router`'s hash mode, or even better, with history mode, to get rid of the ugly hashbang. Also with `vue-router`, it gives your more flexibility and more granularity control.
+
+For example, if we are using Eagle.js as a standalone application. In our router file:
+
+```javascript
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/:slide/:step',
+      component: MySlideshow
+    }
+  ]
+})
+```
+
+And inside a `MySlideshow`, add watchers to update URL when slides changes, and update slides when URL changes:
+```javascript
+ ....
+  methods: {
+    ....
+     updateSlides: function () {
+      this.currentSlideIndex = +this.$route.params.slide
+      this.$nextTick(() => {
+        this.step = +this.$route.params.step
+      })
+    },
+    updateURL: function () {
+      this.$router.push(`/${this.currentSlideIndex}/${this.step}`)
+    }
+  },
+  watch: {
+    '$route': 'updateSlides',
+    step: 'updateURL',
+    currentSlideIndex: 'updateURL'
+  }
+```
+
+[Demo](http://eaglejspermalink.surge.sh/#/introducing-eagle/2/1)
 
 ## Contribute
 
