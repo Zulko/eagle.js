@@ -18,7 +18,6 @@ export default {
     Vue.component('image-slide', ImageSlide)
 
     Vue.component('eg-modal', Modal)
-
     Vue.component('eg-transition', AnimatedTransition)
     Vue.component('eg-code-block', CodeBlock)
     Vue.component('eg-code-comment', CodeComment)
