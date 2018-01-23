@@ -192,6 +192,25 @@ Eagle.js ships several useful widgets that can be used in your `slide`:
 
 See their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
 
+## Themes
+
+For minimum working style,  **you need to wrap your `slideshow` template in a `eg-slideshow` container.**  Eagle.js also has two themes for now: *argume* and *gourmet*. You can import theme style instead of default one to use them:
+
+```javascript
+// in your main.js
+import 'eagle.js/dist/themes/gourmet.css'
+``` 
+
+To make theme style work, in your `slideshow` you should also have a wrapper with theme class, for example if you are using *gourmet* theme:
+
+```html
+<div class="eg-theme-gourment">
+  <div class="eg-slideshow">
+    ...
+  </div>
+</div>
+```
+
 ## Advanced usages
 
 ### API
