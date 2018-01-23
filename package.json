@@ -1,6 +1,6 @@
 {
   "name": "eagle.js",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Slideshow framework for Vue.js",
   "main": "dist/eagle.js",
   "module": "dist/eagle.js",

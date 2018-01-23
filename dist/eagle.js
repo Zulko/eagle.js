@@ -1,5 +1,5 @@
 /*
- * eagle.js v0.1.3
+ * eagle.js v0.1.4
  *
  * @license
  * Copyright 2017, Zulko
