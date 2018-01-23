@@ -77,6 +77,8 @@ Eagle.js is a vue plugin. You need to `use` eagle.js in your vue app's main file
 import Eagle from 'eagle.js'
 // import eagle.js default styles
 import 'eagle.js/dist/eagle.css'
+// import animate.css for slide transition 
+import 'animate.css'
 
 Vue.use(Eagle)
 ```
@@ -176,7 +178,7 @@ You can configure `slide` with these properties:
 
 ### eg-transition
 
-Under the hood, `eg-transition` is just vue's `transition` will support for [animate.css](https://daneden.github.io/animate.css/): you can use animate.css's class name for `enter` and `leave` property and it just works. All eagle.js's transition effects, including `slide`,  happen with this component, and you can use it just like using vue's `transition`.
+Under the hood, `eg-transition` is just vue's `transition` that supports  [animate.css](https://daneden.github.io/animate.css/): you can use animate.css's class name for `enter` and `leave` property and it just works. All eagle.js's transition effects, including `slide`,  happen with this component, and you can use it just like using vue's `transition`.
 
 ### Other components
 
