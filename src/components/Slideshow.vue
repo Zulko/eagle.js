@@ -98,7 +98,7 @@ export default {
       this.$root.direction = 'next'
       var self = this
       this.$nextTick(function () {
-        if (self.step === self.currentSlide.steps) {
+        if (self.step >= self.currentSlide.steps) {
           self.nextSlide()
         } else {
           self.step++
@@ -112,7 +112,7 @@ export default {
       this.$root.direction = 'prev'
       var self = this
       this.$nextTick(function () {
-        if (self.step === 1) {
+        if (self.step <= 1) {
           self.previousSlide()
         } else {
           self.step--
@@ -264,4 +264,3 @@ export default {
 <style lang="sass">
 @import '../themes/base.scss';
 </style>
-
