@@ -187,11 +187,12 @@ export default {
     keydown: function (evt) {
       if (this.keyboardNavigation &&
           (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
-        if (evt.key === 'ArrowLeft') {
+        if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
           this.previousStep()
           evt.preventDefault()
-        } else if (evt.key === 'ArrowRight') {
+        } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep()
+          evt.preventDefault()
           evt.preventDefault()
         }
       }
