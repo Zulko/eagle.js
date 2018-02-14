@@ -182,9 +182,9 @@ export default {
       if (this.keyboardNavigation &&
           (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
         evt.preventDefault()
-        if (evt.key === 'ArrowLeft') {
+        if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
           this.previousStep()
-        } else if (evt.key === 'ArrowRight') {
+        } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep()
         }
       }
