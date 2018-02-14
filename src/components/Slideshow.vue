@@ -58,8 +58,12 @@ export default {
         window.addEventListener('keydown', this.keydown)
       }
       if (this.mouseNavigation) {
-        window.addEventListener('click', this.click)
-        window.addEventListener('wheel', this.wheel)
+        if ('ontouchstart' in window) {
+          window.addEventListener('touchstart', this.click)
+        } else {
+          window.addEventListener('click', this.click)
+          window.addEventListener('wheel', this.wheel)
+        }
       }
       if (this.embedded) {
         this.$el.className += ' embedded-slideshow'
@@ -87,6 +91,7 @@ export default {
   beforeDestroy: function () {
     window.removeEventListener('keydown', this.keydown)
     window.removeEventListener('click', this.click)
+    window.removeEventListener('touchstart', this.click)
     window.removeEventListener('wheel', this.wheel)
     clearInterval(this.timerUpdater)
   },
@@ -159,10 +164,11 @@ export default {
     }, 16),
     click: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
-        if (evt.clientX < (0.25 * document.documentElement.clientWidth)) {
+        var clientX = evt.clientX || evt.touches[0].clientX
+        if (clientX < (0.25 * document.documentElement.clientWidth)) {
           evt.preventDefault()
           this.previousStep()
-        } else if (evt.clientX > (0.75 * document.documentElement.clientWidth)) {
+        } else if (clientX > (0.75 * document.documentElement.clientWidth)) {
           evt.preventDefault()
           this.nextStep()
         }
@@ -181,11 +187,12 @@ export default {
     keydown: function (evt) {
       if (this.keyboardNavigation &&
           (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
-        evt.preventDefault()
         if (evt.key === 'ArrowLeft') {
           this.previousStep()
+          evt.preventDefault()
         } else if (evt.key === 'ArrowRight') {
           this.nextStep()
+          evt.preventDefault()
         }
       }
     },

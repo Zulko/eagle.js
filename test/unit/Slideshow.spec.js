@@ -130,7 +130,7 @@ describe('Slideshow back mode', () => {
     }, 1000)
   })
 
-  it.only('go back by step would result to previous slide last step', done => {
+  it('go back by step would result to previous slide last step', done => {
     wrapper = mount(ComplexSlideshow)
     vm = wrapper.vm
     vm.currentSlideIndex = 3
