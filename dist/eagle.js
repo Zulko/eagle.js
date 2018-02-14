@@ -1,5 +1,5 @@
 /*
- * eagle.js v0.1.4
+ * eagle.js v0.1.5
  *
  * @license
  * Copyright 2017, Zulko
@@ -69,8 +69,12 @@ var Slideshow = {
         window.addEventListener('keydown', this.keydown);
       }
       if (this.mouseNavigation) {
-        window.addEventListener('click', this.click);
-        window.addEventListener('wheel', this.wheel);
+        if ('ontouchstart' in window) {
+          window.addEventListener('touchstart', this.click);
+        } else {
+          window.addEventListener('click', this.click);
+          window.addEventListener('wheel', this.wheel);
+        }
       }
       if (this.embedded) {
         this.$el.className += ' embedded-slideshow';
@@ -96,6 +100,7 @@ var Slideshow = {
   beforeDestroy: function beforeDestroy() {
     window.removeEventListener('keydown', this.keydown);
     window.removeEventListener('click', this.click);
+    window.removeEventListener('touchstart', this.click);
     window.removeEventListener('wheel', this.wheel);
     clearInterval(this.timerUpdater);
   },
@@ -107,7 +112,7 @@ var Slideshow = {
       this.$root.direction = 'next';
       var self = this;
       this.$nextTick(function () {
-        if (self.step === self.currentSlide.steps) {
+        if (self.step >= self.currentSlide.steps) {
           self.nextSlide();
         } else {
           self.step++;
@@ -121,7 +126,7 @@ var Slideshow = {
       this.$root.direction = 'prev';
       var self = this;
       this.$nextTick(function () {
-        if (self.step === 1) {
+        if (self.step <= 1) {
           self.previousSlide();
         } else {
           self.step--;
@@ -164,10 +169,11 @@ var Slideshow = {
     }, 16),
     click: function click(evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
-        if (evt.clientX < 0.25 * document.documentElement.clientWidth) {
+        var clientX = evt.clientX || evt.touches[0].clientX;
+        if (clientX < 0.25 * document.documentElement.clientWidth) {
           evt.preventDefault();
           this.previousStep();
-        } else if (evt.clientX > 0.75 * document.documentElement.clientWidth) {
+        } else if (clientX > 0.75 * document.documentElement.clientWidth) {
           evt.preventDefault();
           this.nextStep();
         }
@@ -185,11 +191,13 @@ var Slideshow = {
     }, 1000),
     keydown: function keydown(evt) {
       if (this.keyboardNavigation && (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
-        evt.preventDefault();
-        if (evt.key === 'ArrowLeft') {
+        if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
           this.previousStep();
-        } else if (evt.key === 'ArrowRight') {
+          evt.preventDefault();
+        } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep();
+          evt.preventDefault();
+          evt.preventDefault();
         }
       }
     },
