@@ -1,5 +1,5 @@
 <p align="center">
-<img alt="Eagle.js" title="Eagle.js" src="https://raw.githubusercontent.com/Zulko/eagle.js/master/img/logo.svg?sanitize=true" width="150">
+<img alt="eagle.js" title="eagle.js" src="https://raw.githubusercontent.com/Zulko/eagle.js/master/img/logo.svg?sanitize=true" width="150">
 </p>
 <h1 align="center">Eagle.js - A slideshow framework for hackers</h1>
 
@@ -13,10 +13,10 @@
 <p align="center"><a href="https://zulko.github.io/eaglejs-demo/#/introducing-eagle" target="_blank"><img alt="screenshot" src="https://raw.githubusercontent.com/Zulko/eagle.js/master/img/screenshot.jpg"></a></p>
 
 
-Most of all, Eagle.js aims at offering a simple and very hackable API so you
+Most of all, eagle.js aims at offering a simple and very hackable API so you
 can get off the beaten tracks and craft the slideshows you really want.
 
-Here is what the Eagle.js syntax looks like (using [Pug](https://pugjs.org/api/getting-started.html)):
+Here is what the eagle.js syntax looks like (using [Pug](https://pugjs.org/api/getting-started.html)):
 ```pug
 .eg-slideshow
     slide
@@ -34,11 +34,11 @@ Here is what the Eagle.js syntax looks like (using [Pug](https://pugjs.org/api/g
       p(v-if='step >= 3') This will appear second.
 ```
 
-If you are not familiar with Vue.js you will find Eagle.js harder to use than, say, [Reveal.js](https://github.com/hakimel/reveal.js/), but on the long term Eagle.js makes it easier to organize your slides and implement new ideas.
+If you are not familiar with Vue.js you will find eagle.js harder to use than, say, [Reveal.js](https://github.com/hakimel/reveal.js/), but on the long term eagle.js makes it easier to organize your slides and implement new ideas.
 
 ## Get started
 
-You must have Node.js/npm installed to use Eagle.js.
+You must have Node.js/npm installed to use eagle.js.
 
 Then the best to get started is to clone the example repo:
 ``` bash
@@ -114,7 +114,7 @@ We use `slideshow`'s data `step` to control the conditional rendering in `slide`
 
 `slideshow` can only be used as mixin. 
 
-*Note*: For vue mixins, template cannot be extended. `slideshow` needs one HTML element to wrap around your following `slide`s because there are events registered to `slideshow` after component mounted. **We recommend you to wrap your template in a `eg-slideshow` div for default styling.** 
+*Note*: For vue mixins, template cannot be extended. `slideshow` needs one HTML element to wrap around your following `slide`s because there are events registered to `slideshow` after component mounted. **We recommend you to wrap your template in a `eg-slideshow` div for default styling.** Also, do not add conditional rendering on `slideshow` (for example, add `v-if="active"` on your `slideshow` template) as it would break `slideshow`'s events registration as well.
 
 You can configure your authored `slideshow` component with these properties: 
 
@@ -143,8 +143,9 @@ Please note, if you have any embedded slideshows, you have to use default back m
 
 #### Nested slideshow
 
-A nested slideshow can be a `inserted` one or a `embedded` one. A `embedded slideshow` would its own events and embedded styles, while a `inserted slideshow` does not.  
-
+A nested slideshow can be an `inserted` one or an `embedded` one. If the nested slideshow's parent is a slideshow, then it's an `inserted` slideshow; if the parent is a slide, then it's an `embedded` slideshow. 
+An `embedded` slideshow would have its own events and embedded styles, while an `inserted` slideshow does not. *Do not mix them up:* a `embedded` slideshow in will replace its parent slideshow, while a `inserted` 
+slideshow inside a slide will simply not work.
 
 ### slide
 
@@ -241,7 +242,7 @@ mounted: {
 
 ### Permalinks
 
-Eagle.js does not comes with permalinks implementation, because Eagle.js does not assume your usage with it. Using Eagle.js as a completely standalone slideshow, like `reveal.js` or `Remark`, or as a component inserted into your routes, permalinks can get quite different. What's more, `vue-router` is not a dependency for Eagle.js. So it's not a 'battery included' situtation. However, it is fairly easy to implement your own.
+Eagle.js does not comes with permalinks implementation, because eagle.js does not assume your usage with it. Using eagle.js as a completely standalone slideshow, like `reveal.js` or `Remark`, or as a component inserted into your routes, permalinks can get quite different. What's more, `vue-router` is not a dependency for eagle.js. So it's not a 'battery included' situtation. However, it is fairly easy to implement your own.
 
 The most common implementation for permalinks is to use hashbang in URLs. You can achieve with with `vue-router`'s hash mode, or even better, with history mode, to get rid of the ugly hashbang. Also with `vue-router`, it gives your more flexibility and more granularity control.
 
