@@ -144,7 +144,7 @@ Please note, if you have any embedded slideshows, you have to use default back m
 #### Nested slideshow
 
 A nested slideshow can be an `inserted` one or an `embedded` one. If the nested slideshow's parent is a slideshow, then it's an `inserted` slideshow; if the parent is a slide, then it's an `embedded` slideshow. 
-An `embedded` slideshow would have its own events and embedded styles, while an `inserted` slideshow does not. *Do not mix them up:* a `embedded` slideshow in will replace its parent slideshow, while a `inserted` 
+An `embedded` slideshow would have its own events and embedded styles, while an `inserted` slideshow does not. *Do not mix them up:* a `embedded` slideshow in a slideshow will replace its parent slideshow, while a `inserted` 
 slideshow inside a slide will simply not work.
 
 ### slide
@@ -282,6 +282,10 @@ And inside a `MySlideshow`, add watchers to update URL when slides changes, and 
 ```
 
 [Demo](http://eaglejspermalink.surge.sh/#/introducing-eagle/2/1)
+
+### Code splitting
+
+Intuitively,  writing your `slide` components and then using Vue's [async component](https://vuejs.org/v2/guide/components.html#Async-Components) by dynamically importing `slide` components in your slideshow sounds like a perfect solution, unfortunately this won't work, as `slideshow` needs all its $children to be properly initialized. Currently, if you really need to do code splitting, you can consider splitting your `slideshow` in different routes and [lazy-loading](https://router.vuejs.org/en/advanced/lazy-loading.html) them.
 
 ## Contribute
 
