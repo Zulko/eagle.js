@@ -40,7 +40,7 @@ If you are not familiar with Vue.js you will find eagle.js harder to use than, s
 
 You must have Node.js/npm installed to use eagle.js.
 
-Then the best to get started is to clone the example repo:
+Then the best to get started is to clone [the example repo](https://github.com/Zulko/eaglejs-demo):
 ``` bash
 $ git clone https://github.com/Zulko/eaglejs-demo.git
 ```
