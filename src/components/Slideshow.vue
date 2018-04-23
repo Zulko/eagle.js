@@ -164,7 +164,7 @@ export default {
     }, 16),
     click: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
-        var clientX = evt.clientX || evt.touches[0].clientX
+        var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX
         if (clientX < (0.25 * document.documentElement.clientWidth)) {
           evt.preventDefault()
           this.previousStep()
@@ -193,13 +193,11 @@ export default {
         } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep()
           evt.preventDefault()
-          evt.preventDefault()
         }
       }
     },
-    afterMounted: function (evt) {
+    afterMounted: function () {
       // useful in some instances
-      return
     },
     findSlides: function () {
       var self = this
