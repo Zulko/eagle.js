@@ -222,7 +222,7 @@ If you want to customize eagle.js, most likely you will work on `slideshow` comp
 
 ### Mobile Support
 
-As you can see in `slideshow` configuration, eagle.js supports mouse and button event, but doesn't have built-in support for mobile gestures. Still, it is very easy to add mobile support with a well-tested library, like [hammer.js](http://hammerjs.github.io/).
+Eagle.js supports basic mouse, keyboard and touch event, but doesn't support any advanced mobile gestures, like 'swipe'. Still, it is very easy to add mobile support with a well-tested library, like [hammer.js](http://hammerjs.github.io/).
 
 In your slideshow component's `mounted` lifecycle hook,
 
