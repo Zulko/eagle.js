@@ -71,6 +71,11 @@ export default {
     }
     window.addEventListener('resize', this.handleResize)
 
+    if (window.opener && window.opener.location.href === window.location.href) {
+      this.parentWindow = window.opener
+      window.addEventListener('message', this.message)
+    }
+
     // PRELOAD PICTURES IF ANY
     if (this.preloadedImages) {
       setTimeout(function () {
@@ -96,7 +101,7 @@ export default {
     clearInterval(this.timerUpdater)
   },
   methods: {
-    nextStep: function () {
+    nextStep: function (fromMessage) {
       this.slides.forEach(function (slide) {
         slide.direction = 'next'
       })
@@ -109,8 +114,11 @@ export default {
           self.step++
         }
       })
+      if (!fromMessage) {
+        this.postMessage('{"method": "nextStep"}')
+      }
     },
-    previousStep: function () {
+    previousStep: function (fromMessage) {
       this.slides.forEach(function (slide) {
         slide.direction = 'prev'
       })
@@ -123,6 +131,9 @@ export default {
           self.step--
         }
       })
+      if (!fromMessage) {
+        this.postMessage('{"method": "previousStep"}')
+      }
     },
     nextSlide: function () {
       var nextSlideIndex = this.currentSlideIndex + 1
@@ -193,7 +204,22 @@ export default {
         } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep()
           evt.preventDefault()
+        } else if (evt.key === 'p' && !this.parentWindow) {
+          this.togglePresenterMode()
+          evt.preventDefault()
         }
+      }
+    },
+    message: function (evt) {
+      if (evt.origin !== window.location.origin) {
+        return void 0
+      }
+      var data = JSON.parse(evt.data)
+      if (data.method === 'nextStep' || data.method === 'previousStep') {
+        this[data.method].call(this, true)
+      }
+      if (data.method === 'currentIndex') {
+        this.currentSlideIndex = data.val
       }
     },
     afterMounted: function () {
@@ -226,6 +252,27 @@ export default {
         this.$el.style.visibility = 'visible'
       } else {
         this.$el.style.visibility = 'hidden'
+      }
+    },
+    postMessage: function (message) {
+      if (this.presenterWindow) {
+        this.presenterWindow.postMessage(message, window.location.origin)
+      }
+      if (this.parentWindow) {
+        this.parentWindow.postMessage(message, window.location.origin)
+      }
+    },
+    togglePresenterMode: function () {
+      var self = this
+      if (this.presenterWindow) {
+        this.presenterWindow.close()
+        this.presenterWindow = null
+      } else {
+        this.presenterWindow = window.open(window.location.href, 'eagle-presenter')
+        window.addEventListener('message', this.message)
+        setTimeout(() => {
+          this.postMessage('{"method": "currentIndex", "val": ' + this.currentSlideIndex +'}')
+        }, 1000);
       }
     }
   },
