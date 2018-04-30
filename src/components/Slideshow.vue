@@ -23,7 +23,9 @@ export default {
       slideshowTimer: 0,
       slideTimer: 0,
       slides: [],
-      active: true
+      active: true,
+      presenterWindow: null,
+      parentWindow: null
     }
   },
   computed: {
@@ -73,6 +75,7 @@ export default {
 
     if (window.opener && window.opener.location.href === window.location.href) {
       this.parentWindow = window.opener
+      this.postMessage('{"method": "getCurrentSlide"}')
       window.addEventListener('message', this.message)
     }
 
@@ -214,13 +217,22 @@ export default {
       if (evt.origin !== window.location.origin) {
         return void 0
       }
-      var data = JSON.parse(evt.data)
-      if (data.method === 'nextStep' || data.method === 'previousStep') {
-        this[data.method].call(this, true)
-      }
-      if (data.method === 'currentIndex') {
-        this.currentSlideIndex = data.val
-      }
+      try {
+        var data = JSON.parse(evt.data)
+        switch(data.method) {
+          case 'nextStep':
+          case 'previousStep': 
+            this[data.method].call(this, true)
+            break
+          case 'getCurrentSlide':
+            this.postMessage('{"method": "setCurrentSlide", "val": ' + this.currentSlideIndex +'}')
+            break
+          case 'setCurrentSlide': 
+            this.currentSlideIndex = data.val
+            break
+          default:
+        }
+      } catch (e) {}
     },
     afterMounted: function () {
       // useful in some instances
@@ -263,16 +275,12 @@ export default {
       }
     },
     togglePresenterMode: function () {
-      var self = this
       if (this.presenterWindow) {
         this.presenterWindow.close()
         this.presenterWindow = null
       } else {
         this.presenterWindow = window.open(window.location.href, 'eagle-presenter')
         window.addEventListener('message', this.message)
-        setTimeout(() => {
-          this.postMessage('{"method": "currentIndex", "val": ' + this.currentSlideIndex +'}')
-        }, 1000);
       }
     }
   },
