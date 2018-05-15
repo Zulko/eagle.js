@@ -199,7 +199,7 @@ For minimum working style,  **you need to wrap your `slideshow` template in a `e
 
 ```javascript
 // in your main.js
-import 'eagle.js/dist/themes/gourmet.css'
+import 'eagle.js/dist/themes/gourmet/gourmet.css'
 ``` 
 
 To make theme style work, in your `slideshow` you should also have a wrapper with theme class, for example if you are using *gourmet* theme:
