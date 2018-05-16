@@ -205,7 +205,7 @@ import 'eagle.js/dist/themes/gourmet/gourmet.css'
 To make theme style work, in your `slideshow` you should also have a wrapper with theme class, for example if you are using *gourmet* theme:
 
 ```html
-<div class="eg-theme-gourment">
+<div class="eg-theme-gourmet">
   <div class="eg-slideshow">
     ...
   </div>
