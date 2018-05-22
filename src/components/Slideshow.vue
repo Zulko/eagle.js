@@ -163,18 +163,21 @@ export default {
         this.onStartExit()
       }
     },
-    handleResize: throttle(function (event) {
-      var width = 0
-      var height = 0
-      if (this.embedded) {
-        width = this.$el.parentElement.clientWidth
-        height = this.$el.parentElement.clientHeight
-      } else {
-        width = document.documentElement.clientWidth
-        height = document.documentElement.clientHeight
-      }
-      this.$el.style.fontSize = (0.04 * Math.min(height, width)) + 'px'
-    }, 16),
+    handleResize: function () {
+      var self = this
+      throttle(function () {
+        var width = 0
+        var height = 0
+        if (self.embedded) {
+          width = self.$el.parentElement.clientWidth
+          height = self.$el.parentElement.clientHeight
+        } else {
+          width = document.documentElement.clientWidth
+          height = document.documentElement.clientHeight
+        }
+        self.$el.style.fontSize = (0.04 * Math.min(height, width)) + 'px'
+      }, 16)()
+    },
     click: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX
