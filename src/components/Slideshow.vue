@@ -24,7 +24,7 @@ export default {
       slideTimer: 0,
       slides: [],
       active: true,
-      presenterWindow: null,
+      childWindow: null,
       parentWindow: null
     }
   },
@@ -70,14 +70,13 @@ export default {
       if (this.embedded) {
         this.$el.className += ' embedded-slideshow'
       }
+      if (window.opener && window.opener.location.href === window.location.href) {
+        this.parentWindow = window.opener
+        this.postMessage('{"method": "getCurrentSlide"}')
+        window.addEventListener('message', this._message)
+      }
     }
     window.addEventListener('resize', this.handleResize)
-
-    if (window.opener && window.opener.location.href === window.location.href) {
-      this.parentWindow = window.opener
-      this.postMessage('{"method": "getCurrentSlide"}')
-      window.addEventListener('message', this.message)
-    }
 
     // PRELOAD PICTURES IF ANY
     if (this.preloadedImages) {
@@ -213,7 +212,7 @@ export default {
         }
       }
     },
-    message: function (evt) {
+    _message: function (evt) {
       if (evt.origin !== window.location.origin) {
         return void 0
       }
@@ -225,10 +224,15 @@ export default {
             this[data.method].call(this, true)
             break
           case 'getCurrentSlide':
-            this.postMessage('{"method": "setCurrentSlide", "val": ' + this.currentSlideIndex +'}')
+            this.postMessage(`{
+              "method": "setCurrentSlide", 
+              "slideIndex": ${this.currentSlideIndex},
+              "step": ${this.step}
+              }`)
             break
           case 'setCurrentSlide': 
-            this.currentSlideIndex = data.val
+            this.currentSlideIndex = data.slideIndex
+            this.step = data.step
             break
           default:
         }
@@ -267,20 +271,20 @@ export default {
       }
     },
     postMessage: function (message) {
-      if (this.presenterWindow) {
-        this.presenterWindow.postMessage(message, window.location.origin)
+      if (this.childWindow) {
+        this.childWindow.postMessage(message, window.location.origin)
       }
       if (this.parentWindow) {
         this.parentWindow.postMessage(message, window.location.origin)
       }
     },
     togglePresenterMode: function () {
-      if (this.presenterWindow) {
-        this.presenterWindow.close()
-        this.presenterWindow = null
+      if (this.childWindow) {
+        this.childWindow.close()
+        this.childWindow = null
       } else {
-        this.presenterWindow = window.open(window.location.href, 'eagle-presenter')
-        window.addEventListener('message', this.message)
+        this.childWindow = window.open(window.location.href, 'eagle-presenter')
+        window.addEventListener('message', this._message)
       }
     }
   },
