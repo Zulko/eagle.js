@@ -96,11 +96,15 @@ export default {
     clearInterval(this.timerUpdater)
   },
   methods: {
-    nextStep: function () {
+    changeDirection: function (direction) {
       this.slides.forEach(function (slide) {
-        slide.direction = 'next'
+        slide.direction = direction
       })
-      this.$root.direction = 'next'
+      this.$root.direction = direction
+    },
+    nextStep: function () {
+      this.changeDirection('next')
+
       var self = this
       this.$nextTick(function () {
         if (self.step >= self.currentSlide.steps) {
@@ -111,10 +115,8 @@ export default {
       })
     },
     previousStep: function () {
-      this.slides.forEach(function (slide) {
-        slide.direction = 'prev'
-      })
-      this.$root.direction = 'prev'
+      this.changeDirection('prev')
+
       var self = this
       this.$nextTick(function () {
         if (self.step <= 1) {
@@ -125,30 +127,41 @@ export default {
       })
     },
     nextSlide: function () {
-      var nextSlideIndex = this.currentSlideIndex + 1
-      while ((nextSlideIndex < this.slides.length + 1) &&
-             (this.slides[nextSlideIndex - 1].skip ||
-              this.slides[nextSlideIndex - 1].$parent.skip)) {
-        nextSlideIndex++
-      }
-      if (nextSlideIndex < this.slides.length + 1) {
-        this.currentSlideIndex = nextSlideIndex
-      } else if (!this.embedded) {
-        this.onEndExit()
-      }
+      this.changeDirection('next')
+
+      var self = this
+      this.$nextTick(function () {
+        var nextSlideIndex = self.currentSlideIndex + 1
+        while ((nextSlideIndex < self.slides.length + 1) &&
+               (self.slides[nextSlideIndex - 1].skip ||
+                self.slides[nextSlideIndex - 1].$parent.skip)) {
+          nextSlideIndex++
+        }
+        if (nextSlideIndex < self.slides.length + 1) {
+          self.currentSlideIndex = nextSlideIndex
+        } else if (!self.embedded) {
+          self.onEndExit()
+        }
+      })
+
     },
     previousSlide: function () {
-      var previousSlideIndex = this.currentSlideIndex - 1
-      while ((previousSlideIndex >= 1) &&
-             (this.slides[previousSlideIndex - 1].skip ||
-              (this.slides[previousSlideIndex - 1].$parent.skip))) {
-        previousSlideIndex--
-      }
-      if (previousSlideIndex >= 1) {
-        this.currentSlideIndex = previousSlideIndex
-      } else if (!this.embedded) {
-        this.onStartExit()
-      }
+      this.changeDirection('prev')
+
+      var self = this
+      this.$nextTick(function () {
+        var previousSlideIndex = self.currentSlideIndex - 1
+        while ((previousSlideIndex >= 1) &&
+               (self.slides[previousSlideIndex - 1].skip ||
+                (self.slides[previousSlideIndex - 1].$parent.skip))) {
+          previousSlideIndex--
+        }
+        if (previousSlideIndex >= 1) {
+          self.currentSlideIndex = previousSlideIndex
+        } else if (!self.embedded) {
+          self.onStartExit()
+        }
+      })
     },
     handleResize: function () {
       var self = this
