@@ -6,20 +6,20 @@ var banner = `/*
  * eagle.js v${pkg.version}
  *
  * @license
- * Copyright 2017, Zulko
+ * Copyright 2017-2018, Zulko
  * Released under the ISC License
  */`
 
 module.exports = {
-  entry: 'src/main.js',
-  dest: 'dist/eagle.js',
-  format: 'es',
-  moduleName: 'eagle.js',
+  input: 'src/main.js',
+  output: [
+    { file: 'dist/eagle.cjs.js', format: 'cjs', banner },
+		{ file: 'dist/eagle.es.js', format: 'es', banner }
+  ],
   external: [
     'highlight.js',
     'lodash'
   ],
-  banner,
   plugins: [
     vue({
       css: 'dist/eagle.css'

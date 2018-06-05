@@ -30,7 +30,6 @@ export default {
       var commentsContent = document.getElementById(this.id2)
       var codeContent = document.getElementById(this.id3)
       codeContent.innerHTML = commentsContent.innerHTML
-      console.log(this.id)
       if (this.lang) {
         hljs.highlightBlock(codeBlock)
       }

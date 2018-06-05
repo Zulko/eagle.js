@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     toggle: function () {
-      console.log(this.checked)
       this.checked = !this.checked
     }
   },

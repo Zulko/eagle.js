@@ -221,10 +221,10 @@ export default {
       }
       try {
         var data = JSON.parse(evt.data)
-        switch(data.method) {
+        switch (data.method) {
           case 'nextStep':
-          case 'previousStep': 
-            this[data.method].call(this, true)
+          case 'previousStep':
+            this[data.method](true)
             break
           case 'getCurrentSlide':
             this.postMessage(`{
@@ -233,9 +233,9 @@ export default {
               "step": ${this.step}
               }`)
             break
-          case 'setCurrentSlide': 
+          case 'setCurrentSlide':
             this.currentSlideIndex = data.slideIndex
-            this.step = data.step
+            this.$nextTick(() => { this.step = data.step })
             break
           default:
         }
