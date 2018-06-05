@@ -137,7 +137,7 @@
       border: 2px solid black;
       border-spacing: 2px;
       z-index: 1; }
-    .eg-theme-agrume .eg-radio .radiodot {
+    .eg-theme-agrume .eg-radio .radiodot.checked {
       background-color: #ffb014; }
   .eg-theme-agrume .embedded-slideshow-container .embedded-slideshow
 .eg-slideshow {

@@ -1,3 +1,24 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.eg-code-comment {
+  display: inline-block
+}
+
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
 .eg-slideshow {
   margin-top: 0;
@@ -86,32 +107,11 @@
 
 .eg-code-block .comments-box[data-v-29468740] {
   position: absolute;
-  color: transparent;
+  color: rgba(0, 0, 0, 0);
   top: 0; }
 
 .eg-code-block .eg-code-comment[data-v-29468740] {
   z-index: 10 !important; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.eg-code-comment {
-  display: inline-block
-}
 
 .eg-switch[data-v-14b66238] {
   /* The slider */ }

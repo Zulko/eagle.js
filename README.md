@@ -6,6 +6,7 @@
 - Slideshow system built on top of the [Vue.js](https://vuejs.org/)
 - Supports animations, themes, interactive widgets (for web demos)
 - Easy to reuse components, slides and styles across presentations
+- Built-in Presenter Mode (Speaker Notes) and various helpful widgets
 - All APIs public, maximum hackability 
 
 ### For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):

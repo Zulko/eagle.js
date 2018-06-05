@@ -1,12 +1,16 @@
 /*
- * eagle.js v0.1.5
+ * eagle.js v0.2.0
  *
  * @license
- * Copyright 2017, Zulko
+ * Copyright 2017-2018, Zulko
  * Released under the ISC License
  */
-import { throttle } from 'lodash';
-import hljs from 'highlight.js';
+'use strict';
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var lodash = require('lodash');
+var hljs = _interopDefault(require('highlight.js'));
 
 var Slideshow = {
   props: {
@@ -34,7 +38,9 @@ var Slideshow = {
       slideshowTimer: 0,
       slideTimer: 0,
       slides: [],
-      active: true
+      active: true,
+      childWindow: null,
+      parentWindow: null
     };
   },
   computed: {
@@ -79,6 +85,11 @@ var Slideshow = {
       if (this.embedded) {
         this.$el.className += ' embedded-slideshow';
       }
+      if (window.opener && window.opener.location.href === window.location.href) {
+        this.parentWindow = window.opener;
+        this.postMessage('{"method": "getCurrentSlide"}');
+        window.addEventListener('message', this._message);
+      }
     }
     window.addEventListener('resize', this.handleResize);
 
@@ -105,7 +116,7 @@ var Slideshow = {
     clearInterval(this.timerUpdater);
   },
   methods: {
-    nextStep: function nextStep() {
+    nextStep: function nextStep(fromMessage) {
       this.slides.forEach(function (slide) {
         slide.direction = 'next';
       });
@@ -118,8 +129,11 @@ var Slideshow = {
           self.step++;
         }
       });
+      if (!fromMessage) {
+        this.postMessage('{"method": "nextStep"}');
+      }
     },
-    previousStep: function previousStep() {
+    previousStep: function previousStep(fromMessage) {
       this.slides.forEach(function (slide) {
         slide.direction = 'prev';
       });
@@ -132,6 +146,9 @@ var Slideshow = {
           self.step--;
         }
       });
+      if (!fromMessage) {
+        this.postMessage('{"method": "previousStep"}');
+      }
     },
     nextSlide: function nextSlide() {
       var nextSlideIndex = this.currentSlideIndex + 1;
@@ -155,21 +172,24 @@ var Slideshow = {
         this.onStartExit();
       }
     },
-    handleResize: throttle(function (event) {
-      var width = 0;
-      var height = 0;
-      if (this.embedded) {
-        width = this.$el.parentElement.clientWidth;
-        height = this.$el.parentElement.clientHeight;
-      } else {
-        width = document.documentElement.clientWidth;
-        height = document.documentElement.clientHeight;
-      }
-      this.$el.style.fontSize = 0.04 * Math.min(height, width) + 'px';
-    }, 16),
+    handleResize: function handleResize() {
+      var self = this;
+      lodash.throttle(function () {
+        var width = 0;
+        var height = 0;
+        if (self.embedded) {
+          width = self.$el.parentElement.clientWidth;
+          height = self.$el.parentElement.clientHeight;
+        } else {
+          width = document.documentElement.clientWidth;
+          height = document.documentElement.clientHeight;
+        }
+        self.$el.style.fontSize = 0.04 * Math.min(height, width) + 'px';
+      }, 16)();
+    },
     click: function click(evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
-        var clientX = evt.clientX || evt.touches[0].clientX;
+        var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX;
         if (clientX < 0.25 * document.documentElement.clientWidth) {
           evt.preventDefault();
           this.previousStep();
@@ -179,7 +199,7 @@ var Slideshow = {
         }
       }
     },
-    wheel: throttle(function (evt) {
+    wheel: lodash.throttle(function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         evt.preventDefault();
         if (evt.wheelDeltaY > 0 || evt.deltaY > 0) {
@@ -197,13 +217,39 @@ var Slideshow = {
         } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep();
           evt.preventDefault();
+        } else if (evt.key === 'p' && !this.parentWindow) {
+          this.togglePresenterMode();
           evt.preventDefault();
         }
       }
     },
-    afterMounted: function afterMounted(evt) {
-      return;
+    _message: function _message(evt) {
+      var _this = this;
+
+      if (evt.origin !== window.location.origin) {
+        return void 0;
+      }
+      try {
+        var data = JSON.parse(evt.data);
+        switch (data.method) {
+          case 'nextStep':
+          case 'previousStep':
+            this[data.method](true);
+            break;
+          case 'getCurrentSlide':
+            this.postMessage('{\n              "method": "setCurrentSlide", \n              "slideIndex": ' + this.currentSlideIndex + ',\n              "step": ' + this.step + '\n              }');
+            break;
+          case 'setCurrentSlide':
+            this.currentSlideIndex = data.slideIndex;
+            this.$nextTick(function () {
+              _this.step = data.step;
+            });
+            break;
+          default:
+        }
+      } catch (e) {}
     },
+    afterMounted: function afterMounted() {},
     findSlides: function findSlides() {
       var self = this;
       var i = 0;
@@ -230,6 +276,23 @@ var Slideshow = {
         this.$el.style.visibility = 'visible';
       } else {
         this.$el.style.visibility = 'hidden';
+      }
+    },
+    postMessage: function postMessage(message) {
+      if (this.childWindow) {
+        this.childWindow.postMessage(message, window.location.origin);
+      }
+      if (this.parentWindow) {
+        this.parentWindow.postMessage(message, window.location.origin);
+      }
+    },
+    togglePresenterMode: function togglePresenterMode() {
+      if (this.childWindow) {
+        this.childWindow.close();
+        this.childWindow = null;
+      } else {
+        this.childWindow = window.open(window.location.href, 'eagle-presenter');
+        window.addEventListener('message', this._message);
       }
     }
   },
@@ -378,7 +441,6 @@ var CodeBlock = { render: function render() {
       var commentsContent = document.getElementById(this.id2);
       var codeContent = document.getElementById(this.id3);
       codeContent.innerHTML = commentsContent.innerHTML;
-      console.log(this.id);
       if (this.lang) {
         hljs.highlightBlock(codeBlock);
       }
@@ -411,7 +473,6 @@ var Toggle = { render: function render() {
   },
   methods: {
     toggle: function toggle() {
-      console.log(this.checked);
       this.checked = !this.checked;
     }
   },
@@ -442,7 +503,6 @@ var RadioButton = { render: function render() {
   methods: {
     select: function select() {
       this.$emit('input', this.label);
-      console.log(this.label, this.value, this.value === this.label);
     }
   }
 };
@@ -523,4 +583,4 @@ var main = {
   }
 };
 
-export default main;
+module.exports = main;
