@@ -1,5 +1,5 @@
 <script>
-import { throttle } from 'lodash'
+import throttle from 'lodash.throttle'
 
 export default {
   props: {

@@ -18,7 +18,7 @@ module.exports = {
   ],
   external: [
     'highlight.js',
-    'lodash'
+    'lodash.throttle'
   ],
   plugins: [
     vue({

@@ -84,11 +84,22 @@ import 'animate.css'
 Vue.use(Eagle)
 ```
 
+Using eagle.js's default export would register both core components and all the widgets. Alternatively you can choose only to use core components:
+
+```javascript
+import { Slide, Transition } from 'eagle.js'
+
+Vue.component(Slide.name, Slide)
+Vue.component(Transition.name, Transition)
+```
+
+Then you can selectively use widgets, as you like. See more on [widgets section](https://github.com/Zulko/eagle.js#widgets)
+
 ### Basic idea
 
 Eagle.js's basic components are `slideshow` and `slide`. You use `slideshow` as mixin to write `slideshow` component, which could include multiple `slide`s. A very basic Single File Component for `slideshow` would look like this:
 
-``` vue
+```vue
 <template lang="pug">
     slide(:steps="4")
       p(v-if="step >= 1")
@@ -102,9 +113,9 @@ Eagle.js's basic components are `slideshow` and `slide`. You use `slideshow` as 
 </template>
 
 <script>
-import eagle from 'eagle.js'
+import { Slideshow } from 'eagle.js'
 export default {
-  mixins: [eagle.slideshow]
+  mixins: [Slideshow]
 }
 </script>
 ```
@@ -182,17 +193,26 @@ You can configure `slide` with these properties:
 
 Under the hood, `eg-transition` is just vue's `transition` that supports  [animate.css](https://daneden.github.io/animate.css/): you can use animate.css's class name for `enter` and `leave` property and it just works. All eagle.js's transition effects, including `slide`,  happen with this component, and you can use it just like using vue's `transition`.
 
-### Other components
+### Widgets
 
 Eagle.js ships several useful widgets that can be used in your `slide`:
 1. `eg-modal`
 2. `eg-code-block` (code highlighted by [highlight.js](https://highlightjs.org/))
 3. `eg-code-comment`
 4. `eg-toggle`
-5. `eg-radio`
+5. `eg-radio-button`
 6. `eg-triggered-message`
 
-See their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
+You can use widgets as you like:
+
+```javascript
+import { Modal, CodeBlock } from 'eagle.js'
+
+Vue.component(Modal.name, Modal)
+Vue.component(CodeBlock.name, CodeBlock)
+```
+Widgets' name follows the same rule: uppercase for importing, `eg` prefixed lowercase connected with dash in HTML.
+See more of their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
 
 ## Themes
 

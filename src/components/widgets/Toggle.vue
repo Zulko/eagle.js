@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  name: 'eg-toggle',
   props: {
     value: {default: true},
     fontsize: {default: '0.8em'}

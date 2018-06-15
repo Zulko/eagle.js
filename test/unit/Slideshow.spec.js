@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { mount } from 'vue-test-utils'
+import { mount } from '@vue/test-utils'
 import Slideshow from '../fixtures/simpleSlideshow.vue'
 import ComplexSlideshow from '../fixtures/complexSlideshow.vue'
 
@@ -123,7 +123,6 @@ describe('Slideshow back mode', () => {
     vm.currentSlideIndex = 3
     vm.previousStep()
     setTimeout(() => {
-      console.log(`current slide is ${vm.currentSlideIndex}`)
       expect(vm.slides[1].active).toBeTruthy()
       expect(vm.step).toBe(1)
       done()

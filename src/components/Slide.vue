@@ -7,6 +7,7 @@ eg-transition(:enter='enterTransition', :leave='leaveTransition')
 
 <script>
 export default {
+  name: 'slide',
   props: {
     skip: {default: false},
     enter: {default: null},
@@ -45,8 +46,6 @@ export default {
     leaveTransition: function () {
       return this.transitions[this.direction].leave
     }
-  },
-  mounted: function () {
   },
   methods: {
     nextStep: function () {

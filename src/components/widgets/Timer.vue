@@ -2,11 +2,12 @@
 <template lang='pug'>
 eg-transition(enter='fadeIn' leave='fadeOut')
   .timer(v-if='display')
-    {{ text }}
+  | {{ text }}
 </template>
 
 <script>
 export default {
+  name: 'eg-timer',
   props: {
     key: {default: 'T'}
   },
@@ -34,7 +35,6 @@ export default {
       }
     },
     updateText: function () {
-      // var seconds = this.$parent.timer
       var time = (this.$parent.timer / 60) + ':' + (this.$parent.timer % 60)
       var slide = this.$parent.currentSlideIndex + '/' + this.$parent.slides.length
       return slide + ' - ' + time
