@@ -13,7 +13,8 @@ export default {
     onStartExit: {default: () => function () {}},
     onEndExit: {default: () => function () {}},
     skip: {default: false},
-    backBySlide: {default: false}
+    backBySlide: {default: false},
+    repeat: {default: false}
   },
   data: function () {
     return {
@@ -146,6 +147,8 @@ export default {
       }
       if (nextSlideIndex < this.slides.length + 1) {
         this.currentSlideIndex = nextSlideIndex
+      } else if (this.repeat) {
+        this.currentSlideIndex = 1
       } else if (!this.embedded) {
         this.onEndExit()
       }
