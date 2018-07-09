@@ -5,8 +5,7 @@
  * Copyright 2017-2018, Zulko
  * Released under the ISC License
  */
-import { throttle } from 'lodash';
-import hljs from 'highlight.js';
+import throttle from 'lodash.throttle';
 
 var Slideshow = {
   props: {
@@ -24,7 +23,8 @@ var Slideshow = {
         return function () {};
       } },
     skip: { default: false },
-    backBySlide: { default: false }
+    backBySlide: { default: false },
+    repeat: { default: false }
   },
   data: function data() {
     return {
@@ -153,6 +153,8 @@ var Slideshow = {
       }
       if (nextSlideIndex < this.slides.length + 1) {
         this.currentSlideIndex = nextSlideIndex;
+      } else if (this.repeat) {
+        this.currentSlideIndex = 1;
       } else if (!this.embedded) {
         this.onEndExit();
       }
@@ -331,6 +333,7 @@ var Slideshow = {
 var Slide = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enterTransition, "leave": _vm.leaveTransition } }, [_vm.active ? _c('div', { staticClass: "eg-slide" }, [_c('div', { staticClass: "eg-slide-content" }, [_vm._t("default")], 2)]) : _vm._e()]);
   }, staticRenderFns: [],
+  name: 'slide',
   props: {
     skip: { default: false },
     enter: { default: null },
@@ -370,7 +373,6 @@ var Slide = { render: function render() {
       return this.transitions[this.direction].leave;
     }
   },
-  mounted: function mounted() {},
   methods: {
     nextStep: function nextStep() {
       if (this.step === this.steps) {
@@ -407,15 +409,18 @@ var Slide = { render: function render() {
 
 var Modal = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-modal" }, [_c('div', { staticClass: "content" }, [_vm._t("default")], 2)]);
-  }, staticRenderFns: []
+  }, staticRenderFns: [],
+  name: 'eg-modal'
 };
 
 function randId() {
   return Math.random().toString(36).substr(2, 10);
 }
+
 var CodeBlock = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-code-block container" }, [_c('div', { staticClass: "box hljs code-box", attrs: { "id": _vm.id } }, [_c('pre', [_c('code', { class: _vm.lang ? _vm.lang : '', attrs: { "id": _vm.id3 } })])]), _c('div', { staticClass: "box comments-box" }, [_c('pre', [_c('code', { attrs: { "id": _vm.id2 } }, [_vm._t("default")], 2)])])]);
   }, staticRenderFns: [], _scopeId: 'data-v-29468740',
+  name: 'eg-code-block',
   props: {
     id: { default: function _default() {
         return randId();
@@ -437,8 +442,8 @@ var CodeBlock = { render: function render() {
       var commentsContent = document.getElementById(this.id2);
       var codeContent = document.getElementById(this.id3);
       codeContent.innerHTML = commentsContent.innerHTML;
-      if (this.lang) {
-        hljs.highlightBlock(codeBlock);
+      if (this.lang && Options.hljs) {
+        Options.hljs.highlightBlock(codeBlock);
       }
     }
   }
@@ -447,6 +452,7 @@ var CodeBlock = { render: function render() {
 var CodeComment = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-code-comment" }, [_vm.arrow ? _c('span', [_vm._v("←")]) : _vm._e(), _vm._t("default")], 2) : _vm._e()]);
   }, staticRenderFns: [],
+  name: 'eg-code-comment',
   props: {
     enter: { default: null },
     leave: { default: null },
@@ -458,6 +464,7 @@ var CodeComment = { render: function render() {
 var Toggle = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-switch" }, [_c('div', { staticClass: "switch", style: { 'font-size': _vm.fontsize }, on: { "click": _vm.toggle } }, [_c('input', { attrs: { "type": "checkbox" }, domProps: { "checked": _vm.checked } }), _c('div', { staticClass: "slider", class: { checked: _vm.checked } }), _c('div', { staticClass: "sliderdot", class: { checked: _vm.checked } })]), _c('span', { class: { unchecked: !_vm.checked } }, [_vm._t("default")], 2)]);
   }, staticRenderFns: [], _scopeId: 'data-v-14b66238',
+  name: 'eg-toggle',
   props: {
     value: { default: true },
     fontsize: { default: '0.8em' }
@@ -479,9 +486,10 @@ var Toggle = { render: function render() {
   }
 };
 
-var AnimatedTransition = { render: function render() {
+var Transition = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('transition', { attrs: { "enter-active-class": _vm.enter ? 'animated ' + _vm.enter : '', "leave-active-class": _vm.leave ? 'animated ' + _vm.leave : '' } }, [_vm._t("default")], 2);
   }, staticRenderFns: [],
+  name: 'eg-transition',
   props: {
     enter: { default: null },
     leave: { default: null }
@@ -491,6 +499,7 @@ var AnimatedTransition = { render: function render() {
 var RadioButton = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-radio" }, [_c('div', { staticClass: "radiobutton", style: { 'font-size': _vm.fontsize }, on: { "click": _vm.select } }, [_c('div', { staticClass: "radio" }), _c('div', { staticClass: "radiodot", class: { checked: _vm.value === _vm.label } })]), _vm._t("default")], 2);
   }, staticRenderFns: [], _scopeId: 'data-v-872b59a6',
+  name: 'eg-radio-button',
   props: {
     value: { default: null },
     label: { default: null },
@@ -506,6 +515,7 @@ var RadioButton = { render: function render() {
 var ImageSlide = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-slide image-slide", style: _vm.style }) : _vm._e()]);
   }, staticRenderFns: [],
+  name: 'eg-image-slide',
   mixins: [Slide],
   props: {
     url: { default: 'https://i.imgur.com/P7iyH.png' },
@@ -526,6 +536,7 @@ var ImageSlide = { render: function render() {
 var TriggeredMessage = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-triggered-message", style: _vm.style }, [_vm._t("default")], 2) : _vm._e()]);
   }, staticRenderFns: [],
+  name: 'eg-triggered-message',
   props: {
     enter: { default: 'slideInLeft' },
     leave: { default: 'slideOutLeft' },
@@ -561,22 +572,62 @@ var TriggeredMessage = { render: function render() {
   }
 };
 
+var Timer = { render: function render() {
+    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": "fadeIn", "leave": "fadeOut" } }, [_vm.display ? _c('div', { staticClass: "timer" }) : _vm._e(), _vm._v(_vm._s(_vm.text))]);
+  }, staticRenderFns: [], _scopeId: 'data-v-ff6db536',
+  name: 'eg-timer',
+  props: {
+    key: { default: 'T' }
+  },
+  data: function data() {
+    return {
+      text: '',
+      active: false
+    };
+  },
+  mounted: function mounted() {
+    this.updateText();
+    window.addEventListener('keydown', this.keydown);
+    setInterval(this.updateText, 1000);
+  },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener('keydown', this.keydown);
+  },
+  methods: {
+    toggle: function toggle() {
+      this.display = !this.display;
+    },
+    keydown: function keydown(evt) {
+      if (evt.key === this.key) {
+        this.active = !this.active;
+      }
+    },
+    updateText: function updateText() {
+      var time = this.$parent.timer / 60 + ':' + this.$parent.timer % 60;
+      var slide = this.$parent.currentSlideIndex + '/' + this.$parent.slides.length;
+      return slide + ' - ' + time;
+    }
+  }
+};
+
+var Options = {};
+
 var main = {
   slideshow: Slideshow,
   slide: Slide,
   install: function install(Vue) {
-    Vue.component('slideshow', Slideshow);
     Vue.component('slide', Slide);
-    Vue.component('image-slide', ImageSlide);
-
+    Vue.component('eg-image-slide', ImageSlide);
     Vue.component('eg-modal', Modal);
-    Vue.component('eg-transition', AnimatedTransition);
+    Vue.component('eg-transition', Transition);
     Vue.component('eg-code-block', CodeBlock);
     Vue.component('eg-code-comment', CodeComment);
     Vue.component('eg-toggle', Toggle);
-    Vue.component('eg-radio', RadioButton);
+    Vue.component('eg-radio-button', RadioButton);
+    Vue.component('eg-timer', Timer);
     Vue.component('eg-triggered-message', TriggeredMessage);
   }
 };
 
 export default main;
+export { Slideshow, Slide, Modal, CodeBlock, CodeComment, Toggle, Transition, RadioButton, ImageSlide, TriggeredMessage, Timer, Options };
