@@ -41,8 +41,6 @@
     }
   },
   "dependencies": {
-    "animate.css": "3.5.2",
-    "highlight.js": "9.9.0",
     "lodash.throttle": "^4.1.1"
   },
   "devDependencies": {
@@ -71,6 +69,7 @@
     "vue-template-compiler": "^2.1.10"
   },
   "peerDependencies": {
+    "animate.css": "^3.0.0 || ^4.0.0",
     "vue": "^2.0.0"
   },
   "engines": {

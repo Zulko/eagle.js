@@ -73,6 +73,7 @@ yarn add eagle.js
 ## Usage
 
 Eagle.js is a vue plugin. You need to `use` eagle.js in your vue app's main file:
+*New in 0.3.0*: `animate.css` is now a peer dependency. User need install their own version.
 
 ```javascript
 import Eagle from 'eagle.js'
@@ -142,6 +143,7 @@ You can configure your authored `slideshow` component with these properties:
 | `onStartExit`        | `null`          | event callback for exiting slideshow through first slide  |
 | `onEndExit`          | `null`          | event callback for exiting slideshow through last slide   |
 | `backBySlide`        | `false`         | slideshow navigates back by step by default               |
+| `repeat`             | `false`         | go to first slide automatically when reaching the last one|
 
 More explaination on `backBySlide`:
 
@@ -193,6 +195,20 @@ You can configure `slide` with these properties:
 
 Under the hood, `eg-transition` is just vue's `transition` that supports  [animate.css](https://daneden.github.io/animate.css/): you can use animate.css's class name for `enter` and `leave` property and it just works. All eagle.js's transition effects, including `slide`,  happen with this component, and you can use it just like using vue's `transition`.
 
+### Speaker's Notes (Presenter Mode)
+
+Eagle.js has built-in presenter mode support. By default pressing "P" would toggle presenter mode: you have two windows that share control with each other. Enabling presenter mode gives user two addition `data` for `slideshow`: `parentWindow` and `childWindow`. For example:
+
+```pug
+.eg-slideshow
+  slide
+    p Eagle.is is awesome!
+    p(v-if="parentWindow") I can be a note!
+    p(v-if="childWindow") I can be a note too!
+```
+
+It might be counter-intuitive that `(v-if="parentWindow")` is acutually child window. It's because it means this window has a parent window, thus making itself a child window. But it is really just user's preference to put notes in either window, as two windows are almost functionally identical, except only parent window could close persenter mode.
+
 ### Widgets
 
 Eagle.js ships several useful widgets that can be used in your `slide`:
@@ -213,6 +229,18 @@ Vue.component(CodeBlock.name, CodeBlock)
 ```
 Widgets' name follows the same rule: uppercase for importing, `eg` prefixed lowercase connected with dash in HTML.
 See more of their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
+
+*New in 0.3.0*: `highlight.js` is not a dependency anymore, so if you need to use `eg-code-block`, you need to install your own version of `highlight.js`, then specifiy it in your `main.js`:
+
+```javascript
+// import your own highlight.js
+import hljs from 'hljs'
+// then pass it to eagle
+import { Options } from 'eagle.js'
+Options.hljs = hljs
+```
+
+This way drastically decrease eagle.js's package size and user could manage their own `highlight.js` version.
 
 ## Themes
 

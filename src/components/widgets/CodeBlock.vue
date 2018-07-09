@@ -10,10 +10,12 @@
 </template>
 
 <script>
-import hljs from 'highlight.js'
+import { Options } from '../../main.js'
+
 function randId () {
   return Math.random().toString(36).substr(2, 10)
 }
+
 export default {
   name: 'eg-code-block',
   props: {
@@ -31,8 +33,8 @@ export default {
       var commentsContent = document.getElementById(this.id2)
       var codeContent = document.getElementById(this.id3)
       codeContent.innerHTML = commentsContent.innerHTML
-      if (this.lang) {
-        hljs.highlightBlock(codeBlock)
+      if (this.lang && Options.hljs) {
+        Options.hljs.highlightBlock(codeBlock)
       }
     }
   }

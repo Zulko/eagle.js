@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe('Slideshow initilization', () => {
   it('has correct slides count', () => {
-    expect(vm.slides.length).toBe(3)
+    expect(vm.slides.length).toBe(4)
   })
 
   it('has set current slide', () => {
@@ -140,6 +140,89 @@ describe('Slideshow back mode', () => {
     setTimeout(() => {
       expect(vm.slides[1].active).toBeTruthy()
       expect(vm.step).toBe(5)
+      done()
+    }, 1000)
+  })
+})
+
+describe('Slideshow properties', () => {
+  it('default value matches', () => {
+    wrapper = mount(Slideshow)
+    expect(wrapper.props().firstSlide).toBe(1)
+    expect(wrapper.props().startStep).toBe(1)
+    expect(wrapper.props().lastSlide).toBe(null)
+    expect(wrapper.props().embedded).toBe(false)
+    expect(wrapper.props().inserted).toBe(false)
+    expect(wrapper.props().keyboardNavigation).toBe(true)
+    expect(wrapper.props().mouseNavigation).toBe(true)
+    expect(wrapper.props().firstSlide).toBe(1)
+    expect(wrapper.props().skip).toBe(false)
+    expect(wrapper.props().backBySlide).toBe(false)
+    expect(wrapper.props().repeat).toBe(false)
+  })
+
+  it('user set props matches', () => {
+    wrapper = mount(Slideshow, {
+      attachToDocument: true,
+      propsData: {
+        firstSlide: 2,
+        startStep: 2,
+        lastSlide: 3,
+        embedded: true,
+        inserted: true,
+        keyboardNavigation: false,
+        mouseNavigation: false,
+        skip: true,
+        backBySlide: true,
+        repeat: true
+      }
+    })
+    expect(wrapper.props().firstSlide).toBe(2)
+    expect(wrapper.props().startStep).toBe(2)
+    expect(wrapper.props().lastSlide).toBe(3)
+    expect(wrapper.props().embedded).toBe(true)
+    expect(wrapper.props().inserted).toBe(true)
+    expect(wrapper.props().keyboardNavigation).toBe(false)
+    expect(wrapper.props().mouseNavigation).toBe(false)
+    expect(wrapper.props().skip).toBe(true)
+    expect(wrapper.props().backBySlide).toBe(true)
+    expect(wrapper.props().repeat).toBe(true)
+  })
+
+  it('props work in slideshow initialization', () => {
+    wrapper = mount(Slideshow, {
+      attachToDocument: true,
+      propsData: {
+        firstSlide: 2,
+        startStep: 2,
+        lastSlide: 3,
+        embedded: true,
+        inserted: true,
+        keyboardNavigation: false,
+        mouseNavigation: false,
+        skip: true,
+        backBySlide: true
+      }
+    })
+    vm = wrapper.vm
+    expect(vm.step).toBe(2)
+    expect(vm.slides.length).toBe(2)
+  })
+
+  it('repeat prop for slideshow ', () => {
+    wrapper = mount(Slideshow, {
+      attachToDocument: true,
+      propsData: {
+        firstSlide: 4,
+        startStep: 4,
+        repeat: true
+      }
+    })
+    vm = wrapper.vm
+    vm.nextStep()
+    setTimeout(() => {
+      expect(vm.slides[1].active).toBeTruthy()
+      expect(vm.step).toBe(1)
       done()
     }, 1000)
   })

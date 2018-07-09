@@ -10,6 +10,8 @@ import ImageSlide from './components//widgets/ImageSlide.vue'
 import TriggeredMessage from './components/widgets/TriggeredMessage.vue'
 import Timer from './components/widgets/Timer.vue'
 
+const Options = {}
+
 export {
   Slideshow,
   Slide,
@@ -21,7 +23,8 @@ export {
   RadioButton,
   ImageSlide,
   TriggeredMessage,
-  Timer
+  Timer,
+  Options
 }
 
 export default {

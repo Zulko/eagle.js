@@ -6,6 +6,8 @@
     p test
   slide(:steps="3")
     p test
+  slide(:steps="4")
+    p test
 </template>
 
 <script>
