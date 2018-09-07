@@ -144,6 +144,7 @@ You can configure your authored `slideshow` component with these properties:
 | `onEndExit`          | `null`          | event callback for exiting slideshow through last slide   |
 | `backBySlide`        | `false`         | slideshow navigates back by step by default               |
 | `repeat`             | `false`         | go to first slide automatically when reaching the last one|
+| `zoom`               | `true`          | alt + click can zoom on slide                             |
 
 More explaination on `backBySlide`:
 
