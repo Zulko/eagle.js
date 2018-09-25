@@ -208,7 +208,7 @@ Eagle.js has built-in presenter mode support. By default pressing "P" would togg
     p(v-if="childWindow") I can be a note too!
 ```
 
-It might be counter-intuitive that `(v-if="parentWindow")` is acutually child window. It's because it means this window has a parent window, thus making itself a child window. But it is really just user's preference to put notes in either window, as two windows are almost functionally identical, except only parent window could close persenter mode.
+It might be counter-intuitive that `(v-if="parentWindow")` is actually child window. It's because it means this window has a parent window, thus making itself a child window. But it is really just user's preference to put notes in either window, as two windows are almost functionally identical, except only parent window could close persenter mode.
 
 ### Widgets
 
