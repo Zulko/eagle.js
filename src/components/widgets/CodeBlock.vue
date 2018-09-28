@@ -27,6 +27,9 @@ export default {
   mounted: function () {
     this.update()
   },
+  updated: function () {
+    this.update()
+  },
   methods: {
     update: function () {
       var codeBlock = document.getElementById(this.id)

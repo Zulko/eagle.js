@@ -234,8 +234,10 @@ See more of their usage in the [demo project](https://github.com/Zulko/eaglejs-d
 *New in 0.3.0*: `highlight.js` is not a dependency anymore, so if you need to use `eg-code-block`, you need to install your own version of `highlight.js`, then specifiy it in your `main.js`:
 
 ```javascript
-// import your own highlight.js
-import hljs from 'hljs'
+// import your own highlight.js(only for javascript) 
+import hljs from 'highlight.js/lib/highlight';
+import javascript from 'highlight.js/lib/languages/javascript';
+hljs.registerLanguage('javascript', javascript);
 // then pass it to eagle
 import { Options } from 'eagle.js'
 Options.hljs = hljs
