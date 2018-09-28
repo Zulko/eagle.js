@@ -1,5 +1,5 @@
 /*
- * eagle.js v0.4.0
+ * eagle.js v0.4.1
  *
  * @license
  * Copyright 2017-2018, Zulko
@@ -17,10 +17,14 @@ var Slideshow = {
     keyboardNavigation: { default: true },
     mouseNavigation: { default: true },
     onStartExit: { default: function _default() {
-        return function () {};
+        return function () {
+          if (this.$router) this.$router.push('/');
+        };
       } },
     onEndExit: { default: function _default() {
-        return function () {};
+        return function () {
+          if (this.$router) this.$router.push('/');
+        };
       } },
     skip: { default: false },
     backBySlide: { default: false },
@@ -488,6 +492,9 @@ var CodeBlock = { render: function render() {
     lang: { default: null }
   },
   mounted: function mounted() {
+    this.update();
+  },
+  updated: function updated() {
     this.update();
   },
   methods: {
