@@ -13,11 +13,10 @@ var banner = `/*
 module.exports = {
   input: 'src/main.js',
   output: [
-    { file: 'dist/eagle.cjs.js', format: 'cjs', banner },
+    { file: 'dist/eagle.cjs.js', format: 'cjs', banner, exports: 'named' },
 		{ file: 'dist/eagle.es.js', format: 'es', banner }
   ],
   external: [
-    'highlight.js',
     'lodash.throttle'
   ],
   plugins: [
