@@ -3,6 +3,9 @@
 </p>
 <h1 align="center">Eagle.js - A slideshow framework for hackers</h1>
 
+[![npm version](https://badge.fury.io/js/eagle.js.svg)](https://badge.fury.io/js/eagle.js)
+[![Build Status](https://travis-ci.org/Zulko/eagle.js.svg?branch=master)](https://travis-ci.org/Zulko/eagle.js)
+
 - Slideshow system built on top of the [Vue.js](https://vuejs.org/)
 - Supports animations, themes, interactive widgets (for web demos)
 - Easy to reuse components, slides and styles across presentations
