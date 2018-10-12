@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { mount } from '@vue/test-utils'
+import { mount, shallow } from '@vue/test-utils'
 import Slideshow from '../fixtures/simpleSlideshow.vue'
 import ComplexSlideshow from '../fixtures/complexSlideshow.vue'
 
@@ -12,137 +12,8 @@ beforeEach(() => {
   vm = wrapper.vm
 })
 
-describe('Slideshow initilization', () => {
-  it('has correct slides count', () => {
-    expect(vm.slides.length).toBe(4)
-  })
-
-  it('has set current slide', () => {
-    expect(vm.currentSlideIndex).toBe(1)    
-  })
-
-  it('has the correct active slide', () => {
-    expect(vm.slides[0].active).toBeTruthy()
-  })
-})
-
-describe('Slideshow pre/next', () => {
-  it('Slideshow goes to next slide when current slide\'s step run out', done => {
-    vm.nextStep()
-    setTimeout(() => {
-      expect(vm.slides[0].active).toBeFalsy()
-      expect(vm.slides[1].active).toBeTruthy()
-      done()
-    }, 1000)
-  })
-
-  it('Slideshow goes to prev slide when current slide\'s step run out', done => {
-    vm.currentSlideIndex = 2
-    vm.previousStep()
-    setTimeout(() => {
-      expect(vm.slides[1].active).toBeFalsy()
-      expect(vm.slides[0].active).toBeTruthy()
-      done()
-    }, 1000)
-  })
-
-  it('Slideshow sets correct step within current slide', done => {
-    vm.currentSlideIndex = 3
-    vm.nextStep()
-    setTimeout(() => {
-      expect(vm.slides[2].active).toBeTruthy()
-      expect(vm.step).toBe(2)
-      done()
-    }, 1000)
-  })
-})
-
-describe('Slideshow events', () => {
-  it('left arrow would perform prev', () => {
-    const spy = jest.spyOn(vm, 'previousStep')
-    wrapper.trigger('keydown', {
-      key: 'ArrowLeft'
-    })
-    expect(spy).toHaveBeenCalled()
-    
-    spy.mockReset()
-    spy.mockRestore()
-  })
-
-  it('right arrow would perform next', () => {
-    const spy = jest.spyOn(vm, 'nextStep')
-    wrapper.trigger('keydown', {
-      key: 'ArrowRight'
-    })
-    expect(spy).toHaveBeenCalled()
-    
-    spy.mockReset()
-    spy.mockRestore()
-  })
-
-  it('wheel would perform next', done => {
-    const spy = jest.spyOn(vm, 'nextStep')
-    wrapper.trigger('wheel', {
-      deltaY: 100
-    })
-    setTimeout(() => { 
-      expect(spy).toHaveBeenCalled()
-      spy.mockReset()
-      spy.mockRestore()
-      done()
-    }, 1000)
-  })
-
-  it('wheel event is throttled', done => {
-    const spy = jest.spyOn(vm, 'nextStep')
-    wrapper.trigger('wheel', {
-      deltaY: 100
-    })
-    wrapper.trigger('wheel', {
-      deltaY: 100
-    })
-   
-    setTimeout(() => { 
-      expect(spy).toHaveBeenCalledTimes(1)
-      spy.mockReset()
-      spy.mockRestore()
-      done()
-    }, 1000)
-  })
-})
-
-describe('Slideshow back mode', () => {
-  it('go back by slide would result to previous slide first step', done => {
-    wrapper = mount(ComplexSlideshow, {
-      attachToDocument: true,
-      propsData: {
-        backBySlide: true
-      }
-    })
-    vm = wrapper.vm
-    vm.currentSlideIndex = 3
-    vm.previousStep()
-    setTimeout(() => {
-      expect(vm.slides[1].active).toBeTruthy()
-      expect(vm.step).toBe(1)
-      done()
-    }, 1000)
-  })
-
-  it('go back by step would result to previous slide last step', done => {
-    wrapper = mount(ComplexSlideshow)
-    vm = wrapper.vm
-    vm.currentSlideIndex = 3
-    // need to wait watcher funciton finishes for currentSlideIndex
-    setTimeout(() => {
-      vm.previousStep()
-    }, 500);
-    setTimeout(() => {
-      expect(vm.slides[1].active).toBeTruthy()
-      expect(vm.step).toBe(5)
-      done()
-    }, 1000)
-  })
+afterEach(() => {
+  jest.restoreAllMocks()
 })
 
 describe('Slideshow properties', () => {
@@ -159,6 +30,7 @@ describe('Slideshow properties', () => {
     expect(wrapper.props().skip).toBe(false)
     expect(wrapper.props().backBySlide).toBe(false)
     expect(wrapper.props().repeat).toBe(false)
+    expect(wrapper.props().zoom).toBe(true)
   })
 
   it('user set props matches', () => {
@@ -174,7 +46,8 @@ describe('Slideshow properties', () => {
         mouseNavigation: false,
         skip: true,
         backBySlide: true,
-        repeat: true
+        repeat: true,
+        zoom: false
       }
     })
     expect(wrapper.props().firstSlide).toBe(2)
@@ -187,6 +60,7 @@ describe('Slideshow properties', () => {
     expect(wrapper.props().skip).toBe(true)
     expect(wrapper.props().backBySlide).toBe(true)
     expect(wrapper.props().repeat).toBe(true)
+    expect(wrapper.props().zoom).toBe(false)
   })
 
   it('props work in slideshow initialization', () => {
@@ -208,8 +82,162 @@ describe('Slideshow properties', () => {
     expect(vm.step).toBe(2)
     expect(vm.slides.length).toBe(2)
   })
+})
 
-  it('repeat prop for slideshow ', () => {
+describe('Slideshow initilization', () => {
+  it('has correct slides count', () => {
+    expect(vm.slides.length).toBe(4)
+  })
+
+  it('has set current slide', () => {
+    expect(vm.currentSlideIndex).toBe(1)    
+  })
+
+  it('has the correct active slide', () => {
+    expect(vm.slides[0].active).toBeTruthy()
+  })
+})
+
+describe('Slideshow lifecycle hooks', () => {
+  it('should register default events when created', () => {
+    jest.spyOn(window, 'addEventListener')
+    wrapper = mount(Slideshow, {
+      attachToDocument: true,
+      propsData: {
+        zoom: false
+      }
+    })
+
+    expect(window.addEventListener).toHaveBeenCalled()
+    expect(window.addEventListener.mock.calls[0][0]).toEqual('keydown')
+    expect(window.addEventListener.mock.calls[1][0]).toEqual('click')
+    expect(window.addEventListener.mock.calls[2][0]).toEqual('wheel')
+    expect(window.addEventListener.mock.calls[3][0]).toEqual('resize')
+  })
+
+  it('should register additional events for zoom', () => {
+    jest.spyOn(window, 'addEventListener')
+    wrapper = mount(Slideshow, {
+      attachToDocument: true,
+    })
+
+    expect(window.addEventListener).toHaveBeenCalled()
+    expect(window.addEventListener.mock.calls[0][0]).toEqual('resize')
+    expect(window.addEventListener.mock.calls[1][0]).toEqual('mousedown')
+  })
+
+  it('should unregister events when destroyed', () => {
+    jest.spyOn(window, 'removeEventListener')
+    wrapper = mount(Slideshow, {
+      attachToDocument: true,
+    }).destroy()
+
+    expect(window.removeEventListener).toHaveBeenCalled()
+    expect(window.removeEventListener.mock.calls[0][0]).toEqual('keydown')
+    expect(window.removeEventListener.mock.calls[1][0]).toEqual('click')
+    expect(window.removeEventListener.mock.calls[2][0]).toEqual('touchstart')
+    expect(window.removeEventListener.mock.calls[3][0]).toEqual('wheel')
+  })
+})
+
+describe('Slideshow pre/next', () => {
+  it('Slideshow goes to next slide when current slide\'s step run out', async () => {
+    vm.nextStep()
+    await Vue.nextTick()
+
+    expect(vm.slides[0].active).toBeFalsy()
+    expect(vm.slides[1].active).toBeTruthy()
+  })
+
+  it('Slideshow goes to prev slide when current slide\'s step run out', async () => {
+    vm.currentSlideIndex = 2
+    vm.previousStep()
+    await Vue.nextTick()
+
+    expect(vm.slides[1].active).toBeFalsy()
+    expect(vm.slides[0].active).toBeTruthy()
+  })
+
+  it('Slideshow sets correct step within current slide', async () => {
+    vm.currentSlideIndex = 3
+    vm.nextStep()
+    await Vue.nextTick()
+
+    expect(vm.slides[2].active).toBeTruthy()
+    expect(vm.step).toBe(2)
+  })
+})
+
+describe('Slideshow events', () => {
+  it('left arrow would perform prev', () => {
+    jest.spyOn(vm, 'previousStep')
+    wrapper.trigger('keydown', {
+      key: 'ArrowLeft'
+    })
+    expect(vm.previousStep).toHaveBeenCalled()
+  })
+
+  it('right arrow would perform next', () => {
+    const spy = jest.spyOn(vm, 'nextStep')
+    wrapper.trigger('keydown', {
+      key: 'ArrowRight'
+    })
+    expect(spy).toHaveBeenCalled()
+  })
+
+  it('wheel event is throttled', done => {
+    const spy = jest.spyOn(vm, 'nextStep')
+    wrapper.trigger('wheel', {
+      deltaY: 100
+    })
+    wrapper.trigger('wheel', {
+      deltaY: 100
+    })
+   
+    setTimeout(() => { 
+      expect(spy).toHaveBeenCalledTimes(1)
+      spy.mockReset()
+      spy.mockRestore()
+      done()
+    }, 1000)
+  })
+})
+
+describe('Slideshow back mode', () => {
+  it('go back by slide would result to previous slide first step', async () => {
+    wrapper = mount(ComplexSlideshow, {
+      attachToDocument: true,
+      propsData: {
+        backBySlide: true
+      }
+    })
+    vm = wrapper.vm
+    vm.currentSlideIndex = 3
+    vm.previousStep()
+    await Vue.nextTick()
+      
+    expect(vm.slides[1].active).toBeTruthy()
+    expect(vm.step).toBe(1)
+
+  })
+
+  it('go back by step would result to previous slide last step', async () => {
+    wrapper = mount(ComplexSlideshow)
+    vm = wrapper.vm
+    vm.currentSlideIndex = 3
+    // need to wait watcher funciton finishes for currentSlideIndex
+    await Vue.nextTick()
+    vm.previousStep()
+
+    await Vue.nextTick()
+
+    expect(vm.slides[1].active).toBeTruthy()
+    expect(vm.step).toBe(5)
+  })
+})
+
+describe('Slideshow features', () => {
+  it('repeat will navigate back to slide 1 when slideshow ends ', async () => {
     wrapper = mount(Slideshow, {
       attachToDocument: true,
       propsData: {
@@ -220,10 +248,9 @@ describe('Slideshow properties', () => {
     })
     vm = wrapper.vm
     vm.nextStep()
-    setTimeout(() => {
-      expect(vm.slides[1].active).toBeTruthy()
-      expect(vm.step).toBe(1)
-      done()
-    }, 1000)
+    await Vue.nextTick()
+
+    expect(vm.slides[0].active).toBeTruthy()
   })
 })
+

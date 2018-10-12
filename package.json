@@ -25,7 +25,8 @@
     "build": "node build/build.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "lint": "eslint --ext vue,js --format node_modules/eslint-friendly-formatter 'src/components/**' src/main.js",
-    "test": "jest"
+    "test": "jest --no-cache --bail",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "lodash.throttle": "^4.1.1"

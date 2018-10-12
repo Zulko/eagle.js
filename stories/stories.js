@@ -18,6 +18,19 @@ const render = slides => ({
   `
 })
 
+Vue.component('NestedSlideshow', {
+  mixins: [Slideshow],
+  template: `
+  <div class='eg-theme-agrume'>
+    <div class='eg-slideshow'>
+      <slide>
+        This is a nested slideshow with only one slide.
+      </slide>
+    </div>
+  </div>
+  `
+})
+
 storiesOf('Slideshow', module)
   .add('single slide', () => 
     render(`
@@ -29,7 +42,7 @@ storiesOf('Slideshow', module)
   .add('multiple slides', () => 
     render(`
     <slide>
-      <h1>Eagle.js</h1>
+      <h1>multiple slides</h1>
     </slide>
     <slide>
       <h1>Eagle.js is easy to use</h1>
@@ -69,3 +82,15 @@ storiesOf('Slideshow', module)
     </slide>
     `)
   )
+  .add('inserted slideshow, slideshow within slideshow', () => 
+    render(`
+      <nested-slideshow :inserted='true' />
+    `)
+  )
+  .add('embedded slideshow, slideshow within slide', () => 
+  render(`
+    <slide>
+      <nested-slideshow :embedded='true' />
+    </slide>
+  `)
+)

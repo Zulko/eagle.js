@@ -20,7 +20,7 @@
 Most of all, eagle.js aims at offering a simple and very hackable API so you
 can get off the beaten tracks and craft the slideshows you really want.
 
-Here is what the eagle.js syntax looks like (using [Pug](https://pugjs.org/api/getting-started.html)):
+Here is what the eagle.js syntax looks like (Example here are using [Pug](https://pugjs.org/api/getting-started.html), but you can still use plain HTML):
 ```pug
 .eg-slideshow
     slide
@@ -352,6 +352,17 @@ Below are a few ideas that deserve more attention in the future:
 - PDF export?
 - Themes
 - Better docs? (What do JavaScript people use to write docs?)
+
+### Development
+
+Eagle.js uses storybook for development:
+
+```bash
+$ git clone https://github.com/Zulko/eagle.js.git
+$ npm install
+$ npm run storybook
+```
+
 
 ## Maintainers
 1. [Zulko](https://github.com/Zulko)(owner)
