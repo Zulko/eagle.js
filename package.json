@@ -24,6 +24,7 @@
     "prepublishOnly": "npm run build",
     "build": "node build/build.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
+    "format": "prettier --write src/themes/**/*.scss src/themes/*.scss",
     "lint": "eslint --ext vue,js --format node_modules/eslint-friendly-formatter 'src/components/**' src/main.js",
     "test": "jest --no-cache --bail",
     "test:watch": "jest --watch"
@@ -53,6 +54,7 @@
     "jest": "^21.2.1",
     "jest-vue-preprocessor": "^1.3.1",
     "node-sass": "^4.5.0",
+    "prettier": "^1.15.1",
     "pug": "^2.0.0-beta11",
     "pug-plain-loader": "^1.0.0",
     "rollup": "^0.59.0",

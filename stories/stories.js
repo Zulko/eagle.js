@@ -3,20 +3,25 @@ import { storiesOf } from '@storybook/vue'
 import Eagle, { Slideshow } from '../src/main.js'
 
 import '../src/themes/agrume/agrume.scss' 
+import '../src/themes/gourmet/gourmet.scss' 
 import 'animate.css'
 
 Vue.use(Eagle)
 
-const render = slides => ({
-  mixins: [Slideshow],
-  template: `
-  <div class='eg-theme-agrume'>
-    <div class='eg-slideshow'>
+const render = (slides, useTheme=true, theme='agrume') => {
+  const template = (useTheme ? `<div class='eg-theme-${theme}'>` : '') +
+    `<div class='eg-slideshow'>
       ${slides}
-    </div>
-  </div>
-  `
-})
+    </div>` +
+    (useTheme ? '</div>' : '')
+
+  console.log(template)
+
+  return {
+    mixins: [Slideshow],
+    template: template
+  }
+}
 
 Vue.component('NestedSlideshow', {
   mixins: [Slideshow],
@@ -88,9 +93,25 @@ storiesOf('Slideshow', module)
     `)
   )
   .add('embedded slideshow, slideshow within slide', () => 
-  render(`
+    render(`
+      <slide>
+        <nested-slideshow :embedded='true' />
+      </slide>
+    `)
+  )
+
+storiesOf('Theme', module)
+  .add('default theme', () => {
+    render(`
     <slide>
-      <nested-slideshow :embedded='true' />
+      <h1>Eagle.js</h1>
     </slide>
-  `)
-)
+    `, false)
+  })
+  .add('gourmet theme', () => {
+    render(`
+    <slide>
+      <h1>Eagle.js</h1>
+    </slide>
+    `, true, 'gourmet')
+  })

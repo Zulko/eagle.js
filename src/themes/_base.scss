@@ -1,54 +1,59 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
 
 .eg-slideshow {
-    margin-top: 0;
-    background-color: black;
-    background-attachment: fixed;
-    position: absolute;
+  margin-top: 0;
+  background-attachment: fixed;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+  h1,
+  h2,
+  h3 {
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 4em;
+    margin-bottom: 0.1em;
+  }
+  h2 {
+    font-size: 3em;
+  }
+  h3 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+  }
+  h4 {
+    font-size: 1.5em;
+  }
+  input {
+    font-size: 1em;
+  }
+  strong {
+    font-weight: bold;
+  }
+  .small {
+    font-size: 0.65em;
+  }
+
+  img {
+    max-width: 80%;
+  }
+  .eg-code-block {
+    font-family: "Source Code Pro", Courier;
+    text-align: left;
+    font-size: 0.5em;
+    .box {
+      padding: 1em;
+    }
+  }
+  .eg-slide {
     height: 100%;
-    width: 100%;
     overflow: hidden;
-
-    h1, h2, h3 {
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 4em;
-      margin-bottom: 0.1em;
-    }
-    h2 {font-size: 3em}
-    h3 {
-      font-size: 2em;
-      margin-bottom: 0.5em;
-    }
-    h4 {font-size: 1.5em}
-    input {
-      font-size: 1em
-    }
-    strong {
-      font-weight: bold;
-    }
-    .small {
-      font-size: 0.65em;
-    }
-
-    img {
-        max-width: 80%;
-    }
-    .eg-code-block {
-      font-family: 'Source Code Pro', Courier;
-      text-align: left;
-      font-size: 0.5em;
-      .box {
-        padding: 1em;
-      }
-    }
-    .eg-slide {
-      height: 100%;
-      overflow: hidden;
-      width: 100%;
-      position: absolute;
+    width: 100%;
+    position: absolute;
   }
   .subslide {
     position: absolute;
@@ -56,7 +61,7 @@
   }
 
   .inline {
-      display: inline-block;
+    display: inline-block;
   }
   .center {
     text-align: center;
@@ -92,5 +97,4 @@
   .nodisplay {
     display: none;
   }
-
 }
