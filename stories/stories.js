@@ -15,8 +15,6 @@ const render = (slides, useTheme=true, theme='agrume') => {
     </div>` +
     (useTheme ? '</div>' : '')
 
-  console.log(template)
-
   return {
     mixins: [Slideshow],
     template: template
@@ -101,17 +99,17 @@ storiesOf('Slideshow', module)
   )
 
 storiesOf('Theme', module)
-  .add('default theme', () => {
+  .add('default theme', () =>
     render(`
     <slide>
       <h1>Eagle.js</h1>
     </slide>
     `, false)
-  })
-  .add('gourmet theme', () => {
+  )
+  .add('gourmet theme', () =>
     render(`
     <slide>
       <h1>Eagle.js</h1>
     </slide>
     `, true, 'gourmet')
-  })
+  )
