@@ -31,14 +31,6 @@ export default {
     }
   },
   computed: {
-    fullPageStyle: function () {
-      var size = 0.04 * Math.min(this.fullPageWidth, this.fullPageHeight)
-      return { fontSize: size + 'px' }
-    },
-    embeddedStyle: function () {
-      var size = 0.04 * Math.min(this.parentWidth, this.parentHeight)
-      return { fontSize: size + 'px' }
-    },
     computedActive: function () {
       return this.slides.some(function (slide) { return slide.active })
     }
