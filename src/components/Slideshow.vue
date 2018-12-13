@@ -295,6 +295,7 @@ export default {
     findSlides: function () {
       var self = this
       var i = 0
+      self.slides = []
       this.$children.forEach(function (el) {
         if (el.isSlide) {
           i++
@@ -313,6 +314,9 @@ export default {
           })
         }
       })
+      self.currentSlideIndex = 1
+      self.currentSlide = self.slides[0]
+      self.step = self.startStep
     },
     updateSlideshowVisibility: function (val) {
       if (val) {
