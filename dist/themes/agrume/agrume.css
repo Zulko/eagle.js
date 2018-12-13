@@ -11,11 +11,13 @@
   .eg-theme-agrume .eg-slideshow {
     background-image: url("~eagle.js/dist/themes/assets/subtle_symphony.png");
     background-color: #eee; }
-  .eg-theme-agrume .eg-slide-content, .eg-theme-agrume .subslide {
+  .eg-theme-agrume .eg-slide-content,
+  .eg-theme-agrume .subslide {
     width: 25em;
     max-width: 80%;
     margin: 0 auto; }
-    .eg-theme-agrume .eg-slide-content .eg-triggered-message, .eg-theme-agrume .subslide .eg-triggered-message {
+    .eg-theme-agrume .eg-slide-content .eg-triggered-message,
+    .eg-theme-agrume .subslide .eg-triggered-message {
       background: #fbfbfb;
       padding-top: 0.3em;
       padding-bottom: 0.3em;
@@ -25,11 +27,19 @@
       border: 0.07em solid #bbb;
       border-radius: 0.5em;
       font-size: 0.8em; }
-      .eg-theme-agrume .eg-slide-content .eg-triggered-message p, .eg-theme-agrume .subslide .eg-triggered-message p {
+      .eg-theme-agrume .eg-slide-content .eg-triggered-message p,
+      .eg-theme-agrume .subslide .eg-triggered-message p {
         margin-top: 0 !important;
         margin-bottom: 0 !important; }
-  .eg-theme-agrume h1, .eg-theme-agrume h2, .eg-theme-agrume h3, .eg-theme-agrume h4, .eg-theme-agrume p, .eg-theme-agrume li, .eg-theme-agrume .button, .eg-theme-agrume input {
-    font-family: 'Pompiere', cursive;
+  .eg-theme-agrume h1,
+  .eg-theme-agrume h2,
+  .eg-theme-agrume h3,
+  .eg-theme-agrume h4,
+  .eg-theme-agrume p,
+  .eg-theme-agrume li,
+  .eg-theme-agrume .button,
+  .eg-theme-agrume input {
+    font-family: "Pompiere", cursive;
     font-weight: normal; }
   .eg-theme-agrume h3 {
     text-transform: uppercase; }
@@ -95,13 +105,16 @@
   .eg-theme-agrume .eg-modal {
     background-color: rgba(0, 0, 0, 0.9);
     color: white; }
-    .eg-theme-agrume .eg-modal h1, .eg-theme-agrume .eg-modal h2, .eg-theme-agrume .eg-modal h3, .eg-theme-agrume .eg-modal h4 {
+    .eg-theme-agrume .eg-modal h1,
+    .eg-theme-agrume .eg-modal h2,
+    .eg-theme-agrume .eg-modal h3,
+    .eg-theme-agrume .eg-modal h4 {
       font-weight: bold; }
     .eg-theme-agrume .eg-modal img {
       box-shadow: 0 0 0.2em 0.2em #888; }
   .eg-theme-agrume input {
     background-color: rgba(255, 255, 255, 0.4);
-    border: .5px solid #ccc;
+    border: 0.5px solid #ccc;
     border-radius: 0.2em; }
   .eg-theme-agrume input:focus {
     border: none; }
@@ -110,7 +123,7 @@
     cursor: pointer;
     border: none;
     color: black;
-    border-radius: .5em;
+    border-radius: 0.5em;
     border: 0.1em solid gray;
     padding: 0.2em 0.2em;
     margin-left: 0.5em;
@@ -121,8 +134,8 @@
     display: inline-block;
     line-height: 1em; }
   .eg-theme-agrume .eg-switch {
-    margin-right: .5em;
-    margin-left: .5em; }
+    margin-right: 0.5em;
+    margin-left: 0.5em; }
     .eg-theme-agrume .eg-switch .slider {
       background-color: #ccc; }
     .eg-theme-agrume .eg-switch .slider.checked {
@@ -130,8 +143,8 @@
     .eg-theme-agrume .eg-switch .unchecked .label {
       color: #bbbbbb; }
   .eg-theme-agrume .eg-radio {
-    margin-right: .5em;
-    margin-left: .5em; }
+    margin-right: 0.5em;
+    margin-left: 0.5em; }
     .eg-theme-agrume .eg-radio .radio {
       background: none;
       border: 2px solid black;
@@ -139,21 +152,21 @@
       z-index: 1; }
     .eg-theme-agrume .eg-radio .radiodot.checked {
       background-color: #ffb014; }
-  .eg-theme-agrume .embedded-slideshow-container .embedded-slideshow
-.eg-slideshow {
+  .eg-theme-agrume .embedded-slideshow-container .embedded-slideshow .eg-slideshow {
     box-shadow: 0 0 0.25em 0.25em #bbb; }
   .eg-theme-agrume .shadowbox {
     box-shadow: 0 0 0.25em 0.25em #bbb; }
 
 .eg-slideshow {
   margin-top: 0;
-  background-color: black;
   background-attachment: fixed;
   position: absolute;
   height: 100%;
   width: 100%;
   overflow: hidden; }
-  .eg-slideshow h1, .eg-slideshow h2, .eg-slideshow h3 {
+  .eg-slideshow h1,
+  .eg-slideshow h2,
+  .eg-slideshow h3 {
     text-align: center; }
   .eg-slideshow h1 {
     font-size: 4em;
@@ -174,7 +187,7 @@
   .eg-slideshow img {
     max-width: 80%; }
   .eg-slideshow .eg-code-block {
-    font-family: 'Source Code Pro', Courier;
+    font-family: "Source Code Pro", Courier;
     text-align: left;
     font-size: 0.5em; }
     .eg-slideshow .eg-code-block .box {

@@ -27,39 +27,18 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-.eg-code-comment {
-  display: inline-block
-}
-
-
-
-
-
-
-
-
-
 /*# sourceMappingURL=Timer.vue.map */
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
 .eg-slideshow {
   margin-top: 0;
-  background-color: black;
   background-attachment: fixed;
   position: absolute;
   height: 100%;
   width: 100%;
   overflow: hidden; }
-  .eg-slideshow h1, .eg-slideshow h2, .eg-slideshow h3 {
+  .eg-slideshow h1,
+  .eg-slideshow h2,
+  .eg-slideshow h3 {
     text-align: center; }
   .eg-slideshow h1 {
     font-size: 4em;
@@ -80,7 +59,7 @@
   .eg-slideshow img {
     max-width: 80%; }
   .eg-slideshow .eg-code-block {
-    font-family: 'Source Code Pro', Courier;
+    font-family: "Source Code Pro", Courier;
     text-align: left;
     font-size: 0.5em; }
     .eg-slideshow .eg-code-block .box {
@@ -153,21 +132,6 @@
     -ms-transform: translateX(1em);
     transform: translateX(1em); }
 
-.eg-code-block.container[data-v-29468740] {
-  position: relative;
-  width: 100%; }
-
-.eg-code-block .code-box .eg-code-comment[data-v-29468740] {
-  display: none; }
-
-.eg-code-block .comments-box[data-v-29468740] {
-  position: absolute;
-  color: rgba(0, 0, 0, 0);
-  top: 0; }
-
-.eg-code-block .eg-code-comment[data-v-29468740] {
-  z-index: 10 !important; }
-
 .eg-radio[data-v-872b59a6] {
   /* The slider */ }
   .eg-radio p[data-v-872b59a6] {
@@ -204,4 +168,41 @@
     width: .9em;
     left: 0.05em;
     bottom: 0.05em; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.eg-code-comment {
+  display: inline-block
+}
+
+.eg-code-block.container[data-v-29468740] {
+  position: relative;
+  width: 100%; }
+
+.eg-code-block .code-box .eg-code-comment[data-v-29468740] {
+  display: none; }
+
+.eg-code-block .comments-box[data-v-29468740] {
+  position: absolute;
+  color: rgba(0, 0, 0, 0);
+  top: 0; }
+
+.eg-code-block .eg-code-comment[data-v-29468740] {
+  z-index: 10 !important; }
 

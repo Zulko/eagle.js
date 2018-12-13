@@ -51,14 +51,6 @@ var Slideshow = {
     };
   },
   computed: {
-    fullPageStyle: function fullPageStyle() {
-      var size = 0.04 * Math.min(this.fullPageWidth, this.fullPageHeight);
-      return { fontSize: size + 'px' };
-    },
-    embeddedStyle: function embeddedStyle() {
-      var size = 0.04 * Math.min(this.parentWidth, this.parentHeight);
-      return { fontSize: size + 'px' };
-    },
     computedActive: function computedActive() {
       return this.slides.some(function (slide) {
         return slide.active;
@@ -315,6 +307,7 @@ var Slideshow = {
     findSlides: function findSlides() {
       var self = this;
       var i = 0;
+      self.slides = [];
       this.$children.forEach(function (el) {
         if (el.isSlide) {
           i++;
@@ -332,6 +325,9 @@ var Slideshow = {
           });
         }
       });
+      self.currentSlideIndex = 1;
+      self.currentSlide = self.slides[0];
+      self.step = self.startStep;
     },
     updateSlideshowVisibility: function updateSlideshowVisibility(val) {
       if (val) {
