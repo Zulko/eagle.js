@@ -141,6 +141,7 @@ You can configure your authored `slideshow` component with these properties:
 | `startStep`          | `1`             |                                                           | 
 | `mouseNavigation`    | `true`          | Navigate with mouse click or scroll event                 |
 | `keyboardNavigation` | `true`          | Navigate with keyboard                                    |
+| `presenterModeKey`   | `'p'`           | set the key that activates presenter mode                 |
 | `embedded`           | `false`         |                                                           |
 | `inserted`           | `false`         |                                                           |
 | `onStartExit`        | `null`          | event callback for exiting slideshow through first slide  |

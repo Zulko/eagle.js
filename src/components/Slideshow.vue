@@ -10,6 +10,7 @@ export default {
     inserted: {default: false},
     keyboardNavigation: {default: true},
     mouseNavigation: {default: true},
+    presenterModeKey: {default: 'p'},
     onStartExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
     onEndExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
     skip: {default: false},
@@ -257,7 +258,7 @@ export default {
         } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep()
           evt.preventDefault()
-        } else if (evt.key === 'p' && !this.parentWindow) {
+        } else if (evt.key === this.presenterModeKey && !this.parentWindow) {
           this.togglePresenterMode()
           evt.preventDefault()
         }
