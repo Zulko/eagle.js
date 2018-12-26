@@ -6,12 +6,23 @@ function keydown (evt) {
   if (slideshow.keyboardNavigation &&
       (slideshow.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
     if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
-      postMessage('{"method": "nextStep"}')
-    } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
       postMessage('{"method": "previousStep"}')
+    } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
+      postMessage('{"method": "nextStep"}')
     } else if (evt.key === presenterModeKey && !this.parentWindow) {
       togglePresenterMode()
       evt.preventDefault()
+    }
+  }
+}
+
+function click (evt) {
+  if (slideshow.mouseNavigation && slideshow.currentSlide.mouseNavigation && !evt.altKey) {
+    const clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX
+    if (clientX < (0.25 * document.documentElement.clientWidth)) {
+      postMessage('{"method": "previousStep"}')
+    } else if (clientX > (0.75 * document.documentElement.clientWidth)) {
+      postMessage('{"method": "nextStep"}')
     }
   }
 }
@@ -73,10 +84,12 @@ export default {
         window.addEventListener('message', message)
       }
       window.addEventListener('keydown', keydown)
+      window.addEventListener('click', click)
     }
   },
   destroy: function () {
     window.removeEventListener('message', message)
     window.removeEventListener('keydown', keydown)
+    window.addEventListener('click', click)
   }
 }
