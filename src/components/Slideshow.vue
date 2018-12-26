@@ -11,7 +11,7 @@ export default {
     keyboardNavigation: {default: true},
     mouseNavigation: {default: true},
     presenterModeKey: {default: 'p'},
-    onStartExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
+    onStartExit: {default: () => function () { if (this.$routerf) this.$router.push('/') }},
     onEndExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
     skip: {default: false},
     backBySlide: {default: false},
@@ -102,11 +102,15 @@ export default {
     clearInterval(this.timerUpdater)
   },
   methods: {
-    nextStep: function (fromMessage) {
+    changeDirection: function (direction) {
       this.slides.forEach(function (slide) {
-        slide.direction = 'next'
+        slide.direction = direction
       })
-      this.$root.direction = 'next'
+      this.$root.direction = direction
+    },
+    nextStep: function (fromMessage) {
+      this.changeDirection('next')
+
       var self = this
       this.$nextTick(function () {
         if (self.step >= self.currentSlide.steps) {
@@ -120,10 +124,8 @@ export default {
       }
     },
     previousStep: function (fromMessage) {
-      this.slides.forEach(function (slide) {
-        slide.direction = 'prev'
-      })
-      this.$root.direction = 'prev'
+      this.changeDirection('prev')
+
       var self = this
       this.$nextTick(function () {
         if (self.step <= 1) {
@@ -152,16 +154,17 @@ export default {
       }
     },
     previousSlide: function () {
-      var previousSlideIndex = this.currentSlideIndex - 1
+      var self = this
+      var previousSlideIndex = self.currentSlideIndex - 1
       while ((previousSlideIndex >= 1) &&
-             (this.slides[previousSlideIndex - 1].skip ||
-              (this.slides[previousSlideIndex - 1].$parent.skip))) {
+             (self.slides[previousSlideIndex - 1].skip ||
+              (self.slides[previousSlideIndex - 1].$parent.skip))) {
         previousSlideIndex--
       }
       if (previousSlideIndex >= 1) {
-        this.currentSlideIndex = previousSlideIndex
-      } else if (!this.embedded) {
-        this.onStartExit()
+        self.currentSlideIndex = previousSlideIndex
+      } else if (!self.embedded) {
+        self.onStartExit()
       }
     },
     handleResize: function () {
