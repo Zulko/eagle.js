@@ -11,7 +11,7 @@ export default {
     keyboardNavigation: {default: true},
     mouseNavigation: {default: true},
     presenterModeKey: {default: 'p'},
-    onStartExit: {default: () => function () { if (this.$routerf) this.$router.push('/') }},
+    onStartExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
     onEndExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
     skip: {default: false},
     backBySlide: {default: false},
@@ -110,7 +110,6 @@ export default {
     },
     nextStep: function (fromMessage) {
       this.changeDirection('next')
-
       var self = this
       this.$nextTick(function () {
         if (self.step >= self.currentSlide.steps) {
@@ -125,7 +124,6 @@ export default {
     },
     previousStep: function (fromMessage) {
       this.changeDirection('prev')
-
       var self = this
       this.$nextTick(function () {
         if (self.step <= 1) {
@@ -319,7 +317,7 @@ export default {
         }
       })
       self.currentSlideIndex = 1
-      self.currentSlide = self.slides[0]
+      self.currentSlide = self.currentSlide === null ? null : self.slides[0]
       self.step = self.startStep
     },
     updateSlideshowVisibility: function (val) {

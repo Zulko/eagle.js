@@ -28,6 +28,7 @@ Vue.component('NestedSlideshow', {
     <div class='eg-slideshow'>
       <slide>
         This is a nested slideshow with only one slide.
+        <slot />
       </slide>
     </div>
   </div>
@@ -87,7 +88,9 @@ storiesOf('Slideshow', module)
   )
   .add('inserted slideshow, slideshow within slideshow', () => 
     render(`
-      <nested-slideshow :inserted='true' />
+      <nested-slideshow :inserted='true' >1</nested-slideshow>
+      <nested-slideshow :inserted='true' >2</nested-slideshow>
+      <nested-slideshow :inserted='true' >3</nested-slideshow>
     `)
   )
   .add('embedded slideshow, slideshow within slide', () => 
