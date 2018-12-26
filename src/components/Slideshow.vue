@@ -11,7 +11,7 @@ export default {
     keyboardNavigation: {default: true},
     mouseNavigation: {default: true},
     presenterModeKey: {default: 'p'},
-    onStartExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
+    onStartExit: {default: () => function () { if (this.$routerf) this.$router.push('/') }},
     onEndExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
     skip: {default: false},
     backBySlide: {default: false},
@@ -108,7 +108,7 @@ export default {
       })
       this.$root.direction = direction
     },
-    nextStep: function () {
+    nextStep: function (fromMessage) {
       this.changeDirection('next')
 
       var self = this
@@ -123,7 +123,7 @@ export default {
         this.postMessage('{"method": "nextStep"}')
       }
     },
-    previousStep: function () {
+    previousStep: function (fromMessage) {
       this.changeDirection('prev')
 
       var self = this
