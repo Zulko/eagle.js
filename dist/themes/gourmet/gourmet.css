@@ -16,15 +16,21 @@
     .eg-theme-gourmet .eg-slideshow h3 {
       margin-top: 0.3em;
       margin-bottom: -0.1em; }
-  .eg-theme-gourmet .eg-slide-content, .eg-theme-gourmet .subslide {
+  .eg-theme-gourmet .eg-slide-content,
+  .eg-theme-gourmet .subslide {
     width: 25em;
     max-width: 80%;
     margin: 0 auto; }
-  .eg-theme-gourmet h1, .eg-theme-gourmet h2, .eg-theme-gourmet h3, .eg-theme-gourmet h4 {
-    font-family: 'Bad Script', cursive;
+  .eg-theme-gourmet h1,
+  .eg-theme-gourmet h2,
+  .eg-theme-gourmet h3,
+  .eg-theme-gourmet h4 {
+    font-family: "Bad Script", cursive;
     font-weight: normal; }
-  .eg-theme-gourmet p, .eg-theme-gourmet li, .eg-theme-gourmet .button {
-    font-family: 'Architects Daughter', cursive;
+  .eg-theme-gourmet p,
+  .eg-theme-gourmet li,
+  .eg-theme-gourmet .button {
+    font-family: "Architects Daughter", cursive;
     font-weight: normal;
     font-size: 0.7em;
     line-height: 2em; }
@@ -83,7 +89,10 @@
   .eg-theme-gourmet .eg-modal {
     background-color: rgba(0, 0, 0, 0.9);
     color: white; }
-    .eg-theme-gourmet .eg-modal h1, .eg-theme-gourmet .eg-modal h2, .eg-theme-gourmet .eg-modal h3, .eg-theme-gourmet .eg-modal h4 {
+    .eg-theme-gourmet .eg-modal h1,
+    .eg-theme-gourmet .eg-modal h2,
+    .eg-theme-gourmet .eg-modal h3,
+    .eg-theme-gourmet .eg-modal h4 {
       font-weight: bold; }
     .eg-theme-gourmet .eg-modal img {
       box-shadow: 0 0 4px 4px #888; }
@@ -123,13 +132,14 @@
 
 .eg-slideshow {
   margin-top: 0;
-  background-color: black;
   background-attachment: fixed;
   position: absolute;
   height: 100%;
   width: 100%;
   overflow: hidden; }
-  .eg-slideshow h1, .eg-slideshow h2, .eg-slideshow h3 {
+  .eg-slideshow h1,
+  .eg-slideshow h2,
+  .eg-slideshow h3 {
     text-align: center; }
   .eg-slideshow h1 {
     font-size: 4em;
@@ -150,7 +160,7 @@
   .eg-slideshow img {
     max-width: 80%; }
   .eg-slideshow .eg-code-block {
-    font-family: 'Source Code Pro', Courier;
+    font-family: "Source Code Pro", Courier;
     text-align: left;
     font-size: 0.5em; }
     .eg-slideshow .eg-code-block .box {

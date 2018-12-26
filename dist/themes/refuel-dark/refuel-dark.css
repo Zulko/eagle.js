@@ -3,8 +3,13 @@
 .reveal {
   color: #aababa; }
 
-h1, h2, h3, h4, p, li {
-  font-family: 'Comfortaa', cursive; }
+h1,
+h2,
+h3,
+h4,
+p,
+li {
+  font-family: "Comfortaa", cursive; }
 
 img {
   border: none !important;
@@ -25,8 +30,14 @@ p {
     width: 25em;
     max-width: 80%;
     margin: 0 auto; }
-  .rf-slideshow h1, .rf-slideshow h2, .rf-slideshow h3, .rf-slideshow h4, .rf-slideshow p, .rf-slideshow li, .rf-slideshow .button {
-    font-family: 'Pompiere', cursive;
+  .rf-slideshow h1,
+  .rf-slideshow h2,
+  .rf-slideshow h3,
+  .rf-slideshow h4,
+  .rf-slideshow p,
+  .rf-slideshow li,
+  .rf-slideshow .button {
+    font-family: "Pompiere", cursive;
     font-weight: normal; }
   .rf-slideshow h3 em {
     text-decoration: underline;
@@ -88,7 +99,10 @@ p {
   .rf-slideshow .rf-modal {
     background-color: rgba(0, 0, 0, 0.9);
     color: white; }
-    .rf-slideshow .rf-modal h1, .rf-slideshow .rf-modal h2, .rf-slideshow .rf-modal h3, .rf-slideshow .rf-modal h4 {
+    .rf-slideshow .rf-modal h1,
+    .rf-slideshow .rf-modal h2,
+    .rf-slideshow .rf-modal h3,
+    .rf-slideshow .rf-modal h4 {
       font-weight: bold; }
     .rf-slideshow .rf-modal img {
       box-shadow: 0 0 4px 4px #888; }
@@ -124,13 +138,14 @@ p {
 
 .eg-slideshow {
   margin-top: 0;
-  background-color: black;
   background-attachment: fixed;
   position: absolute;
   height: 100%;
   width: 100%;
   overflow: hidden; }
-  .eg-slideshow h1, .eg-slideshow h2, .eg-slideshow h3 {
+  .eg-slideshow h1,
+  .eg-slideshow h2,
+  .eg-slideshow h3 {
     text-align: center; }
   .eg-slideshow h1 {
     font-size: 4em;
@@ -151,7 +166,7 @@ p {
   .eg-slideshow img {
     max-width: 80%; }
   .eg-slideshow .eg-code-block {
-    font-family: 'Source Code Pro', Courier;
+    font-family: "Source Code Pro", Courier;
     text-align: left;
     font-size: 0.5em; }
     .eg-slideshow .eg-code-block .box {

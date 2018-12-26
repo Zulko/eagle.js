@@ -1,12 +1,17 @@
 /*
- * eagle.js v0.1.5
+ * eagle.js v0.4.1
  *
  * @license
- * Copyright 2017, Zulko
+ * Copyright 2017-2018, Zulko
  * Released under the ISC License
  */
-import { throttle } from 'lodash';
-import hljs from 'highlight.js';
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var throttle = _interopDefault(require('lodash.throttle'));
 
 var Slideshow = {
   props: {
@@ -18,13 +23,19 @@ var Slideshow = {
     keyboardNavigation: { default: true },
     mouseNavigation: { default: true },
     onStartExit: { default: function _default() {
-        return function () {};
+        return function () {
+          if (this.$router) this.$router.push('/');
+        };
       } },
     onEndExit: { default: function _default() {
-        return function () {};
+        return function () {
+          if (this.$router) this.$router.push('/');
+        };
       } },
     skip: { default: false },
-    backBySlide: { default: false }
+    backBySlide: { default: false },
+    repeat: { default: false },
+    zoom: { default: true }
   },
   data: function data() {
     return {
@@ -34,18 +45,12 @@ var Slideshow = {
       slideshowTimer: 0,
       slideTimer: 0,
       slides: [],
-      active: true
+      active: true,
+      childWindow: null,
+      parentWindow: null
     };
   },
   computed: {
-    fullPageStyle: function fullPageStyle() {
-      var size = 0.04 * Math.min(this.fullPageWidth, this.fullPageHeight);
-      return { fontSize: size + 'px' };
-    },
-    embeddedStyle: function embeddedStyle() {
-      var size = 0.04 * Math.min(this.parentWidth, this.parentHeight);
-      return { fontSize: size + 'px' };
-    },
     computedActive: function computedActive() {
       return this.slides.some(function (slide) {
         return slide.active;
@@ -65,6 +70,10 @@ var Slideshow = {
       this.currentSlide = this.slides[this.currentSlideIndex - 1];
       this.currentSlide.step = this.startStep;
 
+      if (this.zoom && !this.embedded) {
+        this.handleZoom();
+      }
+
       if (this.keyboardNavigation) {
         window.addEventListener('keydown', this.keydown);
       }
@@ -78,6 +87,11 @@ var Slideshow = {
       }
       if (this.embedded) {
         this.$el.className += ' embedded-slideshow';
+      }
+      if (window.opener && window.opener.location.href === window.location.href) {
+        this.parentWindow = window.opener;
+        this.postMessage('{"method": "getCurrentSlide"}');
+        window.addEventListener('message', this._message);
       }
     }
     window.addEventListener('resize', this.handleResize);
@@ -102,10 +116,11 @@ var Slideshow = {
     window.removeEventListener('click', this.click);
     window.removeEventListener('touchstart', this.click);
     window.removeEventListener('wheel', this.wheel);
+    this.handleZoom(true);
     clearInterval(this.timerUpdater);
   },
   methods: {
-    nextStep: function nextStep() {
+    nextStep: function nextStep(fromMessage) {
       this.slides.forEach(function (slide) {
         slide.direction = 'next';
       });
@@ -118,8 +133,11 @@ var Slideshow = {
           self.step++;
         }
       });
+      if (!fromMessage) {
+        this.postMessage('{"method": "nextStep"}');
+      }
     },
-    previousStep: function previousStep() {
+    previousStep: function previousStep(fromMessage) {
       this.slides.forEach(function (slide) {
         slide.direction = 'prev';
       });
@@ -132,6 +150,9 @@ var Slideshow = {
           self.step--;
         }
       });
+      if (!fromMessage) {
+        this.postMessage('{"method": "previousStep"}');
+      }
     },
     nextSlide: function nextSlide() {
       var nextSlideIndex = this.currentSlideIndex + 1;
@@ -140,6 +161,8 @@ var Slideshow = {
       }
       if (nextSlideIndex < this.slides.length + 1) {
         this.currentSlideIndex = nextSlideIndex;
+      } else if (this.repeat) {
+        this.currentSlideIndex = 1;
       } else if (!this.embedded) {
         this.onEndExit();
       }
@@ -155,21 +178,72 @@ var Slideshow = {
         this.onStartExit();
       }
     },
-    handleResize: throttle(function (event) {
-      var width = 0;
-      var height = 0;
-      if (this.embedded) {
-        width = this.$el.parentElement.clientWidth;
-        height = this.$el.parentElement.clientHeight;
-      } else {
-        width = document.documentElement.clientWidth;
-        height = document.documentElement.clientHeight;
+    handleResize: function handleResize() {
+      var self = this;
+      throttle(function () {
+        var width = 0;
+        var height = 0;
+        if (self.embedded) {
+          width = self.$el.parentElement.clientWidth;
+          height = self.$el.parentElement.clientHeight;
+        } else {
+          width = document.documentElement.clientWidth;
+          height = document.documentElement.clientHeight;
+        }
+        self.$el.style.fontSize = 0.04 * Math.min(height, width) + 'px';
+      }, 16)();
+    },
+    handleZoom: function handleZoom(remove) {
+      if (remove) {
+        window.removeEventListener('resize', updateCoords);
+        window.removeEventListener('mousedown', magnify);
+        return;
       }
-      this.$el.style.fontSize = 0.04 * Math.min(height, width) + 'px';
-    }, 16),
+
+      var SCALE = 2;
+      var height = document.documentElement.clientHeight;
+      var width = document.documentElement.clientWidth;
+      var center = {
+        x: width / 2,
+        y: height / 2
+      };
+      var boundary = {
+        x: center.x / SCALE,
+        y: center.y / SCALE
+      };
+
+      window.addEventListener('resize', updateCoords);
+      window.addEventListener('mousedown', magnify);
+
+      function updateCoords() {
+        height = document.documentElement.clientHeight;
+        width = document.documentElement.clientWidth;
+        center.x = width / 2;
+        center.y = height / 2;
+        boundary.x = center.x / SCALE;
+        boundary.y = center.y / SCALE;
+      }
+
+      function magnify(event) {
+        if (!event.altKey) return;
+        if (document.body.style.transform) {
+          document.body.style.transform = '';
+          document.body.style.overflow = 'auto';
+        } else {
+          document.body.style.height = height + 'px';
+          document.body.style.overflow = 'hidden';
+          document.body.style.transition = '0.5s';
+          var translateX = center.x - event.clientX;
+          var translateY = center.y - event.clientY;
+          translateX = translateX < boundary.x ? translateX > -boundary.x ? translateX : -boundary.x : boundary.x;
+          translateY = translateY < boundary.y ? translateY > -boundary.y ? translateY : -boundary.y : boundary.y;
+          document.body.style.transform = 'scale(' + SCALE + ') translate(' + translateX + 'px, ' + translateY + 'px)';
+        }
+      }
+    },
     click: function click(evt) {
-      if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
-        var clientX = evt.clientX || evt.touches[0].clientX;
+      if (this.mouseNavigation && this.currentSlide.mouseNavigation && !evt.altKey) {
+        var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX;
         if (clientX < 0.25 * document.documentElement.clientWidth) {
           evt.preventDefault();
           this.previousStep();
@@ -197,16 +271,43 @@ var Slideshow = {
         } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep();
           evt.preventDefault();
+        } else if (evt.key === 'p' && !this.parentWindow) {
+          this.togglePresenterMode();
           evt.preventDefault();
         }
       }
     },
-    afterMounted: function afterMounted(evt) {
-      return;
+    _message: function _message(evt) {
+      var _this = this;
+
+      if (evt.origin !== window.location.origin) {
+        return void 0;
+      }
+      try {
+        var data = JSON.parse(evt.data);
+        switch (data.method) {
+          case 'nextStep':
+          case 'previousStep':
+            this[data.method](true);
+            break;
+          case 'getCurrentSlide':
+            this.postMessage('{\n              "method": "setCurrentSlide", \n              "slideIndex": ' + this.currentSlideIndex + ',\n              "step": ' + this.step + '\n              }');
+            break;
+          case 'setCurrentSlide':
+            this.currentSlideIndex = data.slideIndex;
+            this.$nextTick(function () {
+              _this.step = data.step;
+            });
+            break;
+          default:
+        }
+      } catch (e) {}
     },
+    afterMounted: function afterMounted() {},
     findSlides: function findSlides() {
       var self = this;
       var i = 0;
+      self.slides = [];
       this.$children.forEach(function (el) {
         if (el.isSlide) {
           i++;
@@ -224,12 +325,32 @@ var Slideshow = {
           });
         }
       });
+      self.currentSlideIndex = 1;
+      self.currentSlide = self.slides[0];
+      self.step = self.startStep;
     },
     updateSlideshowVisibility: function updateSlideshowVisibility(val) {
       if (val) {
         this.$el.style.visibility = 'visible';
       } else {
         this.$el.style.visibility = 'hidden';
+      }
+    },
+    postMessage: function postMessage(message) {
+      if (this.childWindow) {
+        this.childWindow.postMessage(message, window.location.origin);
+      }
+      if (this.parentWindow) {
+        this.parentWindow.postMessage(message, window.location.origin);
+      }
+    },
+    togglePresenterMode: function togglePresenterMode() {
+      if (this.childWindow) {
+        this.childWindow.close();
+        this.childWindow = null;
+      } else {
+        this.childWindow = window.open(window.location.href, 'eagle-presenter');
+        window.addEventListener('message', this._message);
       }
     }
   },
@@ -272,6 +393,7 @@ var Slideshow = {
 var Slide = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enterTransition, "leave": _vm.leaveTransition } }, [_vm.active ? _c('div', { staticClass: "eg-slide" }, [_c('div', { staticClass: "eg-slide-content" }, [_vm._t("default")], 2)]) : _vm._e()]);
   }, staticRenderFns: [],
+  name: 'slide',
   props: {
     skip: { default: false },
     enter: { default: null },
@@ -311,7 +433,6 @@ var Slide = { render: function render() {
       return this.transitions[this.direction].leave;
     }
   },
-  mounted: function mounted() {},
   methods: {
     nextStep: function nextStep() {
       if (this.step === this.steps) {
@@ -348,15 +469,18 @@ var Slide = { render: function render() {
 
 var Modal = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-modal" }, [_c('div', { staticClass: "content" }, [_vm._t("default")], 2)]);
-  }, staticRenderFns: []
+  }, staticRenderFns: [],
+  name: 'eg-modal'
 };
 
 function randId() {
   return Math.random().toString(36).substr(2, 10);
 }
+
 var CodeBlock = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-code-block container" }, [_c('div', { staticClass: "box hljs code-box", attrs: { "id": _vm.id } }, [_c('pre', [_c('code', { class: _vm.lang ? _vm.lang : '', attrs: { "id": _vm.id3 } })])]), _c('div', { staticClass: "box comments-box" }, [_c('pre', [_c('code', { attrs: { "id": _vm.id2 } }, [_vm._t("default")], 2)])])]);
   }, staticRenderFns: [], _scopeId: 'data-v-29468740',
+  name: 'eg-code-block',
   props: {
     id: { default: function _default() {
         return randId();
@@ -372,15 +496,17 @@ var CodeBlock = { render: function render() {
   mounted: function mounted() {
     this.update();
   },
+  updated: function updated() {
+    this.update();
+  },
   methods: {
     update: function update() {
       var codeBlock = document.getElementById(this.id);
       var commentsContent = document.getElementById(this.id2);
       var codeContent = document.getElementById(this.id3);
       codeContent.innerHTML = commentsContent.innerHTML;
-      console.log(this.id);
-      if (this.lang) {
-        hljs.highlightBlock(codeBlock);
+      if (this.lang && Options.hljs) {
+        Options.hljs.highlightBlock(codeBlock);
       }
     }
   }
@@ -389,6 +515,7 @@ var CodeBlock = { render: function render() {
 var CodeComment = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-code-comment" }, [_vm.arrow ? _c('span', [_vm._v("←")]) : _vm._e(), _vm._t("default")], 2) : _vm._e()]);
   }, staticRenderFns: [],
+  name: 'eg-code-comment',
   props: {
     enter: { default: null },
     leave: { default: null },
@@ -400,6 +527,7 @@ var CodeComment = { render: function render() {
 var Toggle = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-switch" }, [_c('div', { staticClass: "switch", style: { 'font-size': _vm.fontsize }, on: { "click": _vm.toggle } }, [_c('input', { attrs: { "type": "checkbox" }, domProps: { "checked": _vm.checked } }), _c('div', { staticClass: "slider", class: { checked: _vm.checked } }), _c('div', { staticClass: "sliderdot", class: { checked: _vm.checked } })]), _c('span', { class: { unchecked: !_vm.checked } }, [_vm._t("default")], 2)]);
   }, staticRenderFns: [], _scopeId: 'data-v-14b66238',
+  name: 'eg-toggle',
   props: {
     value: { default: true },
     fontsize: { default: '0.8em' }
@@ -411,7 +539,6 @@ var Toggle = { render: function render() {
   },
   methods: {
     toggle: function toggle() {
-      console.log(this.checked);
       this.checked = !this.checked;
     }
   },
@@ -422,9 +549,10 @@ var Toggle = { render: function render() {
   }
 };
 
-var AnimatedTransition = { render: function render() {
+var Transition = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('transition', { attrs: { "enter-active-class": _vm.enter ? 'animated ' + _vm.enter : '', "leave-active-class": _vm.leave ? 'animated ' + _vm.leave : '' } }, [_vm._t("default")], 2);
   }, staticRenderFns: [],
+  name: 'eg-transition',
   props: {
     enter: { default: null },
     leave: { default: null }
@@ -434,6 +562,7 @@ var AnimatedTransition = { render: function render() {
 var RadioButton = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-radio" }, [_c('div', { staticClass: "radiobutton", style: { 'font-size': _vm.fontsize }, on: { "click": _vm.select } }, [_c('div', { staticClass: "radio" }), _c('div', { staticClass: "radiodot", class: { checked: _vm.value === _vm.label } })]), _vm._t("default")], 2);
   }, staticRenderFns: [], _scopeId: 'data-v-872b59a6',
+  name: 'eg-radio-button',
   props: {
     value: { default: null },
     label: { default: null },
@@ -442,7 +571,6 @@ var RadioButton = { render: function render() {
   methods: {
     select: function select() {
       this.$emit('input', this.label);
-      console.log(this.label, this.value, this.value === this.label);
     }
   }
 };
@@ -450,6 +578,7 @@ var RadioButton = { render: function render() {
 var ImageSlide = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-slide image-slide", style: _vm.style }) : _vm._e()]);
   }, staticRenderFns: [],
+  name: 'eg-image-slide',
   mixins: [Slide],
   props: {
     url: { default: 'https://i.imgur.com/P7iyH.png' },
@@ -470,6 +599,7 @@ var ImageSlide = { render: function render() {
 var TriggeredMessage = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-triggered-message", style: _vm.style }, [_vm._t("default")], 2) : _vm._e()]);
   }, staticRenderFns: [],
+  name: 'eg-triggered-message',
   props: {
     enter: { default: 'slideInLeft' },
     leave: { default: 'slideOutLeft' },
@@ -505,22 +635,73 @@ var TriggeredMessage = { render: function render() {
   }
 };
 
+var Timer = { render: function render() {
+    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": "fadeIn", "leave": "fadeOut" } }, [_vm.display ? _c('div', { staticClass: "timer" }) : _vm._e(), _vm._v(_vm._s(_vm.text))]);
+  }, staticRenderFns: [], _scopeId: 'data-v-ff6db536',
+  name: 'eg-timer',
+  props: {
+    key: { default: 'T' }
+  },
+  data: function data() {
+    return {
+      text: '',
+      active: false
+    };
+  },
+  mounted: function mounted() {
+    this.updateText();
+    window.addEventListener('keydown', this.keydown);
+    setInterval(this.updateText, 1000);
+  },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener('keydown', this.keydown);
+  },
+  methods: {
+    toggle: function toggle() {
+      this.display = !this.display;
+    },
+    keydown: function keydown(evt) {
+      if (evt.key === this.key) {
+        this.active = !this.active;
+      }
+    },
+    updateText: function updateText() {
+      var time = this.$parent.timer / 60 + ':' + this.$parent.timer % 60;
+      var slide = this.$parent.currentSlideIndex + '/' + this.$parent.slides.length;
+      return slide + ' - ' + time;
+    }
+  }
+};
+
+var Options = {};
+
 var main = {
   slideshow: Slideshow,
   slide: Slide,
   install: function install(Vue) {
-    Vue.component('slideshow', Slideshow);
     Vue.component('slide', Slide);
-    Vue.component('image-slide', ImageSlide);
-
+    Vue.component('eg-image-slide', ImageSlide);
     Vue.component('eg-modal', Modal);
-    Vue.component('eg-transition', AnimatedTransition);
+    Vue.component('eg-transition', Transition);
     Vue.component('eg-code-block', CodeBlock);
     Vue.component('eg-code-comment', CodeComment);
     Vue.component('eg-toggle', Toggle);
-    Vue.component('eg-radio', RadioButton);
+    Vue.component('eg-radio-button', RadioButton);
+    Vue.component('eg-timer', Timer);
     Vue.component('eg-triggered-message', TriggeredMessage);
   }
 };
 
-export default main;
+exports.Slideshow = Slideshow;
+exports.Slide = Slide;
+exports.Modal = Modal;
+exports.CodeBlock = CodeBlock;
+exports.CodeComment = CodeComment;
+exports.Toggle = Toggle;
+exports.Transition = Transition;
+exports.RadioButton = RadioButton;
+exports.ImageSlide = ImageSlide;
+exports.TriggeredMessage = TriggeredMessage;
+exports.Timer = Timer;
+exports.Options = Options;
+exports.default = main;

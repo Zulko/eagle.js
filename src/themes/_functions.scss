@@ -1,3 +1,9 @@
+$sass-env: production !default;
+
 @function assetUrl($path) {
-  @return url("~eagle.js/dist/themes/assets/" + $path);
+  @if ($sass-env == "development") {
+    @return url("../assets/"+$path);
+  }
+
+  @return url("~eagle.js/dist/themes/assets/"+$path);
 }

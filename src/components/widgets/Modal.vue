@@ -4,6 +4,12 @@
     slot
 </template>
 
+<script>
+export default {
+  name: 'eg-modal'
+}
+</script>
+
 <style>
 .eg-modal {
   position: absolute;

@@ -5,8 +5,9 @@ eg-transition(:enter='enter', :leave='leave')
 </template>
 
 <script>
-import Slide from './Slide.vue'
+import Slide from '../Slide.vue'
 export default {
+  name: 'eg-image-slide',
   mixins: [Slide],
   props: {
     url: {default: 'https://i.imgur.com/P7iyH.png'},

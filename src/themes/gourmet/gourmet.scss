@@ -10,18 +10,24 @@
       margin-bottom: -0.1em;
     }
   }
-  .eg-slide-content, .subslide {
+  .eg-slide-content,
+  .subslide {
     width: 25em;
     max-width: 80%;
     margin: 0 auto;
   }
 
-  h1, h2, h3, h4 {
-    font-family: 'Bad Script', cursive;
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: "Bad Script", cursive;
     font-weight: normal;
   }
-  p, li, .button {
-    font-family: 'Architects Daughter', cursive;
+  p,
+  li,
+  .button {
+    font-family: "Architects Daughter", cursive;
     font-weight: normal;
     font-size: 0.7em;
     line-height: 2em;
@@ -30,22 +36,25 @@
     text-decoration: underline;
     font-style: normal;
   }
-  @import './tomorrow';
+  @import "./tomorrow";
   .code-box {
-    box-shadow: 0 0 0.25em 0.25em #ddd
+    box-shadow: 0 0 0.25em 0.25em #ddd;
   }
   .eg-code-comment {
     font-weight: bold;
-    color: #dd4321
+    color: #dd4321;
   }
   .eg-modal {
-    background-color: rgba(0,0,0,0.9);
+    background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    h1, h2, h3, h4 {
+    h1,
+    h2,
+    h3,
+    h4 {
       font-weight: bold;
     }
     img {
-      box-shadow: 0 0 4px 4px #888
+      box-shadow: 0 0 4px 4px #888;
     }
   }
   .button {
@@ -69,7 +78,7 @@
       background-color: #ffb014;
     }
     .unchecked {
-      color: #bbbbbb
+      color: #bbbbbb;
     }
   }
   .eg-radio {
@@ -87,13 +96,13 @@
   }
 
   .shadowbox {
-    box-shadow: 0 0 4px 4px #bbb
+    box-shadow: 0 0 4px 4px #bbb;
   }
   .embedded-slideshow .eg-slideshow {
-    box-shadow: 0 0 4px 4px #bbb
+    box-shadow: 0 0 4px 4px #bbb;
   }
   .half {
-    width: 50%
+    width: 50%;
   }
 }
 

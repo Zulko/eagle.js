@@ -3,9 +3,13 @@
 </p>
 <h1 align="center">Eagle.js - A slideshow framework for hackers</h1>
 
+[![npm version](https://badge.fury.io/js/eagle.js.svg)](https://badge.fury.io/js/eagle.js)
+[![Build Status](https://travis-ci.org/Zulko/eagle.js.svg?branch=master)](https://travis-ci.org/Zulko/eagle.js)
+
 - Slideshow system built on top of the [Vue.js](https://vuejs.org/)
 - Supports animations, themes, interactive widgets (for web demos)
 - Easy to reuse components, slides and styles across presentations
+- Built-in Presenter Mode (Speaker Notes) and various helpful widgets
 - All APIs public, maximum hackability 
 
 ### For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):
@@ -16,7 +20,7 @@
 Most of all, eagle.js aims at offering a simple and very hackable API so you
 can get off the beaten tracks and craft the slideshows you really want.
 
-Here is what the eagle.js syntax looks like (using [Pug](https://pugjs.org/api/getting-started.html)):
+Here is what the eagle.js syntax looks like (Example here are using [Pug](https://pugjs.org/api/getting-started.html), but you can still use plain HTML):
 ```pug
 .eg-slideshow
     slide
@@ -72,6 +76,7 @@ yarn add eagle.js
 ## Usage
 
 Eagle.js is a vue plugin. You need to `use` eagle.js in your vue app's main file:
+*New in 0.3.0*: `animate.css` is now a peer dependency. User need install their own version.
 
 ```javascript
 import Eagle from 'eagle.js'
@@ -83,11 +88,22 @@ import 'animate.css'
 Vue.use(Eagle)
 ```
 
+Using eagle.js's default export would register both core components and all the widgets. Alternatively you can choose only to use core components:
+
+```javascript
+import { Slide, Transition } from 'eagle.js'
+
+Vue.component(Slide.name, Slide)
+Vue.component(Transition.name, Transition)
+```
+
+Then you can selectively use widgets, as you like. See more on [widgets section](https://github.com/Zulko/eagle.js#widgets)
+
 ### Basic idea
 
 Eagle.js's basic components are `slideshow` and `slide`. You use `slideshow` as mixin to write `slideshow` component, which could include multiple `slide`s. A very basic Single File Component for `slideshow` would look like this:
 
-``` vue
+```vue
 <template lang="pug">
     slide(:steps="4")
       p(v-if="step >= 1")
@@ -101,9 +117,9 @@ Eagle.js's basic components are `slideshow` and `slide`. You use `slideshow` as 
 </template>
 
 <script>
-import eagle from 'eagle.js'
+import { Slideshow } from 'eagle.js'
 export default {
-  mixins: [eagle.slideshow]
+  mixins: [Slideshow]
 }
 </script>
 ```
@@ -125,11 +141,14 @@ You can configure your authored `slideshow` component with these properties:
 | `startStep`          | `1`             |                                                           | 
 | `mouseNavigation`    | `true`          | Navigate with mouse click or scroll event                 |
 | `keyboardNavigation` | `true`          | Navigate with keyboard                                    |
+| `presenterModeKey`   | `'p'`           | set the key that activates presenter mode                 |
 | `embedded`           | `false`         |                                                           |
 | `inserted`           | `false`         |                                                           |
 | `onStartExit`        | `null`          | event callback for exiting slideshow through first slide  |
 | `onEndExit`          | `null`          | event callback for exiting slideshow through last slide   |
 | `backBySlide`        | `false`         | slideshow navigates back by step by default               |
+| `repeat`             | `false`         | go to first slide automatically when reaching the last one|
+| `zoom`               | `true`          | alt + click can zoom on slide                             |
 
 More explaination on `backBySlide`:
 
@@ -181,17 +200,54 @@ You can configure `slide` with these properties:
 
 Under the hood, `eg-transition` is just vue's `transition` that supports  [animate.css](https://daneden.github.io/animate.css/): you can use animate.css's class name for `enter` and `leave` property and it just works. All eagle.js's transition effects, including `slide`,  happen with this component, and you can use it just like using vue's `transition`.
 
-### Other components
+### Speaker's Notes (Presenter Mode)
+
+Eagle.js has built-in presenter mode support. By default pressing "P" would toggle presenter mode: you have two windows that share control with each other. Enabling presenter mode gives user two addition `data` for `slideshow`: `parentWindow` and `childWindow`. For example:
+
+```pug
+.eg-slideshow
+  slide
+    p Eagle.is is awesome!
+    p(v-if="parentWindow") I can be a note!
+    p(v-if="childWindow") I can be a note too!
+```
+
+It might be counter-intuitive that `(v-if="parentWindow")` is actually child window. It's because it means this window has a parent window, thus making itself a child window. But it is really just user's preference to put notes in either window, as two windows are almost functionally identical, except only parent window could close persenter mode.
+
+### Widgets
 
 Eagle.js ships several useful widgets that can be used in your `slide`:
 1. `eg-modal`
 2. `eg-code-block` (code highlighted by [highlight.js](https://highlightjs.org/))
 3. `eg-code-comment`
 4. `eg-toggle`
-5. `eg-radio`
+5. `eg-radio-button`
 6. `eg-triggered-message`
 
-See their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
+You can use widgets as you like:
+
+```javascript
+import { Modal, CodeBlock } from 'eagle.js'
+
+Vue.component(Modal.name, Modal)
+Vue.component(CodeBlock.name, CodeBlock)
+```
+Widgets' name follows the same rule: uppercase for importing, `eg` prefixed lowercase connected with dash in HTML.
+See more of their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
+
+*New in 0.3.0*: `highlight.js` is not a dependency anymore, so if you need to use `eg-code-block`, you need to install your own version of `highlight.js`, then specifiy it in your `main.js`:
+
+```javascript
+// import your own highlight.js(only for javascript) 
+import hljs from 'highlight.js/lib/highlight';
+import javascript from 'highlight.js/lib/languages/javascript';
+hljs.registerLanguage('javascript', javascript);
+// then pass it to eagle
+import { Options } from 'eagle.js'
+Options.hljs = hljs
+```
+
+This way drastically decrease eagle.js's package size and user could manage their own `highlight.js` version.
 
 ## Themes
 
@@ -297,6 +353,17 @@ Below are a few ideas that deserve more attention in the future:
 - PDF export?
 - Themes
 - Better docs? (What do JavaScript people use to write docs?)
+
+### Development
+
+Eagle.js uses storybook for development:
+
+```bash
+$ git clone https://github.com/Zulko/eagle.js.git
+$ npm install
+$ npm run storybook
+```
+
 
 ## Maintainers
 1. [Zulko](https://github.com/Zulko)(owner)

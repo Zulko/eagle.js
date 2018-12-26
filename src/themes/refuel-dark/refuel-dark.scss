@@ -1,25 +1,27 @@
 @import url(https://fonts.googleapis.com/css?family=Comfortaa);
-@import "functions";
-// @import "/../node_modules/highlight.js/styles/solarized-dark.css";
-// @import "../assets/themes/base-theme.scss";
+@import "../functions";
+
 .reveal {
   color: #aababa;
 }
 
-h1, h2, h3, h4, p, li {
-  font-family: 'Comfortaa', cursive;
+h1,
+h2,
+h3,
+h4,
+p,
+li {
+  font-family: "Comfortaa", cursive;
 }
 
 img {
-border: none !important ;
-box-shadow: none !important ;
+  border: none !important ;
+  box-shadow: none !important ;
 }
 
 p {
-text-align: left
+  text-align: left;
 }
-
-
 
 .rf-slideshow {
   background-image: assetUrl("subtle_symphony.png");
@@ -28,28 +30,36 @@ text-align: left
     max-width: 80%;
     margin: 0 auto;
   }
-  h1, h2, h3, h4, p, li, .button {
-    font-family: 'Pompiere', cursive;
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  .button {
+    font-family: "Pompiere", cursive;
     font-weight: normal;
   }
   h3 em {
     text-decoration: underline;
     font-style: normal;
   }
-  @import 'agrume/solarized-light';
+  @import "../agrume/solarized-light";
   .rf-code-comment {
-    // font-family: 'Raleway', Courier;
     font-weight: bold;
-    color: #dd4321
+    color: #dd4321;
   }
   .rf-modal {
-    background-color: rgba(0,0,0,0.9);
+    background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    h1, h2, h3, h4 {
+    h1,
+    h2,
+    h3,
+    h4 {
       font-weight: bold;
     }
     img {
-      box-shadow: 0 0 4px 4px #888
+      box-shadow: 0 0 4px 4px #888;
     }
   }
   .button {
@@ -73,7 +83,7 @@ text-align: left
       background-color: #ffb014;
     }
     .unchecked {
-      color: #bbbbbb
+      color: #bbbbbb;
     }
   }
   .rf-radio {
@@ -91,10 +101,8 @@ text-align: left
   }
 
   .shadowbox {
-    box-shadow: 0 0 4px 4px #bbb
+    box-shadow: 0 0 4px 4px #bbb;
   }
-
-
 }
 
-@import "base";
+@import "../base";

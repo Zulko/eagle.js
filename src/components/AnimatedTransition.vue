@@ -5,6 +5,7 @@ transition(:enter-active-class="enter ? 'animated ' + enter : ''",
 </template>
 <script>
 export default {
+  name: 'eg-transition',
   props: {
     enter: {default: null},
     leave: {default: null}

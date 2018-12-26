@@ -10,11 +10,9 @@
 
 <script>
 import slideshow from '@/components/Slideshow'
-import slide from '@/components/Slide'
 
 export default {
-  mixins: [ slideshow ],
-  components: { slide }
+  mixins: [ slideshow ]
 }
 </script>
   
