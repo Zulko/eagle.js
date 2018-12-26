@@ -154,6 +154,7 @@ export default {
       }
     },
     previousSlide: function () {
+      var self = this
       var previousSlideIndex = self.currentSlideIndex - 1
       while ((previousSlideIndex >= 1) &&
              (self.slides[previousSlideIndex - 1].skip ||
