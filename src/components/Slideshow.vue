@@ -136,17 +136,16 @@ export default {
       }
     },
     previousSlide: function () {
-      var self = this
-      var previousSlideIndex = self.currentSlideIndex - 1
+      var previousSlideIndex = this.currentSlideIndex - 1
       while ((previousSlideIndex >= 1) &&
-             (self.slides[previousSlideIndex - 1].skip ||
-              (self.slides[previousSlideIndex - 1].$parent.skip))) {
+             (this.slides[previousSlideIndex - 1].skip ||
+              (this.slides[previousSlideIndex - 1].$parent.skip))) {
         previousSlideIndex--
       }
       if (previousSlideIndex >= 1) {
-        self.currentSlideIndex = previousSlideIndex
-      } else if (!self.embedded) {
-        self.onStartExit()
+        this.currentSlideIndex = previousSlideIndex
+      } else if (!this.embedded) {
+        this.onStartExit()
       }
     },
     handleResize: function () {
@@ -237,18 +236,15 @@ export default {
       }
     },
     registerPlugins: function () {
-      if (Options.plugins) {
-        Options.plugins.forEach(plugin => {
-          plugin[0].init(this, plugin[1])
-        })
-      }
+      Options.plugins.forEach(plugin => {
+        plugin[0].init(this, plugin[1])
+      })
+      
     },
     unregisterPlugins: function () {
-      if (Options.plugins) {
-        Options.plugins.forEach(plugin => {
-          plugin[0].destroy(this)
-        })
-      }
+      Options.plugins.forEach(plugin => {
+        plugin[0].destroy(this)
+      })
     }
   },
   watch: {
