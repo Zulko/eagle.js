@@ -6,6 +6,7 @@ eg-transition(:enter='enter', :leave='leave')
 </template>
 <script>
 export default {
+  isWidget: true,
   name: 'eg-code-comment',
   props: {
     enter: {default: null},

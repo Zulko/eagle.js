@@ -17,6 +17,7 @@ function randId () {
 }
 
 export default {
+  isWidget: true,
   name: 'eg-code-block',
   props: {
     id: {default: () => randId()},

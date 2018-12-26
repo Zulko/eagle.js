@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  isWidget: true,
   name: 'eg-toggle',
   props: {
     value: {default: true},

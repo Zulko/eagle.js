@@ -8,6 +8,7 @@
 
 <script>
 export default {
+  isWidget: true,
   name: 'eg-radio-button',
   props: {
     value: {default: null},
