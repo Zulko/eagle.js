@@ -1,5 +1,5 @@
 /*
- * eagle.js v0.4.1
+ * eagle.js v0.4.3
  *
  * @license
  * Copyright 2017-2018, Zulko
@@ -16,6 +16,7 @@ var Slideshow = {
     inserted: { default: false },
     keyboardNavigation: { default: true },
     mouseNavigation: { default: true },
+    presenterModeKey: { default: 'p' },
     onStartExit: { default: function _default() {
         return function () {
           if (this.$router) this.$router.push('/');
@@ -114,11 +115,14 @@ var Slideshow = {
     clearInterval(this.timerUpdater);
   },
   methods: {
-    nextStep: function nextStep(fromMessage) {
+    changeDirection: function changeDirection(direction) {
       this.slides.forEach(function (slide) {
-        slide.direction = 'next';
+        slide.direction = direction;
       });
-      this.$root.direction = 'next';
+      this.$root.direction = direction;
+    },
+    nextStep: function nextStep(fromMessage) {
+      this.changeDirection('next');
       var self = this;
       this.$nextTick(function () {
         if (self.step >= self.currentSlide.steps) {
@@ -132,10 +136,7 @@ var Slideshow = {
       }
     },
     previousStep: function previousStep(fromMessage) {
-      this.slides.forEach(function (slide) {
-        slide.direction = 'prev';
-      });
-      this.$root.direction = 'prev';
+      this.changeDirection('prev');
       var self = this;
       this.$nextTick(function () {
         if (self.step <= 1) {
@@ -162,14 +163,15 @@ var Slideshow = {
       }
     },
     previousSlide: function previousSlide() {
-      var previousSlideIndex = this.currentSlideIndex - 1;
-      while (previousSlideIndex >= 1 && (this.slides[previousSlideIndex - 1].skip || this.slides[previousSlideIndex - 1].$parent.skip)) {
+      var self = this;
+      var previousSlideIndex = self.currentSlideIndex - 1;
+      while (previousSlideIndex >= 1 && (self.slides[previousSlideIndex - 1].skip || self.slides[previousSlideIndex - 1].$parent.skip)) {
         previousSlideIndex--;
       }
       if (previousSlideIndex >= 1) {
-        this.currentSlideIndex = previousSlideIndex;
-      } else if (!this.embedded) {
-        this.onStartExit();
+        self.currentSlideIndex = previousSlideIndex;
+      } else if (!self.embedded) {
+        self.onStartExit();
       }
     },
     handleResize: function handleResize() {
@@ -265,7 +267,7 @@ var Slideshow = {
         } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep();
           evt.preventDefault();
-        } else if (evt.key === 'p' && !this.parentWindow) {
+        } else if (evt.key === this.presenterModeKey && !this.parentWindow) {
           this.togglePresenterMode();
           evt.preventDefault();
         }
@@ -320,7 +322,7 @@ var Slideshow = {
         }
       });
       self.currentSlideIndex = 1;
-      self.currentSlide = self.slides[0];
+      self.currentSlide = self.currentSlide === null ? null : self.slides[0];
       self.step = self.startStep;
     },
     updateSlideshowVisibility: function updateSlideshowVisibility(val) {
