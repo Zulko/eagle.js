@@ -294,7 +294,7 @@ export default {
     afterMounted: function () {
       // useful in some instances
     },
-    findSlides: function () {
+    findSlides: function ({resetIndex = true} = {}) {
       var self = this
       var i = 0
       self.slides = []
@@ -316,9 +316,11 @@ export default {
           })
         }
       })
-      self.currentSlideIndex = 1
-      self.currentSlide = self.currentSlide === null ? null : self.slides[0]
-      self.step = self.startStep
+      if (resetIndex) {
+        self.currentSlideIndex = 1
+        self.currentSlide = self.currentSlide === null ? null : self.slides[0]
+        self.step = self.startStep
+      }
     },
     updateSlideshowVisibility: function (val) {
       if (val) {
