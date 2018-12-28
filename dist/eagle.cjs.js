@@ -1,5 +1,5 @@
 /*
- * eagle.js v0.4.3
+ * eagle.js v0.4.4
  *
  * @license
  * Copyright 2017-2018, Zulko
@@ -307,6 +307,10 @@ var Slideshow = {
     },
     afterMounted: function afterMounted() {},
     findSlides: function findSlides() {
+      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref$resetIndex = _ref.resetIndex,
+          resetIndex = _ref$resetIndex === undefined ? true : _ref$resetIndex;
+
       var self = this;
       var i = 0;
       self.slides = [];
@@ -327,9 +331,11 @@ var Slideshow = {
           });
         }
       });
-      self.currentSlideIndex = 1;
-      self.currentSlide = self.currentSlide === null ? null : self.slides[0];
-      self.step = self.startStep;
+      if (resetIndex) {
+        self.currentSlideIndex = 1;
+        self.currentSlide = self.currentSlide === null ? null : self.slides[0];
+        self.step = self.startStep;
+      }
     },
     updateSlideshowVisibility: function updateSlideshowVisibility(val) {
       if (val) {
