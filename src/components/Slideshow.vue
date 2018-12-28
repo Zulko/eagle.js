@@ -294,7 +294,7 @@ export default {
     afterMounted: function () {
       // useful in some instances
     },
-    findSlides: function ({resetIndex = true}) {
+    findSlides: function ({resetIndex = true} = {}) {
       var self = this
       var i = 0
       self.slides = []
