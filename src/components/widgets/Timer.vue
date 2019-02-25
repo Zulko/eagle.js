@@ -7,6 +7,7 @@ eg-transition(enter='fadeIn' leave='fadeOut')
 
 <script>
 export default {
+  isWidget: true,
   name: 'eg-timer',
   props: {
     key: {default: 'T'}

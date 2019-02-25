@@ -6,7 +6,7 @@ var banner = `/*
  * eagle.js v${pkg.version}
  *
  * @license
- * Copyright 2017-2018, Zulko
+ * Copyright 2017-2019, Zulko
  * Released under the ISC License
  */`
 

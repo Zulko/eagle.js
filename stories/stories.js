@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import Eagle, { Slideshow } from '../src/main.js'
+import Eagle, { Slideshow, Zoom, Presenter } from '../src/main.js'
 
 import '../src/themes/agrume/agrume.scss' 
 import '../src/themes/gourmet/gourmet.scss' 
 import 'animate.css'
 
 Vue.use(Eagle)
+Eagle.use(Zoom)
+Eagle.use(Presenter)
 
 const render = (slides, useTheme=true, theme='agrume') => {
   const template = (useTheme ? `<div class='eg-theme-${theme}'>` : '') +

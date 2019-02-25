@@ -7,6 +7,7 @@ eg-transition(:enter='enter', :leave='leave')
 <script>
 import Slide from '../Slide.vue'
 export default {
+  isWidget: true,
   name: 'eg-image-slide',
   mixins: [Slide],
   props: {

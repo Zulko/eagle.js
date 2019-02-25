@@ -30,7 +30,6 @@ describe('Slideshow properties', () => {
     expect(wrapper.props().skip).toBe(false)
     expect(wrapper.props().backBySlide).toBe(false)
     expect(wrapper.props().repeat).toBe(false)
-    expect(wrapper.props().zoom).toBe(true)
   })
 
   it('user set props matches', () => {
@@ -47,7 +46,6 @@ describe('Slideshow properties', () => {
         skip: true,
         backBySlide: true,
         repeat: true,
-        zoom: false
       }
     })
     expect(wrapper.props().firstSlide).toBe(2)
@@ -60,7 +58,6 @@ describe('Slideshow properties', () => {
     expect(wrapper.props().skip).toBe(true)
     expect(wrapper.props().backBySlide).toBe(true)
     expect(wrapper.props().repeat).toBe(true)
-    expect(wrapper.props().zoom).toBe(false)
   })
 
   it('props work in slideshow initialization', () => {
@@ -115,7 +112,7 @@ describe('Slideshow lifecycle hooks', () => {
     expect(window.addEventListener.mock.calls[3][0]).toEqual('resize')
   })
 
-  it('should register additional events for zoom', () => {
+  xit('should register additional events for zoom', () => {
     jest.spyOn(window, 'addEventListener')
     wrapper = mount(Slideshow, {
       attachToDocument: true,

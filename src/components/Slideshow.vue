@@ -1,5 +1,6 @@
 <script>
 import throttle from 'lodash.throttle'
+import { Options } from '../main.js'
 
 export default {
   props: {
@@ -10,13 +11,11 @@ export default {
     inserted: {default: false},
     keyboardNavigation: {default: true},
     mouseNavigation: {default: true},
-    presenterModeKey: {default: 'p'},
     onStartExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
     onEndExit: {default: () => function () { if (this.$router) this.$router.push('/') }},
     skip: {default: false},
     backBySlide: {default: false},
-    repeat: {default: false},
-    zoom: {default: true}
+    repeat: {default: false}
   },
   data: function () {
     return {
@@ -26,9 +25,7 @@ export default {
       slideshowTimer: 0,
       slideTimer: 0,
       slides: [],
-      active: true,
-      childWindow: null,
-      parentWindow: null
+      active: true
     }
   },
   computed: {
@@ -50,28 +47,20 @@ export default {
       this.currentSlide = this.slides[this.currentSlideIndex - 1]
       this.currentSlide.step = this.startStep
 
-      if (this.zoom && !this.embedded) {
-        this.handleZoom()
-      }
       // ADD NAVIGATION EVENTS
       if (this.keyboardNavigation) {
-        window.addEventListener('keydown', this.keydown)
+        window.addEventListener('keydown', this.handleKeydown)
       }
       if (this.mouseNavigation) {
         if ('ontouchstart' in window) {
-          window.addEventListener('touchstart', this.click)
+          window.addEventListener('touchstart', this.hanldeClick)
         } else {
-          window.addEventListener('click', this.click)
-          window.addEventListener('wheel', this.wheel)
+          window.addEventListener('click', this.handleClick)
+          window.addEventListener('wheel', this.handleWheel)
         }
       }
       if (this.embedded) {
         this.$el.className += ' embedded-slideshow'
-      }
-      if (window.opener && window.opener.location.href === window.location.href) {
-        this.parentWindow = window.opener
-        this.postMessage('{"method": "getCurrentSlide"}')
-        window.addEventListener('message', this._message)
       }
     }
     window.addEventListener('resize', this.handleResize)
@@ -91,15 +80,16 @@ export default {
       self.slideshowTimer++
       self.slideTimer++
     }, 1000)
+    this.registerPlugins()
     this.afterMounted()
   },
   beforeDestroy: function () {
-    window.removeEventListener('keydown', this.keydown)
-    window.removeEventListener('click', this.click)
-    window.removeEventListener('touchstart', this.click)
-    window.removeEventListener('wheel', this.wheel)
-    this.handleZoom(true)
+    window.removeEventListener('keydown', this.handleKeydown)
+    window.removeEventListener('click', this.handleClick)
+    window.removeEventListener('touchstart', this.handleClick)
+    window.removeEventListener('wheel', this.handleWheel)
     clearInterval(this.timerUpdater)
+    this.unregisterPlugins()
   },
   methods: {
     changeDirection: function (direction) {
@@ -108,7 +98,7 @@ export default {
       })
       this.$root.direction = direction
     },
-    nextStep: function (fromMessage) {
+    nextStep: function () {
       this.changeDirection('next')
       var self = this
       this.$nextTick(function () {
@@ -118,11 +108,8 @@ export default {
           self.step++
         }
       })
-      if (!fromMessage) {
-        this.postMessage('{"method": "nextStep"}')
-      }
     },
-    previousStep: function (fromMessage) {
+    previousStep: function () {
       this.changeDirection('prev')
       var self = this
       this.$nextTick(function () {
@@ -132,9 +119,6 @@ export default {
           self.step--
         }
       })
-      if (!fromMessage) {
-        this.postMessage('{"method": "previousStep"}')
-      }
     },
     nextSlide: function () {
       var nextSlideIndex = this.currentSlideIndex + 1
@@ -152,17 +136,16 @@ export default {
       }
     },
     previousSlide: function () {
-      var self = this
-      var previousSlideIndex = self.currentSlideIndex - 1
+      var previousSlideIndex = this.currentSlideIndex - 1
       while ((previousSlideIndex >= 1) &&
-             (self.slides[previousSlideIndex - 1].skip ||
-              (self.slides[previousSlideIndex - 1].$parent.skip))) {
+             (this.slides[previousSlideIndex - 1].skip ||
+              (this.slides[previousSlideIndex - 1].$parent.skip))) {
         previousSlideIndex--
       }
       if (previousSlideIndex >= 1) {
-        self.currentSlideIndex = previousSlideIndex
-      } else if (!self.embedded) {
-        self.onStartExit()
+        this.currentSlideIndex = previousSlideIndex
+      } else if (!this.embedded) {
+        this.onStartExit()
       }
     },
     handleResize: function () {
@@ -180,55 +163,7 @@ export default {
         self.$el.style.fontSize = (0.04 * Math.min(height, width)) + 'px'
       }, 16)()
     },
-    handleZoom: function (remove) {
-      if (remove) {
-        window.removeEventListener('resize', updateCoords)
-        window.removeEventListener('mousedown', magnify)
-        return
-      }
-
-      const SCALE = 2
-      let height = document.documentElement.clientHeight
-      let width = document.documentElement.clientWidth
-      const center = {
-        x: width / 2,
-        y: height / 2
-      }
-      const boundary = {
-        x: center.x / SCALE,
-        y: center.y / SCALE
-      }
-
-      window.addEventListener('resize', updateCoords)
-      window.addEventListener('mousedown', magnify)
-
-      function updateCoords () {
-        height = document.documentElement.clientHeight
-        width = document.documentElement.clientWidth
-        center.x = width / 2
-        center.y = height / 2
-        boundary.x = center.x / SCALE
-        boundary.y = center.y / SCALE
-      }
-
-      function magnify (event) {
-        if (!event.altKey) return
-        if (document.body.style.transform) {
-          document.body.style.transform = ''
-          document.body.style.overflow = 'auto'
-        } else {
-          document.body.style.height = height + 'px'
-          document.body.style.overflow = 'hidden'
-          document.body.style.transition = '0.5s'
-          let translateX = center.x - event.clientX
-          let translateY = center.y - event.clientY
-          translateX = translateX < boundary.x ? translateX > -boundary.x ? translateX : -boundary.x : boundary.x
-          translateY = translateY < boundary.y ? translateY > -boundary.y ? translateY : -boundary.y : boundary.y
-          document.body.style.transform = `scale(${SCALE}) translate(${translateX}px, ${translateY}px)`
-        }
-      }
-    },
-    click: function (evt) {
+    handleClick: function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation && !evt.altKey) {
         var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX
         if (clientX < (0.25 * document.documentElement.clientWidth)) {
@@ -240,7 +175,7 @@ export default {
         }
       }
     },
-    wheel: throttle(function (evt) {
+    handleWheel: throttle(function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         evt.preventDefault()
         if ((evt.wheelDeltaY > 0) || (evt.deltaY > 0)) {
@@ -250,7 +185,7 @@ export default {
         }
       }
     }, 1000),
-    keydown: function (evt) {
+    handleKeydown: function (evt) {
       if (this.keyboardNavigation &&
           (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
         if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
@@ -259,37 +194,8 @@ export default {
         } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep()
           evt.preventDefault()
-        } else if (evt.key === this.presenterModeKey && !this.parentWindow) {
-          this.togglePresenterMode()
-          evt.preventDefault()
         }
       }
-    },
-    _message: function (evt) {
-      if (evt.origin !== window.location.origin) {
-        return void 0
-      }
-      try {
-        var data = JSON.parse(evt.data)
-        switch (data.method) {
-          case 'nextStep':
-          case 'previousStep':
-            this[data.method](true)
-            break
-          case 'getCurrentSlide':
-            this.postMessage(`{
-              "method": "setCurrentSlide", 
-              "slideIndex": ${this.currentSlideIndex},
-              "step": ${this.step}
-              }`)
-            break
-          case 'setCurrentSlide':
-            this.currentSlideIndex = data.slideIndex
-            this.$nextTick(() => { this.step = data.step })
-            break
-          default:
-        }
-      } catch (e) {}
     },
     afterMounted: function () {
       // useful in some instances
@@ -329,22 +235,15 @@ export default {
         this.$el.style.visibility = 'hidden'
       }
     },
-    postMessage: function (message) {
-      if (this.childWindow) {
-        this.childWindow.postMessage(message, window.location.origin)
-      }
-      if (this.parentWindow) {
-        this.parentWindow.postMessage(message, window.location.origin)
-      }
+    registerPlugins: function () {
+      Options.plugins.forEach(plugin => {
+        plugin[0].init(this, plugin[1])
+      })
     },
-    togglePresenterMode: function () {
-      if (this.childWindow) {
-        this.childWindow.close()
-        this.childWindow = null
-      } else {
-        this.childWindow = window.open(window.location.href, 'eagle-presenter')
-        window.addEventListener('message', this._message)
-      }
+    unregisterPlugins: function () {
+      Options.plugins.forEach(plugin => {
+        plugin[0].destroy(this)
+      })
     }
   },
   watch: {

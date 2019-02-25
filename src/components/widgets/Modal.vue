@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  isWidget: true,
   name: 'eg-modal'
 }
 </script>

@@ -5,6 +5,7 @@ eg-transition(:enter='enter', :leave='leave')
 </template>
 <script>
 export default {
+  isWidget: true,
   name: 'eg-triggered-message',
   props: {
     enter: {default: 'slideInLeft'},
