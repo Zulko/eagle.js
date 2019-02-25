@@ -132,7 +132,6 @@ You can configure your authored `slideshow` component with these properties:
 | `startStep`          | `1`             |                                                           | 
 | `mouseNavigation`    | `true`          | Navigate with mouse click or scroll event                 |
 | `keyboardNavigation` | `true`          | Navigate with keyboard                                    |
-| `presenterModeKey`   | `'p'`           | set the key that activates presenter mode                 |
 | `embedded`           | `false`         |                                                           |
 | `inserted`           | `false`         |                                                           |
 | `onStartExit`        | `null`          | event callback for exiting slideshow through first slide  |
@@ -196,9 +195,10 @@ Under the hood, `eg-transition` is just vue's `transition` that supports  [anima
 Starting from 0.5.0 we introduction extensions to eagle.js. It includes two categories, namely widgets and plugins:
 1. Widgets are Vue components that can be directly used in a slide.
 2. Plugins are used in slideshow to enhance slide globally.
+
 Both widgets and plugins have the same interface to use, just like how Vue uses plugins, for example:
 
-```
+```javascript
 // plugin
 Eagle.use(Zoom, {scale: 2})
 // Widget
@@ -256,7 +256,7 @@ Eagle.use(Presenter, {
 })
 ```
 
-By default pressing "p" would toggle presenter mode: you have two windows that share control with each other. Enabling presenter mode gives user two addition `data` for `slideshow`: `parentWindow` and `childWindow`. For example:
+Press your configured button would toggle presenter mode: you have two windows that share control with each other. Enabling presenter mode gives user two addition `data` for `slideshow`: `parentWindow` and `childWindow`. For example:
 
 ```pug
 .eg-slideshow
@@ -278,7 +278,7 @@ Eagle.use(Presenter, {
 })
 ```
 
-Holding command key (or alt key on Windows) + click would zoom in and out.
+`Cmd`+Click (`Alt`+click on non-Mac) would zoom in and out.
 
 ## Themes
 

@@ -17,6 +17,7 @@ module.exports = {
 		{ file: 'dist/eagle.es.js', format: 'es', banner }
   ],
   external: [
+    'vue',
     'lodash.throttle'
   ],
   plugins: [

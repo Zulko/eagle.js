@@ -1,11 +1,12 @@
 /*
- * eagle.js v0.4.4
+ * eagle.js v0.5.0
  *
  * @license
- * Copyright 2017-2018, Zulko
+ * Copyright 2017-2019, Zulko
  * Released under the ISC License
  */
 import throttle from 'lodash.throttle';
+import Vue from 'vue';
 
 var Slideshow = {
   props: {
@@ -16,7 +17,6 @@ var Slideshow = {
     inserted: { default: false },
     keyboardNavigation: { default: true },
     mouseNavigation: { default: true },
-    presenterModeKey: { default: 'p' },
     onStartExit: { default: function _default() {
         return function () {
           if (this.$router) this.$router.push('/');
@@ -29,8 +29,7 @@ var Slideshow = {
       } },
     skip: { default: false },
     backBySlide: { default: false },
-    repeat: { default: false },
-    zoom: { default: true }
+    repeat: { default: false }
   },
   data: function data() {
     return {
@@ -40,9 +39,7 @@ var Slideshow = {
       slideshowTimer: 0,
       slideTimer: 0,
       slides: [],
-      active: true,
-      childWindow: null,
-      parentWindow: null
+      active: true
     };
   },
   computed: {
@@ -65,28 +62,19 @@ var Slideshow = {
       this.currentSlide = this.slides[this.currentSlideIndex - 1];
       this.currentSlide.step = this.startStep;
 
-      if (this.zoom && !this.embedded) {
-        this.handleZoom();
-      }
-
       if (this.keyboardNavigation) {
-        window.addEventListener('keydown', this.keydown);
+        window.addEventListener('keydown', this.handleKeydown);
       }
       if (this.mouseNavigation) {
         if ('ontouchstart' in window) {
-          window.addEventListener('touchstart', this.click);
+          window.addEventListener('touchstart', this.hanldeClick);
         } else {
-          window.addEventListener('click', this.click);
-          window.addEventListener('wheel', this.wheel);
+          window.addEventListener('click', this.handleClick);
+          window.addEventListener('wheel', this.handleWheel);
         }
       }
       if (this.embedded) {
         this.$el.className += ' embedded-slideshow';
-      }
-      if (window.opener && window.opener.location.href === window.location.href) {
-        this.parentWindow = window.opener;
-        this.postMessage('{"method": "getCurrentSlide"}');
-        window.addEventListener('message', this._message);
       }
     }
     window.addEventListener('resize', this.handleResize);
@@ -104,15 +92,16 @@ var Slideshow = {
       self.slideshowTimer++;
       self.slideTimer++;
     }, 1000);
+    this.registerPlugins();
     this.afterMounted();
   },
   beforeDestroy: function beforeDestroy() {
-    window.removeEventListener('keydown', this.keydown);
-    window.removeEventListener('click', this.click);
-    window.removeEventListener('touchstart', this.click);
-    window.removeEventListener('wheel', this.wheel);
-    this.handleZoom(true);
+    window.removeEventListener('keydown', this.handleKeydown);
+    window.removeEventListener('click', this.handleClick);
+    window.removeEventListener('touchstart', this.handleClick);
+    window.removeEventListener('wheel', this.handleWheel);
     clearInterval(this.timerUpdater);
+    this.unregisterPlugins();
   },
   methods: {
     changeDirection: function changeDirection(direction) {
@@ -121,7 +110,7 @@ var Slideshow = {
       });
       this.$root.direction = direction;
     },
-    nextStep: function nextStep(fromMessage) {
+    nextStep: function nextStep() {
       this.changeDirection('next');
       var self = this;
       this.$nextTick(function () {
@@ -131,11 +120,8 @@ var Slideshow = {
           self.step++;
         }
       });
-      if (!fromMessage) {
-        this.postMessage('{"method": "nextStep"}');
-      }
     },
-    previousStep: function previousStep(fromMessage) {
+    previousStep: function previousStep() {
       this.changeDirection('prev');
       var self = this;
       this.$nextTick(function () {
@@ -145,9 +131,6 @@ var Slideshow = {
           self.step--;
         }
       });
-      if (!fromMessage) {
-        this.postMessage('{"method": "previousStep"}');
-      }
     },
     nextSlide: function nextSlide() {
       var nextSlideIndex = this.currentSlideIndex + 1;
@@ -163,15 +146,14 @@ var Slideshow = {
       }
     },
     previousSlide: function previousSlide() {
-      var self = this;
-      var previousSlideIndex = self.currentSlideIndex - 1;
-      while (previousSlideIndex >= 1 && (self.slides[previousSlideIndex - 1].skip || self.slides[previousSlideIndex - 1].$parent.skip)) {
+      var previousSlideIndex = this.currentSlideIndex - 1;
+      while (previousSlideIndex >= 1 && (this.slides[previousSlideIndex - 1].skip || this.slides[previousSlideIndex - 1].$parent.skip)) {
         previousSlideIndex--;
       }
       if (previousSlideIndex >= 1) {
-        self.currentSlideIndex = previousSlideIndex;
-      } else if (!self.embedded) {
-        self.onStartExit();
+        this.currentSlideIndex = previousSlideIndex;
+      } else if (!this.embedded) {
+        this.onStartExit();
       }
     },
     handleResize: function handleResize() {
@@ -189,55 +171,7 @@ var Slideshow = {
         self.$el.style.fontSize = 0.04 * Math.min(height, width) + 'px';
       }, 16)();
     },
-    handleZoom: function handleZoom(remove) {
-      if (remove) {
-        window.removeEventListener('resize', updateCoords);
-        window.removeEventListener('mousedown', magnify);
-        return;
-      }
-
-      var SCALE = 2;
-      var height = document.documentElement.clientHeight;
-      var width = document.documentElement.clientWidth;
-      var center = {
-        x: width / 2,
-        y: height / 2
-      };
-      var boundary = {
-        x: center.x / SCALE,
-        y: center.y / SCALE
-      };
-
-      window.addEventListener('resize', updateCoords);
-      window.addEventListener('mousedown', magnify);
-
-      function updateCoords() {
-        height = document.documentElement.clientHeight;
-        width = document.documentElement.clientWidth;
-        center.x = width / 2;
-        center.y = height / 2;
-        boundary.x = center.x / SCALE;
-        boundary.y = center.y / SCALE;
-      }
-
-      function magnify(event) {
-        if (!event.altKey) return;
-        if (document.body.style.transform) {
-          document.body.style.transform = '';
-          document.body.style.overflow = 'auto';
-        } else {
-          document.body.style.height = height + 'px';
-          document.body.style.overflow = 'hidden';
-          document.body.style.transition = '0.5s';
-          var translateX = center.x - event.clientX;
-          var translateY = center.y - event.clientY;
-          translateX = translateX < boundary.x ? translateX > -boundary.x ? translateX : -boundary.x : boundary.x;
-          translateY = translateY < boundary.y ? translateY > -boundary.y ? translateY : -boundary.y : boundary.y;
-          document.body.style.transform = 'scale(' + SCALE + ') translate(' + translateX + 'px, ' + translateY + 'px)';
-        }
-      }
-    },
-    click: function click(evt) {
+    handleClick: function handleClick(evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation && !evt.altKey) {
         var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX;
         if (clientX < 0.25 * document.documentElement.clientWidth) {
@@ -249,7 +183,7 @@ var Slideshow = {
         }
       }
     },
-    wheel: throttle(function (evt) {
+    handleWheel: throttle(function (evt) {
       if (this.mouseNavigation && this.currentSlide.mouseNavigation) {
         evt.preventDefault();
         if (evt.wheelDeltaY > 0 || evt.deltaY > 0) {
@@ -259,7 +193,7 @@ var Slideshow = {
         }
       }
     }, 1000),
-    keydown: function keydown(evt) {
+    handleKeydown: function handleKeydown(evt) {
       if (this.keyboardNavigation && (this.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
         if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
           this.previousStep();
@@ -267,37 +201,8 @@ var Slideshow = {
         } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
           this.nextStep();
           evt.preventDefault();
-        } else if (evt.key === this.presenterModeKey && !this.parentWindow) {
-          this.togglePresenterMode();
-          evt.preventDefault();
         }
       }
-    },
-    _message: function _message(evt) {
-      var _this = this;
-
-      if (evt.origin !== window.location.origin) {
-        return void 0;
-      }
-      try {
-        var data = JSON.parse(evt.data);
-        switch (data.method) {
-          case 'nextStep':
-          case 'previousStep':
-            this[data.method](true);
-            break;
-          case 'getCurrentSlide':
-            this.postMessage('{\n              "method": "setCurrentSlide", \n              "slideIndex": ' + this.currentSlideIndex + ',\n              "step": ' + this.step + '\n              }');
-            break;
-          case 'setCurrentSlide':
-            this.currentSlideIndex = data.slideIndex;
-            this.$nextTick(function () {
-              _this.step = data.step;
-            });
-            break;
-          default:
-        }
-      } catch (e) {}
     },
     afterMounted: function afterMounted() {},
     findSlides: function findSlides() {
@@ -338,22 +243,19 @@ var Slideshow = {
         this.$el.style.visibility = 'hidden';
       }
     },
-    postMessage: function postMessage(message) {
-      if (this.childWindow) {
-        this.childWindow.postMessage(message, window.location.origin);
-      }
-      if (this.parentWindow) {
-        this.parentWindow.postMessage(message, window.location.origin);
-      }
+    registerPlugins: function registerPlugins() {
+      var _this = this;
+
+      Options.plugins.forEach(function (plugin) {
+        plugin[0].init(_this, plugin[1]);
+      });
     },
-    togglePresenterMode: function togglePresenterMode() {
-      if (this.childWindow) {
-        this.childWindow.close();
-        this.childWindow = null;
-      } else {
-        this.childWindow = window.open(window.location.href, 'eagle-presenter');
-        window.addEventListener('message', this._message);
-      }
+    unregisterPlugins: function unregisterPlugins() {
+      var _this2 = this;
+
+      Options.plugins.forEach(function (plugin) {
+        plugin[0].destroy(_this2);
+      });
     }
   },
   watch: {
@@ -469,9 +371,20 @@ var Slide = { render: function render() {
   }
 };
 
+var Transition = { render: function render() {
+    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('transition', { attrs: { "enter-active-class": _vm.enter ? 'animated ' + _vm.enter : '', "leave-active-class": _vm.leave ? 'animated ' + _vm.leave : '' } }, [_vm._t("default")], 2);
+  }, staticRenderFns: [],
+  name: 'eg-transition',
+  props: {
+    enter: { default: null },
+    leave: { default: null }
+  }
+};
+
 var Modal = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-modal" }, [_c('div', { staticClass: "content" }, [_vm._t("default")], 2)]);
   }, staticRenderFns: [],
+  isWidget: true,
   name: 'eg-modal'
 };
 
@@ -482,6 +395,7 @@ function randId() {
 var CodeBlock = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-code-block container" }, [_c('div', { staticClass: "box hljs code-box", attrs: { "id": _vm.id } }, [_c('pre', [_c('code', { class: _vm.lang ? _vm.lang : '', attrs: { "id": _vm.id3 } })])]), _c('div', { staticClass: "box comments-box" }, [_c('pre', [_c('code', { attrs: { "id": _vm.id2 } }, [_vm._t("default")], 2)])])]);
   }, staticRenderFns: [], _scopeId: 'data-v-29468740',
+  isWidget: true,
   name: 'eg-code-block',
   props: {
     id: { default: function _default() {
@@ -517,6 +431,7 @@ var CodeBlock = { render: function render() {
 var CodeComment = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-code-comment" }, [_vm.arrow ? _c('span', [_vm._v("←")]) : _vm._e(), _vm._t("default")], 2) : _vm._e()]);
   }, staticRenderFns: [],
+  isWidget: true,
   name: 'eg-code-comment',
   props: {
     enter: { default: null },
@@ -529,6 +444,7 @@ var CodeComment = { render: function render() {
 var Toggle = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-switch" }, [_c('div', { staticClass: "switch", style: { 'font-size': _vm.fontsize }, on: { "click": _vm.toggle } }, [_c('input', { attrs: { "type": "checkbox" }, domProps: { "checked": _vm.checked } }), _c('div', { staticClass: "slider", class: { checked: _vm.checked } }), _c('div', { staticClass: "sliderdot", class: { checked: _vm.checked } })]), _c('span', { class: { unchecked: !_vm.checked } }, [_vm._t("default")], 2)]);
   }, staticRenderFns: [], _scopeId: 'data-v-14b66238',
+  isWidget: true,
   name: 'eg-toggle',
   props: {
     value: { default: true },
@@ -551,19 +467,10 @@ var Toggle = { render: function render() {
   }
 };
 
-var Transition = { render: function render() {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('transition', { attrs: { "enter-active-class": _vm.enter ? 'animated ' + _vm.enter : '', "leave-active-class": _vm.leave ? 'animated ' + _vm.leave : '' } }, [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'eg-transition',
-  props: {
-    enter: { default: null },
-    leave: { default: null }
-  }
-};
-
 var RadioButton = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "eg-radio" }, [_c('div', { staticClass: "radiobutton", style: { 'font-size': _vm.fontsize }, on: { "click": _vm.select } }, [_c('div', { staticClass: "radio" }), _c('div', { staticClass: "radiodot", class: { checked: _vm.value === _vm.label } })]), _vm._t("default")], 2);
   }, staticRenderFns: [], _scopeId: 'data-v-872b59a6',
+  isWidget: true,
   name: 'eg-radio-button',
   props: {
     value: { default: null },
@@ -580,6 +487,7 @@ var RadioButton = { render: function render() {
 var ImageSlide = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-slide image-slide", style: _vm.style }) : _vm._e()]);
   }, staticRenderFns: [],
+  isWidget: true,
   name: 'eg-image-slide',
   mixins: [Slide],
   props: {
@@ -601,6 +509,7 @@ var ImageSlide = { render: function render() {
 var TriggeredMessage = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": _vm.enter, "leave": _vm.leave } }, [_vm.active ? _c('div', { staticClass: "eg-triggered-message", style: _vm.style }, [_vm._t("default")], 2) : _vm._e()]);
   }, staticRenderFns: [],
+  isWidget: true,
   name: 'eg-triggered-message',
   props: {
     enter: { default: 'slideInLeft' },
@@ -640,6 +549,7 @@ var TriggeredMessage = { render: function render() {
 var Timer = { render: function render() {
     var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('eg-transition', { attrs: { "enter": "fadeIn", "leave": "fadeOut" } }, [_vm.display ? _c('div', { staticClass: "timer" }) : _vm._e(), _vm._v(_vm._s(_vm.text))]);
   }, staticRenderFns: [], _scopeId: 'data-v-ff6db536',
+  isWidget: true,
   name: 'eg-timer',
   props: {
     key: { default: 'T' }
@@ -675,24 +585,180 @@ var Timer = { render: function render() {
   }
 };
 
-var Options = {};
+var height = void 0,
+    width = void 0,
+    center = void 0,
+    boundary = void 0;
+
+var scale = 2;
+
+function updateCoords() {
+  height = document.documentElement.clientHeight;
+  width = document.documentElement.clientWidth;
+  center.x = width / 2;
+  center.y = height / 2;
+  boundary.x = center.x / scale;
+  boundary.y = center.y / scale;
+}
+
+function magnify(event) {
+  if (!event.altKey) return;
+  if (document.body.style.transform) {
+    document.body.style.transform = '';
+    document.body.style.overflow = 'auto';
+  } else {
+    document.body.style.height = height + 'px';
+    document.body.style.overflow = 'hidden';
+    document.body.style.transition = '0.5s';
+    var translateX = center.x - event.clientX;
+    var translateY = center.y - event.clientY;
+    translateX = translateX < boundary.x ? translateX > -boundary.x ? translateX : -boundary.x : boundary.x;
+    translateY = translateY < boundary.y ? translateY > -boundary.y ? translateY : -boundary.y : boundary.y;
+    document.body.style.transform = 'scale(' + scale + ') translate(' + translateX + 'px, ' + translateY + 'px)';
+  }
+}
+
+var zoom = {
+  isPlugin: true,
+  init: function init(slideshow, config) {
+    if (!slideshow.embedded) return;
+
+    scale = config.scale || scale;
+    height = document.documentElement.clientHeight;
+    width = document.documentElement.clientWidth;
+    center = {
+      x: width / 2,
+      y: height / 2
+    };
+    boundary = {
+      x: center.x / scale,
+      y: center.y / scale
+    };
+
+    window.addEventListener('resize', updateCoords);
+    window.addEventListener('mousedown', magnify);
+  },
+  destroy: function destroy() {
+    window.removeEventListener('resize', updateCoords);
+    window.removeEventListener('mousedown', magnify);
+  }
+
+};
+
+var slideshow = void 0,
+    childWindow = void 0,
+    parentWindow = void 0;
+
+var presenterModeKey = 'p';
+
+function keydown(evt) {
+  if (slideshow.keyboardNavigation && (slideshow.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
+    if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
+      postMessage('{"method": "previousStep"}');
+    } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
+      postMessage('{"method": "nextStep"}');
+    } else if (evt.key === presenterModeKey && !this.parentWindow) {
+      togglePresenterMode();
+      evt.preventDefault();
+    }
+  }
+}
+
+function click(evt) {
+  if (slideshow.mouseNavigation && slideshow.currentSlide.mouseNavigation && !evt.altKey) {
+    var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX;
+    if (clientX < 0.25 * document.documentElement.clientWidth) {
+      postMessage('{"method": "previousStep"}');
+    } else if (clientX > 0.75 * document.documentElement.clientWidth) {
+      postMessage('{"method": "nextStep"}');
+    }
+  }
+}
+
+function postMessage(message) {
+  if (childWindow) {
+    childWindow.postMessage(message, window.location.origin);
+  }
+  if (parentWindow) {
+    parentWindow.postMessage(message, window.location.origin);
+  }
+}
+
+function togglePresenterMode() {
+  if (childWindow) {
+    childWindow.close();
+    childWindow = null;
+  } else {
+    childWindow = window.open(window.location.href, 'eagle-presenter');
+    window.addEventListener('message', message);
+  }
+}
+
+function message(evt) {
+  if (evt.origin !== window.location.origin) {
+    return void 0;
+  }
+  try {
+    var data = JSON.parse(evt.data);
+    switch (data.method) {
+      case 'nextStep':
+      case 'previousStep':
+        slideshow[data.method]();
+        break;
+      case 'getCurrentSlide':
+        postMessage('{\n          "method": "setCurrentSlide", \n          "slideIndex": ' + slideshow.currentSlideIndex + ',\n          "step": ' + slideshow.step + '\n          }');
+        break;
+      case 'setCurrentSlide':
+        slideshow.currentSlideIndex = data.slideIndex;
+        slideshow.$nextTick(function () {
+          slideshow.step = data.step;
+        });
+        break;
+      default:
+    }
+  } catch (e) {}
+}
+
+var presenter = {
+  isPlugin: true,
+  init: function init(s, config) {
+    presenterModeKey = config.presenterModeKey || presenterModeKey;
+    slideshow = s;
+    if (!slideshow.inserted) {
+      if (window.opener && window.opener.location.href === window.location.href) {
+        parentWindow = window.opener;
+        postMessage('{"method": "getCurrentSlide"}');
+        window.addEventListener('message', message);
+      }
+      window.addEventListener('keydown', keydown);
+      window.addEventListener('click', click);
+    }
+  },
+  destroy: function destroy() {
+    window.removeEventListener('message', message);
+    window.removeEventListener('keydown', keydown);
+    window.addEventListener('click', click);
+  }
+};
+
+var Options = {
+  plugins: []
+};
 
 var main = {
-  slideshow: Slideshow,
-  slide: Slide,
-  install: function install(Vue) {
-    Vue.component('slide', Slide);
-    Vue.component('eg-image-slide', ImageSlide);
-    Vue.component('eg-modal', Modal);
-    Vue.component('eg-transition', Transition);
-    Vue.component('eg-code-block', CodeBlock);
-    Vue.component('eg-code-comment', CodeComment);
-    Vue.component('eg-toggle', Toggle);
-    Vue.component('eg-radio-button', RadioButton);
-    Vue.component('eg-timer', Timer);
-    Vue.component('eg-triggered-message', TriggeredMessage);
+  install: function install(Vue$$1) {
+    Vue$$1.component('slide', Slide);
+    Vue$$1.component('eg-transition', Transition);
+  },
+  use: function use(extension, config) {
+    if (extension.isPlugin) {
+      Options.plugins.push([extension, config]);
+    }
+    if (extension.isWidget) {
+      Vue.component(extension.name, extension);
+    }
   }
 };
 
 export default main;
-export { Slideshow, Slide, Modal, CodeBlock, CodeComment, Toggle, Transition, RadioButton, ImageSlide, TriggeredMessage, Timer, Options };
+export { Slideshow, Slide, Modal, CodeBlock, CodeComment, Toggle, Transition, RadioButton, ImageSlide, TriggeredMessage, Timer, zoom as Zoom, presenter as Presenter, Options };
