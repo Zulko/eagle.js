@@ -9,7 +9,7 @@
 - Slideshow system built on top of the [Vue.js](https://vuejs.org/)
 - Supports animations, themes, interactive widgets (for web demos)
 - Easy to reuse components, slides and styles across presentations
-- Built-in Presenter Mode (Speaker Notes) and various helpful widgets
+- Lightweight core and various helpful extensions
 - All APIs public, maximum hackability 
 
 ### For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):
@@ -75,8 +75,8 @@ yarn add eagle.js
 
 ## Usage
 
-Eagle.js is a vue plugin. You need to `use` eagle.js in your vue app's main file:
-*New in 0.3.0*: `animate.css` is now a peer dependency. User need install their own version.
+Eagle.js is a vue plugin. You need to `use` eagle.js in your vue app's main file.
+**New in 0.3.0**: `animate.css` is now a peer dependency. User need install their own version.
 
 ```javascript
 import Eagle from 'eagle.js'
@@ -88,16 +88,7 @@ import 'animate.css'
 Vue.use(Eagle)
 ```
 
-Using eagle.js's default export would register both core components and all the widgets. Alternatively you can choose only to use core components:
-
-```javascript
-import { Slide, Transition } from 'eagle.js'
-
-Vue.component(Slide.name, Slide)
-Vue.component(Transition.name, Transition)
-```
-
-Then you can selectively use widgets, as you like. See more on [widgets section](https://github.com/Zulko/eagle.js#widgets)
+**New in 0.5.0** Now by default eagle.js doesn't export all plugins but only core components. You have to explicitly use your widgets or plugins from now on. See more on [extensions section](https://github.com/Zulko/eagle.js#extensions)
 
 ### Basic idea
 
@@ -200,19 +191,19 @@ You can configure `slide` with these properties:
 
 Under the hood, `eg-transition` is just vue's `transition` that supports  [animate.css](https://daneden.github.io/animate.css/): you can use animate.css's class name for `enter` and `leave` property and it just works. All eagle.js's transition effects, including `slide`,  happen with this component, and you can use it just like using vue's `transition`.
 
-### Speaker's Notes (Presenter Mode)
+## Extensions
 
-Eagle.js has built-in presenter mode support. By default pressing "P" would toggle presenter mode: you have two windows that share control with each other. Enabling presenter mode gives user two addition `data` for `slideshow`: `parentWindow` and `childWindow`. For example:
+Starting from 0.5.0 we introduction extensions to eagle.js. It includes two categories, namely widgets and plugins:
+1. Widgets are Vue components that can be directly used in a slide.
+2. Plugins are used in slideshow to enhance slide globally.
+Both widgets and plugins have the same interface to use, just like how Vue uses plugins, for example:
 
-```pug
-.eg-slideshow
-  slide
-    p Eagle.is is awesome!
-    p(v-if="parentWindow") I can be a note!
-    p(v-if="childWindow") I can be a note too!
 ```
-
-It might be counter-intuitive that `(v-if="parentWindow")` is actually child window. It's because it means this window has a parent window, thus making itself a child window. But it is really just user's preference to put notes in either window, as two windows are almost functionally identical, except only parent window could close persenter mode.
+// plugin
+Eagle.use(Zoom, {scale: 2})
+// Widget
+Eagle.use(CodeBlock)
+```
 
 ### Widgets
 
@@ -224,13 +215,17 @@ Eagle.js ships several useful widgets that can be used in your `slide`:
 5. `eg-radio-button`
 6. `eg-triggered-message`
 
-You can use widgets as you like:
+Using widgets is really simple
 
 ```javascript
-import { Modal, CodeBlock } from 'eagle.js'
+import Eagle, { Modal, CodeBlock } from 'eagle.js'
 
-Vue.component(Modal.name, Modal)
-Vue.component(CodeBlock.name, CodeBlock)
+Eagle.use(Modal)
+Eagle.use(CodeBlock)
+
+// You can still do this, which eagle does the same under the hood
+// Vue.component(Modal.name, Modal)
+// Vue.component(CodeBlock.name, CodeBlock)
 ```
 Widgets' name follows the same rule: uppercase for importing, `eg` prefixed lowercase connected with dash in HTML.
 See more of their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
@@ -248,6 +243,42 @@ Options.hljs = hljs
 ```
 
 This way drastically decrease eagle.js's package size and user could manage their own `highlight.js` version.
+
+### Presenter Plugin
+
+You can use presenter plugin to enable presenter mode:
+
+```javascript
+import Eagle, {Presenter} from eagle.js
+
+Eagle.use(Presenter, {
+  presenterModeKey: 'a' // default is p
+})
+```
+
+By default pressing "p" would toggle presenter mode: you have two windows that share control with each other. Enabling presenter mode gives user two addition `data` for `slideshow`: `parentWindow` and `childWindow`. For example:
+
+```pug
+.eg-slideshow
+  slide
+    p Eagle.is is awesome!
+    p(v-if="parentWindow") I can be a note!
+    p(v-if="childWindow") I can be a note too!
+```
+
+It might be counter-intuitive that `(v-if="parentWindow")` is actually child window. It's because it means this window has a parent window, thus making itself a child window. But it is really just user's preference to put notes in either window, as two windows are almost functionally identical, except only parent window could close persenter mode.
+
+### Zoom Plugin
+
+```javascript
+import Eagle, {Zoom} from eagle.js
+
+Eagle.use(Presenter, {
+  scale: 1 // default is 2
+})
+```
+
+Holding command key (or alt key on Windows) + click would zoom in and out.
 
 ## Themes
 

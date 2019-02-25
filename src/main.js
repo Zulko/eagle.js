@@ -33,10 +33,8 @@ export {
   ImageSlide,
   TriggeredMessage,
   Timer,
-
   Zoom,
   Presenter,
-
   Options
 }
 

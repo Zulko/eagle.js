@@ -34,7 +34,7 @@ export default {
     // zoom can be only enabled by main slideshow
     if (!slideshow.embedded) return
 
-    scale = config.scale
+    scale = config.scale || scale
     height = document.documentElement.clientHeight
     width = document.documentElement.clientWidth
     center = {

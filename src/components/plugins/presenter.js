@@ -75,7 +75,8 @@ function message (evt) {
 
 export default {
   isPlugin: true,
-  init: function (s) {
+  init: function (s, config) {
+    presenterModeKey = config.presenterModeKey || presenterModeKey
     slideshow = s
     if (!slideshow.inserted) {
       if (window.opener && window.opener.location.href === window.location.href) {
