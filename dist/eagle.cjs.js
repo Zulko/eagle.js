@@ -1,5 +1,5 @@
 /*
- * eagle.js v0.5.0
+ * eagle.js v0.5.1
  *
  * @license
  * Copyright 2017-2019, Zulko
@@ -12,6 +12,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var throttle = _interopDefault(require('lodash.throttle'));
+var _Object$assign = _interopDefault(require('babel-runtime/core-js/object/assign'));
 var Vue = _interopDefault(require('vue'));
 
 var Slideshow = {
@@ -260,7 +261,7 @@ var Slideshow = {
       var _this2 = this;
 
       Options.plugins.forEach(function (plugin) {
-        plugin[0].destroy(_this2);
+        plugin[0].destroy(_this2, plugin[1]);
       });
     }
   },
@@ -591,159 +592,176 @@ var Timer = { render: function render() {
   }
 };
 
-var height = void 0,
-    width = void 0,
-    center = void 0,
-    boundary = void 0;
+var hasZoom = false;
 
-var scale = 2;
+var updateCoords = function updateCoords(slideshow, config) {
+  return function () {
+    slideshow._height = document.documentElement.clientHeight;
+    slideshow._width = document.documentElement.clientWidth;
+    slideshow._center.x = slideshow._width / 2;
+    slideshow._center.y = slideshow._height / 2;
+    slideshow._boundary.x = slideshow._center.x / config.scale;
+    slideshow._boundary.y = slideshow._center.y / config.scale;
+  };
+};
 
-function updateCoords() {
-  height = document.documentElement.clientHeight;
-  width = document.documentElement.clientWidth;
-  center.x = width / 2;
-  center.y = height / 2;
-  boundary.x = center.x / scale;
-  boundary.y = center.y / scale;
-}
-
-function magnify(event) {
-  if (!event.altKey) return;
-  if (document.body.style.transform) {
-    document.body.style.transform = '';
-    document.body.style.overflow = 'auto';
-  } else {
-    document.body.style.height = height + 'px';
-    document.body.style.overflow = 'hidden';
-    document.body.style.transition = '0.5s';
-    var translateX = center.x - event.clientX;
-    var translateY = center.y - event.clientY;
-    translateX = translateX < boundary.x ? translateX > -boundary.x ? translateX : -boundary.x : boundary.x;
-    translateY = translateY < boundary.y ? translateY > -boundary.y ? translateY : -boundary.y : boundary.y;
-    document.body.style.transform = 'scale(' + scale + ') translate(' + translateX + 'px, ' + translateY + 'px)';
-  }
-}
+var magnify = function magnify(slideshow, config) {
+  return function (event) {
+    if (!event.altKey) return;
+    if (document.body.style.transform) {
+      document.body.style.transform = '';
+      document.body.style.overflow = 'auto';
+    } else {
+      document.body.style.height = slideshow._height + 'px';
+      document.body.style.overflow = 'hidden';
+      document.body.style.transition = '0.5s';
+      var translateX = slideshow._center.x - event.clientX;
+      var translateY = slideshow._center.y - event.clientY;
+      translateX = translateX < slideshow._boundary.x ? translateX > -slideshow._boundary.x ? translateX : -slideshow._boundary.x : slideshow._boundary.x;
+      translateY = translateY < slideshow._boundary.y ? translateY > -slideshow._boundary.y ? translateY : -slideshow._boundary.y : slideshow._boundary.y;
+      document.body.style.transform = 'scale(' + config.scale + ') translate(' + translateX + 'px, ' + translateY + 'px)';
+    }
+  };
+};
 
 var zoom = {
   isPlugin: true,
   init: function init(slideshow, config) {
-    if (!slideshow.embedded) return;
+    if (slideshow.embedded || slideshow.inserted || hasZoom) return;
 
-    scale = config.scale || scale;
-    height = document.documentElement.clientHeight;
-    width = document.documentElement.clientWidth;
-    center = {
-      x: width / 2,
-      y: height / 2
+    config = _Object$assign({
+      scale: 2
+    }, config);
+
+    hasZoom = true;
+    slideshow._zoom = true;
+
+    slideshow._height = document.documentElement.clientHeight;
+    slideshow._width = document.documentElement.clientWidth;
+    slideshow._center = {
+      x: slideshow._width / 2,
+      y: slideshow._height / 2
     };
-    boundary = {
-      x: center.x / scale,
-      y: center.y / scale
+    slideshow._boundary = {
+      x: slideshow._center.x / config.scale,
+      y: slideshow._center.y / config.scale
     };
 
-    window.addEventListener('resize', updateCoords);
-    window.addEventListener('mousedown', magnify);
+    window.addEventListener('resize', updateCoords(slideshow, config));
+    window.addEventListener('mousedown', magnify(slideshow, config));
   },
-  destroy: function destroy() {
-    window.removeEventListener('resize', updateCoords);
-    window.removeEventListener('mousedown', magnify);
+  destroy: function destroy(slideshow, config) {
+    if (slideshow._zoom) {
+      window.removeEventListener('resize', updateCoords(slideshow, config));
+      window.removeEventListener('mousedown', magnify(slideshow, config));
+    }
   }
-
 };
 
-var slideshow = void 0,
-    childWindow = void 0,
-    parentWindow = void 0;
+var hasPresenter = false;
 
-var presenterModeKey = 'p';
-
-function keydown(evt) {
-  if (slideshow.keyboardNavigation && (slideshow.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
-    if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
-      postMessage('{"method": "previousStep"}');
-    } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
-      postMessage('{"method": "nextStep"}');
-    } else if (evt.key === presenterModeKey && !this.parentWindow) {
-      togglePresenterMode();
-      evt.preventDefault();
+var keydown = function keydown(slideshow, config) {
+  return function (evt) {
+    if (slideshow.keyboardNavigation && (slideshow.currentSlide.keyboardNavigation || evt.ctrlKey || evt.metaKey)) {
+      if (evt.key === 'ArrowLeft' || evt.key === 'PageUp') {
+        postMessage(slideshow, '{"method": "previousStep"}');
+      } else if (evt.key === 'ArrowRight' || evt.key === 'PageDown') {
+        postMessage(slideshow, '{"method": "nextStep"}');
+      } else if (evt.key === config.presenterModeKey && !slideshow.parentWindow) {
+        togglePresenterMode(slideshow);
+        evt.preventDefault();
+      }
     }
-  }
-}
+  };
+};
 
-function click(evt) {
-  if (slideshow.mouseNavigation && slideshow.currentSlide.mouseNavigation && !evt.altKey) {
-    var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX;
-    if (clientX < 0.25 * document.documentElement.clientWidth) {
-      postMessage('{"method": "previousStep"}');
-    } else if (clientX > 0.75 * document.documentElement.clientWidth) {
-      postMessage('{"method": "nextStep"}');
+var click = function click(slideshow) {
+  return function (evt) {
+    if (slideshow.mouseNavigation && slideshow.currentSlide.mouseNavigation && !evt.altKey) {
+      var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX;
+      if (clientX < 0.25 * document.documentElement.clientWidth) {
+        postMessage(slideshow, '{"method": "previousStep"}');
+      } else if (clientX > 0.75 * document.documentElement.clientWidth) {
+        postMessage(slideshow, '{"method": "nextStep"}');
+      }
     }
+  };
+};
+
+var message = function message(slideshow) {
+  return function (evt) {
+    if (evt.origin !== window.location.origin) {
+      return void 0;
+    }
+    try {
+      var data = JSON.parse(evt.data);
+      switch (data.method) {
+        case 'nextStep':
+        case 'previousStep':
+          slideshow[data.method]();
+          break;
+        case 'getCurrentSlide':
+          postMessage(slideshow, '{\n          "method": "setCurrentSlide", \n          "slideIndex": ' + slideshow.currentSlideIndex + ',\n          "step": ' + slideshow.step + '\n          }');
+          break;
+        case 'setCurrentSlide':
+          slideshow.currentSlideIndex = data.slideIndex;
+          slideshow.$nextTick(function () {
+            slideshow.step = data.step;
+          });
+          break;
+        default:
+      }
+    } catch (e) {
+      console.log('Presenter mode runs into an error: ' + e);
+    }
+  };
+};
+
+function postMessage(slideshow, message) {
+  if (slideshow.childWindow) {
+    slideshow.childWindow.postMessage(message, window.location.origin);
+  }
+  if (slideshow.parentWindow) {
+    slideshow.parentWindow.postMessage(message, window.location.origin);
   }
 }
 
-function postMessage(message) {
-  if (childWindow) {
-    childWindow.postMessage(message, window.location.origin);
-  }
-  if (parentWindow) {
-    parentWindow.postMessage(message, window.location.origin);
-  }
-}
-
-function togglePresenterMode() {
-  if (childWindow) {
-    childWindow.close();
-    childWindow = null;
+function togglePresenterMode(slideshow) {
+  if (slideshow.childWindow) {
+    slideshow.childWindow.close();
+    slideshow.childWindow = null;
   } else {
-    childWindow = window.open(window.location.href, 'eagle-presenter');
-    window.addEventListener('message', message);
+    slideshow.childWindow = window.open(window.location.href, 'eagle-presenter');
+    window.addEventListener('message', message(slideshow));
   }
-}
-
-function message(evt) {
-  if (evt.origin !== window.location.origin) {
-    return void 0;
-  }
-  try {
-    var data = JSON.parse(evt.data);
-    switch (data.method) {
-      case 'nextStep':
-      case 'previousStep':
-        slideshow[data.method]();
-        break;
-      case 'getCurrentSlide':
-        postMessage('{\n          "method": "setCurrentSlide", \n          "slideIndex": ' + slideshow.currentSlideIndex + ',\n          "step": ' + slideshow.step + '\n          }');
-        break;
-      case 'setCurrentSlide':
-        slideshow.currentSlideIndex = data.slideIndex;
-        slideshow.$nextTick(function () {
-          slideshow.step = data.step;
-        });
-        break;
-      default:
-    }
-  } catch (e) {}
 }
 
 var presenter = {
   isPlugin: true,
-  init: function init(s, config) {
-    presenterModeKey = config.presenterModeKey || presenterModeKey;
-    slideshow = s;
-    if (!slideshow.inserted) {
-      if (window.opener && window.opener.location.href === window.location.href) {
-        parentWindow = window.opener;
-        postMessage('{"method": "getCurrentSlide"}');
-        window.addEventListener('message', message);
-      }
-      window.addEventListener('keydown', keydown);
-      window.addEventListener('click', click);
+  init: function init(slideshow, config) {
+    if (slideshow.embedded || slideshow.inserted || hasPresenter) return;
+
+    config = _Object$assign({
+      presenterModeKey: 'p'
+    }, config);
+
+    hasPresenter = true;
+    slideshow._presenter = true;
+
+    if (window.opener && window.opener.location.href === window.location.href) {
+      slideshow.parentWindow = window.opener;
+      postMessage(slideshow, '{"method": "getCurrentSlide"}');
+      window.addEventListener('message', message(slideshow));
     }
+    window.addEventListener('keydown', keydown(slideshow, config));
+    window.addEventListener('click', click(slideshow));
   },
-  destroy: function destroy() {
-    window.removeEventListener('message', message);
-    window.removeEventListener('keydown', keydown);
-    window.addEventListener('click', click);
+  destroy: function destroy(slideshow, config) {
+    if (slideshow._presenter) {
+      window.removeEventListener('message', message(slideshow));
+      window.removeEventListener('keydown', keydown(slideshow, config));
+      window.addEventListener('click', click(slideshow));
+    }
   }
 };
 

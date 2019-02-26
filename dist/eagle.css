@@ -1,3 +1,18 @@
+.eg-code-block.container[data-v-29468740] {
+  position: relative;
+  width: 100%; }
+
+.eg-code-block .code-box .eg-code-comment[data-v-29468740] {
+  display: none; }
+
+.eg-code-block .comments-box[data-v-29468740] {
+  position: absolute;
+  color: rgba(0, 0, 0, 0);
+  top: 0; }
+
+.eg-code-block .eg-code-comment[data-v-29468740] {
+  z-index: 10 !important; }
+
 
 
 
@@ -29,28 +44,81 @@
 
 
 /*# sourceMappingURL=Timer.vue.map */
+.eg-radio[data-v-872b59a6] {
+  /* The slider */ }
+  .eg-radio p[data-v-872b59a6] {
+    display: inline; }
+  .eg-radio .radiobutton[data-v-872b59a6] {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em; }
+  .eg-radio .radio[data-v-872b59a6] {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 0.5em; }
+  .eg-radio .radiodot[data-v-872b59a6] {
+    position: absolute;
+    cursor: pointer;
+    content: "";
+    height: 0em;
+    width: 0em;
+    left: 0.5em;
+    bottom: 0.5em;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%; }
+  .eg-radio .radiodot.checked[data-v-872b59a6] {
+    height: .9em;
+    width: .9em;
+    left: 0.05em;
+    bottom: 0.05em; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.eg-code-comment {
-  display: inline-block
-}
+.eg-switch[data-v-14b66238] {
+  /* The slider */ }
+  .eg-switch p[data-v-14b66238] {
+    display: inline; }
+  .eg-switch .switch[data-v-14b66238] {
+    position: relative;
+    display: inline-block;
+    width: 2em;
+    height: 1em; }
+  .eg-switch .switch input[data-v-14b66238] {
+    display: none; }
+  .eg-switch .slider[data-v-14b66238] {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 0.5em; }
+  .eg-switch .sliderdot[data-v-14b66238] {
+    position: absolute;
+    cursor: pointer;
+    content: "";
+    height: 0.8em;
+    width: 0.8em;
+    left: 0.1em;
+    bottom: 0.1em;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: .4em; }
+  .eg-switch .sliderdot.checked[data-v-14b66238] {
+    -webkit-transform: translateX(1em);
+    -ms-transform: translateX(1em);
+    transform: translateX(1em); }
 
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
 .eg-slideshow {
@@ -117,94 +185,26 @@
   .eg-slideshow .nodisplay {
     display: none; }
 
-.eg-switch[data-v-14b66238] {
-  /* The slider */ }
-  .eg-switch p[data-v-14b66238] {
-    display: inline; }
-  .eg-switch .switch[data-v-14b66238] {
-    position: relative;
-    display: inline-block;
-    width: 2em;
-    height: 1em; }
-  .eg-switch .switch input[data-v-14b66238] {
-    display: none; }
-  .eg-switch .slider[data-v-14b66238] {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 0.5em; }
-  .eg-switch .sliderdot[data-v-14b66238] {
-    position: absolute;
-    cursor: pointer;
-    content: "";
-    height: 0.8em;
-    width: 0.8em;
-    left: 0.1em;
-    bottom: 0.1em;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: .4em; }
-  .eg-switch .sliderdot.checked[data-v-14b66238] {
-    -webkit-transform: translateX(1em);
-    -ms-transform: translateX(1em);
-    transform: translateX(1em); }
 
-.eg-code-block.container[data-v-29468740] {
-  position: relative;
-  width: 100%; }
 
-.eg-code-block .code-box .eg-code-comment[data-v-29468740] {
-  display: none; }
 
-.eg-code-block .comments-box[data-v-29468740] {
-  position: absolute;
-  color: rgba(0, 0, 0, 0);
-  top: 0; }
 
-.eg-code-block .eg-code-comment[data-v-29468740] {
-  z-index: 10 !important; }
 
-.eg-radio[data-v-872b59a6] {
-  /* The slider */ }
-  .eg-radio p[data-v-872b59a6] {
-    display: inline; }
-  .eg-radio .radiobutton[data-v-872b59a6] {
-    position: relative;
-    display: inline-block;
-    width: 1em;
-    height: 1em; }
-  .eg-radio .radio[data-v-872b59a6] {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 0.5em; }
-  .eg-radio .radiodot[data-v-872b59a6] {
-    position: absolute;
-    cursor: pointer;
-    content: "";
-    height: 0em;
-    width: 0em;
-    left: 0.5em;
-    bottom: 0.5em;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 50%; }
-  .eg-radio .radiodot.checked[data-v-872b59a6] {
-    height: .9em;
-    width: .9em;
-    left: 0.05em;
-    bottom: 0.05em; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.eg-code-comment {
+  display: inline-block
+}
 
