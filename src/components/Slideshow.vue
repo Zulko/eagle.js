@@ -242,7 +242,7 @@ export default {
     },
     unregisterPlugins: function () {
       Options.plugins.forEach(plugin => {
-        plugin[0].destroy(this)
+        plugin[0].destroy(this, plugin[1])
       })
     }
   },

@@ -245,15 +245,26 @@ Options.hljs = hljs
 This way drastically decrease eagle.js's package size and user could manage their own `highlight.js` version.
 
 ### Presenter Plugin
-
 You can use presenter plugin to enable presenter mode:
 
 ```javascript
+// first, use plugin in your entry file
 import Eagle, {Presenter} from eagle.js
 
 Eagle.use(Presenter, {
   presenterModeKey: 'a' // default is p
 })
+
+// second, in your slideshow, declare two `data` property
+{
+  data: function () {
+    return {
+      childWindow: null,
+      parentWindow: null,
+      // .. the rest of your data
+    }
+  }
+}
 ```
 
 Press your configured button would toggle presenter mode: you have two windows that share control with each other. Enabling presenter mode gives user two addition `data` for `slideshow`: `parentWindow` and `childWindow`. For example:
@@ -270,6 +281,8 @@ It might be counter-intuitive that `(v-if="parentWindow")` is actually child win
 
 ### Zoom Plugin
 
+You can use zoom plugin to enable zoom mode:
+
 ```javascript
 import Eagle, {Zoom} from eagle.js
 
@@ -278,7 +291,7 @@ Eagle.use(Presenter, {
 })
 ```
 
-`Cmd`+Click (`Alt`+click on non-Mac) would zoom in and out.
+`Option`+Click (`Alt`+click on non-Mac) would zoom in and out.
 
 ## Themes
 
