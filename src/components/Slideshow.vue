@@ -163,8 +163,9 @@ export default {
         self.$el.style.fontSize = (0.04 * Math.min(height, width)) + 'px'
       }, 16)()
     },
-    handleClick: function (evt) {
-      if (this.mouseNavigation && this.currentSlide.mouseNavigation && !evt.altKey) {
+    handleClick: function (evt) {      
+      var wasKeyboard = evt.screenX === 0 && evt.screenY === 0;
+      if (this.mouseNavigation && this.currentSlide.mouseNavigation && !evt.altKey && !wasKeyboard) {
         var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX
         if (clientX < (0.25 * document.documentElement.clientWidth)) {
           evt.preventDefault()
