@@ -164,7 +164,8 @@ export default {
       }, 16)()
     },
     handleClick: function (evt) {
-      if (this.mouseNavigation && this.currentSlide.mouseNavigation && !evt.altKey) {
+      var noHref = evt.target['href'] === undefined
+      if (this.mouseNavigation && this.currentSlide.mouseNavigation && noHref && !evt.altKey) {
         var clientX = evt.clientX != null ? evt.clientX : evt.touches[0].clientX
         if (clientX < (0.25 * document.documentElement.clientWidth)) {
           evt.preventDefault()
