@@ -1,14 +1,7 @@
 {
   "presets": [
-    ["env", { "modules": false}]
+    ["@babel/preset-env", { "modules": false}]
   ],
-  "plugins": ["transform-runtime"],
-  "comments": false,
-  "env": {
-    "test": {
-      "presets": [
-        ["env", { "targets": { "node": "current" }}]
-      ]
-    }
-  }
+  "plugins": ["@babel/plugin-transform-runtime"],
+  "comments": false
 }

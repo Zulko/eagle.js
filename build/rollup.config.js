@@ -1,8 +1,9 @@
-var babel = require('rollup-plugin-babel')
-var vue = require('rollup-plugin-vue')
-var pkg = require('../package.json')
+const babel = require('rollup-plugin-babel')
+const commonjs = require('rollup-plugin-commonjs')
+const vue = require('rollup-plugin-vue')
+const pkg = require('../package.json')
 
-var banner = `/*
+const banner = `/*
  * eagle.js v${pkg.version}
  *
  * @license
@@ -21,9 +22,10 @@ module.exports = {
     'lodash.throttle'
   ],
   plugins: [
-    vue({
-      css: 'dist/eagle.css'
-    }),
-    babel()
+    commonjs(),
+    vue(),
+    babel({
+      runtimeHelpers: true
+    })
   ]
 }
