@@ -1,32 +1,36 @@
 const path = require('path');
 
-module.exports = {
-  resolve: {
-    alias: {
-        'vue$': 'vue/dist/vue.esm.js'
+module.exports = async ({ config }) => {
+  // Overwrite the default storybook webpack config for same tests loaders are applied serially
+  config.module.rules = [
+    {
+      test: /\.vue$/,
+      loader: 'vue-loader'
+    },
+    {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      exclude: /node_modules/
+    },
+    {
+      test: /\.(scss|css)$/,
+      use: ['vue-style-loader', 'css-loader', {
+        loader: 'sass-loader',
+        options: {
+          data: '$sass-env: development;'
+        }
+      }],
+      include: path.resolve(__dirname, '../')
+    },
+    {
+      test: /\.pug$/,
+      loader: 'pug-plain-loader'
+    },
+    {
+      test: /\.(png|jpg|gif)$/,
+      use: ['file-loader']
     }
-  },
-	module: {
-		rules: [
-      {
-        test: /\.(scss|css)$/,
-        use: ['style-loader', 'css-loader', {
-          loader: 'sass-loader',
-          options: {
-            data: '$sass-env: development;'
-          }
-        }],
-        include: path.resolve(__dirname, "../")
-      },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: ['file-loader']
-      },
-      {
-        test: /\.stories\.js?$/,
-        loaders: [require.resolve('@storybook/addon-storysource/loader')],
-        enforce: 'pre',
-      }
-    ]
-	}
+  ];
+
+  return config;
 }
