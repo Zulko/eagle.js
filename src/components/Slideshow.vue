@@ -285,6 +285,6 @@ export default {
 }
 </script>
 
-<style lang="sass">
-  @import '../themes/base.scss'
+<style lang="scss">
+@import '../themes/base.scss';
 </style>
