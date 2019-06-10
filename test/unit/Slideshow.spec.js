@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { mount, shallow } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Slideshow from '../fixtures/simpleSlideshow.vue'
 import ComplexSlideshow from '../fixtures/complexSlideshow.vue'
 
