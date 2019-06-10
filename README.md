@@ -76,12 +76,11 @@ yarn add eagle.js
 ## Usage
 
 Eagle.js is a vue plugin. You need to `use` eagle.js in your vue app's main file.
-**New in 0.3.0**: `animate.css` is now a peer dependency. User need install their own version.
+<br>**New in 0.3**: `animate.css` is now a peer dependency. User need install their own version.
+<br>**New in 0.6** You do not need to explicitly import the default style  anymore. 
 
 ```javascript
 import Eagle from 'eagle.js'
-// import eagle.js default styles
-import 'eagle.js/dist/eagle.css'
 // import animate.css for slide transition 
 import 'animate.css'
 
