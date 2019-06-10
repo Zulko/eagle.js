@@ -25,7 +25,7 @@
     "build": "node build/build.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "format": "prettier --write src/themes/**/*.scss src/themes/*.scss",
-    "lint": "eslint --ext vue,js --format node_modules/eslint-friendly-formatter 'src/components/**' src/main.js",
+    "lint": "eslint --ext vue,js --format node_modules/eslint-friendly-formatter src test",
     "test": "jest --no-cache --bail",
     "test:watch": "jest --watch"
   },

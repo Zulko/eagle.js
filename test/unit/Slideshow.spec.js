@@ -45,7 +45,7 @@ describe('Slideshow properties', () => {
         mouseNavigation: false,
         skip: true,
         backBySlide: true,
-        repeat: true,
+        repeat: true
       }
     })
     expect(wrapper.props().firstSlide).toBe(2)
@@ -87,7 +87,7 @@ describe('Slideshow initilization', () => {
   })
 
   it('has set current slide', () => {
-    expect(vm.currentSlideIndex).toBe(1)    
+    expect(vm.currentSlideIndex).toBe(1)
   })
 
   it('has the correct active slide', () => {
@@ -115,7 +115,7 @@ describe('Slideshow lifecycle hooks', () => {
   xit('should register additional events for zoom', () => {
     jest.spyOn(window, 'addEventListener')
     wrapper = mount(Slideshow, {
-      attachToDocument: true,
+      attachToDocument: true
     })
 
     expect(window.addEventListener).toHaveBeenCalled()
@@ -126,7 +126,7 @@ describe('Slideshow lifecycle hooks', () => {
   it('should unregister events when destroyed', () => {
     jest.spyOn(window, 'removeEventListener')
     wrapper = mount(Slideshow, {
-      attachToDocument: true,
+      attachToDocument: true
     }).destroy()
 
     expect(window.removeEventListener).toHaveBeenCalled()
@@ -190,8 +190,8 @@ describe('Slideshow events', () => {
     wrapper.trigger('wheel', {
       deltaY: 100
     })
-   
-    setTimeout(() => { 
+
+    setTimeout(() => {
       expect(spy).toHaveBeenCalledTimes(1)
       spy.mockReset()
       spy.mockRestore()
@@ -212,10 +212,9 @@ describe('Slideshow back mode', () => {
     vm.currentSlideIndex = 3
     vm.previousStep()
     await Vue.nextTick()
-      
+
     expect(vm.slides[1].active).toBeTruthy()
     expect(vm.step).toBe(1)
-
   })
 
   it('go back by step would result to previous slide last step', async () => {

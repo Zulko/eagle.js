@@ -2,15 +2,15 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import Eagle, { Slideshow, Zoom, Presenter } from '../src/main.js'
 
-import '../src/themes/agrume/agrume.scss' 
-import '../src/themes/gourmet/gourmet.scss' 
+import '../src/themes/agrume/agrume.scss'
+import '../src/themes/gourmet/gourmet.scss'
 import 'animate.css'
 
 Vue.use(Eagle)
 Eagle.use(Zoom)
 Eagle.use(Presenter)
 
-const render = (slides, useTheme=true, theme='agrume') => {
+const render = (slides, useTheme = true, theme = 'agrume') => {
   const template = (useTheme ? `<div class='eg-theme-${theme}'>` : '') +
     `<div class='eg-slideshow'>
       ${slides}
@@ -38,14 +38,14 @@ Vue.component('NestedSlideshow', {
 })
 
 storiesOf('Slideshow', module)
-  .add('single slide', () => 
+  .add('single slide', () =>
     render(`
     <slide>
       <h1>Eagle.js</h1>
     </slide>
     `)
   )
-  .add('multiple slides', () => 
+  .add('multiple slides', () =>
     render(`
     <slide>
       <h1>multiple slides</h1>
@@ -58,7 +58,7 @@ storiesOf('Slideshow', module)
     </slide>
     `)
   )
-  .add('multiple slides with enter/exit animation', () => 
+  .add('multiple slides with enter/exit animation', () =>
     render(`
     <slide enter='bounceInLeft' leave='bounceOutLeft'>
       <h1>Eagle.js</h1>
@@ -71,7 +71,7 @@ storiesOf('Slideshow', module)
     </slide>
     `)
   )
-  .add('single slide multiple steps with animation', () => 
+  .add('single slide multiple steps with animation', () =>
     render(`
     <slide :steps='4'>
       <h4>
@@ -88,14 +88,14 @@ storiesOf('Slideshow', module)
     </slide>
     `)
   )
-  .add('inserted slideshow, slideshow within slideshow', () => 
+  .add('inserted slideshow, slideshow within slideshow', () =>
     render(`
       <nested-slideshow :inserted='true' >1</nested-slideshow>
       <nested-slideshow :inserted='true' >2</nested-slideshow>
       <nested-slideshow :inserted='true' >3</nested-slideshow>
     `)
   )
-  .add('embedded slideshow, slideshow within slide', () => 
+  .add('embedded slideshow, slideshow within slide', () =>
     render(`
       <slide>
         <nested-slideshow :embedded='true' />
