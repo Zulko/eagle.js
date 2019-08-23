@@ -126,8 +126,8 @@ You can configure your authored `slideshow` component with these properties:
 
 | Property             | Default         | Description                                               |
 | -------------------- | --------------- | --------------------------------------------------------- |
-| `firstslide`         | `1`             |                                                           |
-| `lastslide`          | `null`          |                                                           |
+| `firstSlide`         | `1`             |                                                           |
+| `lastSlide`          | `null`          |                                                           |
 | `startStep`          | `1`             |                                                           | 
 | `mouseNavigation`    | `true`          | Navigate with mouse click or scroll event                 |
 | `keyboardNavigation` | `true`          | Navigate with keyboard                                    |
