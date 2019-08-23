@@ -53,7 +53,7 @@ export default {
       }
       if (this.mouseNavigation) {
         if ('ontouchstart' in window) {
-          window.addEventListener('touchstart', this.hanldeClick)
+          window.addEventListener('touchstart', this.handleClick)
         } else {
           window.addEventListener('click', this.handleClick)
           window.addEventListener('wheel', this.handleWheel)
