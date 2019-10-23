@@ -77,7 +77,8 @@ yarn add eagle.js
 
 Eagle.js is a vue plugin. You need to `use` eagle.js in your vue app's main file.
 <br>**New in 0.3**: `animate.css` is now a peer dependency. User need install their own version.
-<br>**New in 0.6** You do not need to explicitly import the default style  anymore. 
+<br>**New in 0.5**: By default eagle.js doesn't export all plugins but only core components. You have to explicitly use your widgets or plugins from now on. See more on [extensions section](https://github.com/Zulko/eagle.js#extensions).
+<br>**New in 0.6**: You do not need to explicitly import the default style anymore. 
 
 ```javascript
 import Eagle from 'eagle.js'
@@ -86,8 +87,6 @@ import 'animate.css'
 
 Vue.use(Eagle)
 ```
-
-**New in 0.5.0** Now by default eagle.js doesn't export all plugins but only core components. You have to explicitly use your widgets or plugins from now on. See more on [extensions section](https://github.com/Zulko/eagle.js#extensions)
 
 ### Basic idea
 
@@ -191,9 +190,9 @@ Under the hood, `eg-transition` is just vue's `transition` that supports  [anima
 
 ## Extensions
 
-Starting from 0.5.0 we introduction extensions to eagle.js. It includes two categories, namely widgets and plugins:
-1. Widgets are Vue components that can be directly used in a slide.
-2. Plugins are used in slideshow to enhance slide globally.
+Starting from 0.5 we introduced extensions to eagle.js. It includes two categories, namely widgets and plugins:
+1. Widgets are Vue components that can be directly used in a `slide`.
+2. Plugins are used in `slideshow` to enhance `slide` globally.
 
 Both widgets and plugins have the same interface to use, just like how Vue uses plugins, for example:
 
@@ -229,7 +228,7 @@ Eagle.use(CodeBlock)
 Widgets' name follows the same rule: uppercase for importing, `eg` prefixed lowercase connected with dash in HTML.
 See more of their usage in the [demo project](https://github.com/Zulko/eaglejs-demo).
 
-*New in 0.3.0*: `highlight.js` is not a dependency anymore, so if you need to use `eg-code-block`, you need to install your own version of `highlight.js`, then specifiy it in your `main.js`:
+*New in 0.3*: `highlight.js` is not a dependency anymore, so if you need to use `eg-code-block`, you need to install your own version of `highlight.js`, then specifiy it in your `main.js`:
 
 ```javascript
 // import your own highlight.js(only for javascript) 
@@ -388,7 +387,7 @@ Intuitively,  writing your `slide` components and then using Vue's [async compon
 
 ## Frequently Asked Questions
 
-- ### (Vue-CLI v.4+) The white-spaces in my code are not preserved by the CodeBlock widget, how can I fix it?
+- #### (Vue-CLI v.4+) The white-spaces in my code are not preserved by the CodeBlock widget, how can I fix it?
 
 The way Vue-CLI treats white-spaces [has changed](https://cli.vuejs.org/migrating-from-v3/#vue-cli-service) in the version 4. If you use Vue-CLI to create your slideshow, you will need to add the following configuration in your `vue.config.js` file (see [issue#90](https://github.com/Zulko/eagle.js/issues/90#issue-510662591)).
 
