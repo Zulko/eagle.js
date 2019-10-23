@@ -386,6 +386,26 @@ And inside a `MySlideshow`, add watchers to update URL when slides changes, and 
 
 Intuitively,  writing your `slide` components and then using Vue's [async component](https://vuejs.org/v2/guide/components.html#Async-Components) by dynamically importing `slide` components in your slideshow sounds like a perfect solution, unfortunately this won't work, as `slideshow` needs all its $children to be properly initialized. Currently, if you really need to do code splitting, you can consider splitting your `slideshow` in different routes and [lazy-loading](https://router.vuejs.org/en/advanced/lazy-loading.html) them.
 
+## Frequently Asked Questions
+
+- ### (Vue-CLI v.4+) The white-spaces in my code are not preserved by the CodeBlock widget, how can I fix it?
+
+The way Vue-CLI treats white-spaces [has changed](https://cli.vuejs.org/migrating-from-v3/#vue-cli-service) in the version 4. If you use Vue-CLI to create your slideshow, you will need to add the following configuration in your `vue.config.js` file (see [issue#90](https://github.com/Zulko/eagle.js/issues/90#issue-510662591)).
+
+```js
+// vue.config.js
+module.exports = {
+    chainWebpack: config => {
+      config.module
+        .rule('vue')
+          .use('vue-loader')
+            .tap(args => {
+              args.compilerOptions.whitespace = 'preserve'
+            })
+    }
+  }
+```
+
 ## Contribute
 
 Eagle.js is an open source framework originally written by [Zulko](https://github.com/Zulko) and released on [Github](https://github.com/Zulko/eagle.js) under the ISC licence. Everyone is welcome to contribute!
