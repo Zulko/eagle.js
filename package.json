@@ -26,7 +26,7 @@
     "storybook": "start-storybook -p 9001 -c .storybook",
     "format": "prettier --write src/themes/**/*.scss src/themes/*.scss",
     "lint": "eslint --ext vue,js --format node_modules/eslint-friendly-formatter src test",
-    "test": "jest --no-cache --bail",
+    "test": "jest --bail",
     "test:watch": "jest --watch"
   },
   "dependencies": {

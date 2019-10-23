@@ -118,6 +118,3 @@ storiesOf('Theme', module)
     </slide>
     `, true, 'gourmet')
   )
-
-  // storiesOf('Plugin', module)
-  //   .add('presenter', () =>)
