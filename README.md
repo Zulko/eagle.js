@@ -40,6 +40,12 @@ Here is what the eagle.js syntax looks like (Example here are using [Pug](https:
 
 If you are not familiar with Vue.js you will find eagle.js harder to use than, say, [Reveal.js](https://github.com/hakimel/reveal.js/), but on the long term eagle.js makes it easier to organize your slides and implement new ideas.
 
+## Templates
+
+- [**elpete/eaglejs-template**](https://github.com/elpete/eaglejs-template) Eagle.js Template for vue-cli.
+- [**christian-nils/presentation_template**](https://github.com/christian-nils/presentation_template) Presentation template using VueJS and EagleJS, with some custom components. ([demo](https://christian-nils.github.io/phd_presentation/))
+
+
 ## Get started
 
 You must have Node.js/npm installed to use eagle.js.
