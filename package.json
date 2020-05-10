@@ -29,9 +29,12 @@
     "test": "jest --bail",
     "test:watch": "jest --watch",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "deploy": "deploy.sh"
   },
+  "homepage": "https://errajswami.github.io/eagle.js/",
   "dependencies": {
+    "gh-pages": "^2.2.0",
     "lodash.throttle": "^4.1.1"
   },
   "devDependencies": {
