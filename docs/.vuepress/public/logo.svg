@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="27.5mm" width="35mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 123.97141 97.588438">
+ <g transform="translate(-264 -285)">
+  <path d="m384 332c-26.7-32.1-68.1-59.2-103-32.4-26.7 24.4-13.1 68.9 16.1 77.5 40.7 10 65.5-18.2 86.5-45.1z" fill-rule="evenodd" fill="#272200"/>
+  <ellipse rx="38.9" ry="37.4" cy="336" cx="320" fill="#f6fb05"/>
+  <ellipse rx="14.9" ry="15.7" cy="337" cx="321"/>
+  <ellipse fill-opacity=".304" rx="45.4" ry="18.2" transform="matrix(.976 .217 -.313 .950 0 0)" cy="239" cx="409"/>
+  <ellipse fill-opacity=".968" rx="3.15" ry="3.43" cy="328" cx="327" fill="#fff"/>
+ </g>
+</svg>
