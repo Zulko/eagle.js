@@ -3,7 +3,6 @@ module.exports = {
     head: [
         ['link', { rel: 'icon', href: '/logo.svg' }]
     ],
-    dest: 'dist',
     themeConfig: {
       logo: '/logo.svg',
     }
