@@ -165,7 +165,7 @@ export default {
           width = document.documentElement.clientWidth
           height = document.documentElement.clientHeight
         }
-        self.$el.style.fontSize = (0.04 * Math.min(height, width)) + 'px'
+        self.$el.style.fontSize = Math.min(height, width) > 0 ? (0.04 * Math.min(height, width)) + 'px' : (0.04 * Math.max(height, width)) + 'px';
       }, 16)()
     },
     handleClick: function (evt) {

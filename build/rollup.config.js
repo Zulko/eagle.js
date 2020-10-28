@@ -15,7 +15,7 @@ module.exports = {
   input: 'src/main.js',
   output: [
     { file: 'dist/eagle.cjs.js', format: 'cjs', banner, exports: 'named' },
-		{ file: 'dist/eagle.es.js', format: 'es', banner }
+    { file: 'dist/eagle.es.js', format: 'es', banner }
   ],
   external: [
     'vue',

@@ -29,7 +29,7 @@ Vue.component('NestedSlideshow', {
   <div class='eg-theme-agrume'>
     <div class='eg-slideshow'>
       <slide>
-        This is a nested slideshow with only one slide.
+        <h1>This is a nested slideshow with only one slide.</h1>
         <slot />
       </slide>
     </div>
@@ -60,13 +60,13 @@ storiesOf('Slideshow', module)
   )
   .add('multiple slides with enter/exit animation', () =>
     render(`
-    <slide enter='bounceInLeft' leave='bounceOutLeft'>
+    <slide enter='animate__bounceInLeft' leave='animate__bounceOutLeft'>
       <h1>Eagle.js</h1>
     </slide>
-    <slide enter='fadeIn' leave='fadeOut'>
+    <slide enter='animate__fadeIn' leave='fanimate__adeOut'>
       <h1>Eagle.js is easy to use</h1>
     </slide>
-    <slide enter='zoomIn' leave='zoomOut'>
+    <slide enter='animate__zoomIn' leave='animate__zoomOut'>
       <h1>Eagle.js offers max hackbility</h1>
     </slide>
     `)
@@ -75,13 +75,14 @@ storiesOf('Slideshow', module)
     render(`
     <slide :steps='4'>
       <h4>
-        <eg-transition enter='bounceInLeft' leave='bounceOutLeft'>
+        <p v-if="step == 1">Eagle.js</p>
+        <eg-transition enter='animate__bounceInLeft' leave='animate__bounceOutLeft'>
           <p v-if='step >= 2'><b>Vue.js</b> is one of the coolest frontend frameworks out there</p>
         </eg-transition>
-        <eg-transition enter='bounceInRight' leave='bounceOutRight'>
+        <eg-transition enter='animate__bounceInRight' leave='animate__bounceOutRight'>
           <p v-if='step >= 3'><b>Vue.js</b> supports components and transitions out of the box</p>
         </eg-transition>
-        <eg-transition enter='bounceInLeft' leave='bounceOutLeft'>
+        <eg-transition enter='animate__bounceInLeft' leave='animate__bounceOutLeft'>
           <p v-if='step >= 4'><b>Eagle.js</b> adds navigation logics, scalable components, etc.</p>
         </eg-transition>
       </h4>
