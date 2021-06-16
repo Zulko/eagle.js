@@ -60,6 +60,7 @@
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-vue": "^5.0.0",
+    "rollup-plugin-css-only": "^3.1.0",
     "sass-loader": "^7.1.0",
     "shelljs": "^0.7.6",
     "vue": "^2.6.10",
