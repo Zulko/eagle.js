@@ -21,7 +21,7 @@
   "author": "Zulko",
   "license": "ISC",
   "scripts": {
-    "prepare": "npm run build",
+    "prepare": "node build/build.js",
     "build": "node build/build.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "format": "prettier --write src/themes/**/*.scss src/themes/*.scss",
