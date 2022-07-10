@@ -6,11 +6,13 @@
 [![npm version](https://badge.fury.io/js/eagle.js.svg)](https://badge.fury.io/js/eagle.js)
 [![Build Status](https://travis-ci.org/Zulko/eagle.js.svg?branch=master)](https://travis-ci.org/Zulko/eagle.js)
 
-- Slideshow system built on top of the [Vue.js](https://vuejs.org/)
+- Slideshow system built on top of the Vue 2
 - Supports animations, themes, interactive widgets (for web demos)
 - Easy to reuse components, slides and styles across presentations
 - Lightweight core and various helpful extensions
 - All APIs public, maximum hackability 
+
+**This project is considered feature-completed and not actively maintained currently. We recommend you to use [slidev](https://sli.dev/) for better support of Vue 3.**
 
 ### For a quick tour, see [this slideshow](https://zulko.github.io/eaglejs-demo/#/introducing-eagle):
 
