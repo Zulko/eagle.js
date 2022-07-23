@@ -1,0 +1,201 @@
+@import url(https://fonts.googleapis.com/css?family=Comfortaa);
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
+.reveal {
+  color: #aababa; }
+
+h1,
+h2,
+h3,
+h4,
+p,
+li {
+  font-family: "Comfortaa", cursive; }
+
+img {
+  border: none !important;
+  box-shadow: none !important; }
+
+p {
+  text-align: left; }
+
+.rf-slideshow {
+  background-image: url("~eagle.js/dist/themes/assets/subtle_symphony.png");
+  /* Solarized Green */
+  /* Solarized Cyan */
+  /* Solarized Blue */
+  /* Solarized Yellow */
+  /* Solarized Orange */
+  /* Solarized Red */ }
+  .rf-slideshow .rf-slide-content {
+    width: 25em;
+    max-width: 80%;
+    margin: 0 auto; }
+  .rf-slideshow h1,
+  .rf-slideshow h2,
+  .rf-slideshow h3,
+  .rf-slideshow h4,
+  .rf-slideshow p,
+  .rf-slideshow li,
+  .rf-slideshow .button {
+    font-family: "Pompiere", cursive;
+    font-weight: normal; }
+  .rf-slideshow h3 em {
+    text-decoration: underline;
+    font-style: normal; }
+  .rf-slideshow .hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: #fdf6e3;
+    color: #657b83; }
+  .rf-slideshow .hljs-comment,
+  .rf-slideshow .hljs-quote {
+    color: #93a1a1; }
+  .rf-slideshow .hljs-keyword,
+  .rf-slideshow .hljs-selector-tag,
+  .rf-slideshow .hljs-addition {
+    color: #859900; }
+  .rf-slideshow .hljs-number,
+  .rf-slideshow .hljs-string,
+  .rf-slideshow .hljs-meta .hljs-meta-string,
+  .rf-slideshow .hljs-literal,
+  .rf-slideshow .hljs-doctag,
+  .rf-slideshow .hljs-regexp {
+    color: #2aa198; }
+  .rf-slideshow .hljs-title,
+  .rf-slideshow .hljs-section,
+  .rf-slideshow .hljs-name,
+  .rf-slideshow .hljs-selector-id,
+  .rf-slideshow .hljs-selector-class {
+    color: #268bd2; }
+  .rf-slideshow .hljs-attribute,
+  .rf-slideshow .hljs-attr,
+  .rf-slideshow .hljs-variable,
+  .rf-slideshow .hljs-template-variable,
+  .rf-slideshow .hljs-class .hljs-title,
+  .rf-slideshow .hljs-type {
+    color: #b58900; }
+  .rf-slideshow .hljs-symbol,
+  .rf-slideshow .hljs-bullet,
+  .rf-slideshow .hljs-subst,
+  .rf-slideshow .hljs-meta,
+  .rf-slideshow .hljs-meta .hljs-keyword,
+  .rf-slideshow .hljs-selector-attr,
+  .rf-slideshow .hljs-selector-pseudo,
+  .rf-slideshow .hljs-link {
+    color: #cb4b16; }
+  .rf-slideshow .hljs-built_in,
+  .rf-slideshow .hljs-deletion {
+    color: #dc322f; }
+  .rf-slideshow .hljs-formula {
+    background: #eee8d5; }
+  .rf-slideshow .hljs-emphasis {
+    font-style: italic; }
+  .rf-slideshow .hljs-strong {
+    font-weight: bold; }
+  .rf-slideshow .rf-code-comment {
+    font-weight: bold;
+    color: #dd4321; }
+  .rf-slideshow .rf-modal {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white; }
+    .rf-slideshow .rf-modal h1,
+    .rf-slideshow .rf-modal h2,
+    .rf-slideshow .rf-modal h3,
+    .rf-slideshow .rf-modal h4 {
+      font-weight: bold; }
+    .rf-slideshow .rf-modal img {
+      box-shadow: 0 0 4px 4px #888; }
+  .rf-slideshow .button {
+    background: none;
+    cursor: pointer;
+    border: none;
+    color: black;
+    border-radius: 2em;
+    border: 1px solid gray;
+    padding: 0.5em 0.5em;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 1em;
+    display: inline-block; }
+  .rf-slideshow .rf-switch .slider {
+    background-color: #ccc; }
+  .rf-slideshow .rf-switch .slider.checked {
+    background-color: #ffb014; }
+  .rf-slideshow .rf-switch .unchecked {
+    color: #bbbbbb; }
+  .rf-slideshow .rf-radio {
+    margin-right: 1em; }
+    .rf-slideshow .rf-radio .radio {
+      background: none;
+      border: 2px solid black;
+      border-spacing: 2px;
+      z-index: 1; }
+    .rf-slideshow .rf-radio .radiodot {
+      background-color: #ffb014; }
+  .rf-slideshow .shadowbox {
+    box-shadow: 0 0 4px 4px #bbb; }
+
+.eg-slideshow {
+  margin-top: 0;
+  background-attachment: fixed;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
+  .eg-slideshow h1,
+  .eg-slideshow h2,
+  .eg-slideshow h3 {
+    text-align: center; }
+  .eg-slideshow h1 {
+    font-size: 4em;
+    margin-bottom: 0.1em; }
+  .eg-slideshow h2 {
+    font-size: 3em; }
+  .eg-slideshow h3 {
+    font-size: 2em;
+    margin-bottom: 0.5em; }
+  .eg-slideshow h4 {
+    font-size: 1.5em; }
+  .eg-slideshow input {
+    font-size: 1em; }
+  .eg-slideshow strong {
+    font-weight: bold; }
+  .eg-slideshow .small {
+    font-size: 0.65em; }
+  .eg-slideshow img {
+    max-width: 80%; }
+  .eg-slideshow .eg-code-block {
+    font-family: "Source Code Pro", Courier;
+    text-align: left;
+    font-size: 0.5em; }
+    .eg-slideshow .eg-code-block .box {
+      padding: 1em; }
+  .eg-slideshow .eg-slide {
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+    position: absolute; }
+  .eg-slideshow .subslide {
+    position: absolute;
+    margin-top: -1em; }
+  .eg-slideshow .inline {
+    display: inline-block; }
+  .eg-slideshow .center {
+    text-align: center; }
+    .eg-slideshow .center p {
+      text-align: center; }
+  .eg-slideshow .quarter {
+    display: inline-block;
+    width: 50%;
+    margin-bottom: 0.5em; }
+  .eg-slideshow .eg-switch .switch {
+    margin-right: 0.5em; }
+  .eg-slideshow .eg-radio .radiobutton {
+    margin-right: 0.5em; }
+  .eg-slideshow .eg-triggered-message {
+    position: absolute; }
+  .eg-slideshow .button {
+    font-size: 1em; }
+  .eg-slideshow .nodisplay {
+    display: none; }

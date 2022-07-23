@@ -1,6 +1,7 @@
 const babel = require('rollup-plugin-babel')
 const commonjs = require('rollup-plugin-commonjs')
 const vue = require('rollup-plugin-vue')
+const css = require('rollup-plugin-css-only')
 const pkg = require('../package.json')
 
 const banner = `/*
@@ -23,7 +24,8 @@ module.exports = {
   ],
   plugins: [
     commonjs(),
-    vue(),
+    css(),
+    vue({ css: false }),
     babel({
       runtimeHelpers: true
     })

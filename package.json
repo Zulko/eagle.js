@@ -21,7 +21,8 @@
   "author": "Zulko",
   "license": "ISC",
   "scripts": {
-    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
+    "prepublish": "npm run build",
     "build": "node build/build.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "format": "prettier --write src/themes/**/*.scss src/themes/*.scss",
@@ -60,6 +61,7 @@
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-vue": "^5.0.0",
+    "rollup-plugin-css-only": "^3.1.0",
     "sass-loader": "^7.1.0",
     "shelljs": "^0.7.6",
     "vue": "^2.6.10",
