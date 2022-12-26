@@ -1,6 +1,6 @@
 <template lang='pug'>
-transition(:enter-active-class="enter ? 'animated ' + enter : ''",
-           :leave-active-class="leave ? 'animated ' + leave : ''")
+transition(:enter-active-class="enter ? 'animate animate__animated ' + enter : ''",
+           :leave-active-class="leave ? 'animate animate__animated ' + leave : ''")
   slot
 </template>
 <script>
